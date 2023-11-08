@@ -87,6 +87,11 @@ func createHeaders(copilotToken string) map[string]string {
 // 根据提供的json数据和headers，构造一个request对象
 func FakeRequest(c *gin.Context) {
 	content := c.Query("content")
+	// 获取post请求的参数
+
+	form := c.PostFormMap("top_p")
+
+	fmt.Println("content", content, c.PostForm("top_p"), form)
 	url := "https://api.githubcopilot.com/chat/completions"
 	copilotToken := config.CoToken
 	headers := createHeaders(copilotToken)
@@ -143,6 +148,7 @@ func FakeRequest(c *gin.Context) {
 func copilotProxy(c *gin.Context) {
 	// 从请求头部获取 github token，然后获取 copilot token
 	utils.GetGithubTokens(c)
+	// 构造请求
 	FakeRequest(c)
 }
 
@@ -150,5 +156,9 @@ func main() {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.POST("/v1/chat/completions", copilotProxy)
+	router.GET("/ping", func(c *gin.Context) {
+		c.String(http.StatusOK, "pong")
+		c.JSON(http.StatusOK, gin.H{"code": 200, "message": "pong"})
+	})
 	router.Run(":8080")
 }

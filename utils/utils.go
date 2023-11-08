@@ -59,18 +59,7 @@ func getCopilotToken(c *gin.Context, githubToken string) {
 		if err = json.Unmarshal(body, &copilotToken); err != nil {
 			fmt.Println("序列化错误", err)
 		}
-		fmt.Println("copilotToken123", copilotToken.ExpiresAt)
-		// copilotToken.Token的值是
-		// {
-		// 	"tid": "f1d9e1327eb5886230aeecde78696a8d",
-		// 	"exp": 1699366852,
-		// 	"sku": "free_educational",
-		// 	"st": "dotcom",
-		// 	"chat": 1,
-		// 	"8kp": "1:920eb2c11195537c1ab013361bf44cd58bda0e8e50db80e7a990bbbcb316500b"
-		// }
 		token.Token = copilotToken.Token
-		// 保存到 cache
 		setTokenToCache(githubToken, *copilotToken)
 	}
 	config.CoToken = token.Token
