@@ -1,19 +1,34 @@
 package handler
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
 
 	"copilot-gpt4-service/utils"
-
-	"github.com/gin-gonic/gin"
 )
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(200)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func Handler(c *gin.Context) {
-	// 从请求头部获取 github token，然后获取 copilot token
+	gin.SetMode(gin.ReleaseMode)
+	gin := gin.Default()
+	gin.Use(CORSMiddleware())
+
 	utils.GetGithubTokens(c)
 	// 构造请求
 	utils.FakeRequest(c)
-
-	fmt.Fprintf(c.Writer, "<h1>Hello from Go!</h1>")
-
+	gin.ServeHTTP(c.Writer, c.Request)
 }
