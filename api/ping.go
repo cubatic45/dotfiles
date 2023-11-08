@@ -7,6 +7,8 @@ import (
 
 // 当前端请求api时，返回{code: 200, data: 'pong'}内容给他
 func ping(w http.ResponseWriter, r *http.Request) {
+
+	
 	// 返回HTTP状态码200
 	w.WriteHeader(http.StatusOK)
 	// 返回http响应内容
