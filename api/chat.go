@@ -127,7 +127,7 @@ func FakeRequest(c *gin.Context) {
 	}
 }
 
-func chat(c *gin.Context) {
+func Handler(c *gin.Context) {
 	// 从请求头部获取 github token，然后获取 copilot token
 	utils.GetGithubTokens(c)
 	// 构造请求
