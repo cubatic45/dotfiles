@@ -23,12 +23,22 @@ func CORSMiddleware() gin.HandlerFunc {
 }
 
 func Handler(c *gin.Context) {
-	gin.SetMode(gin.ReleaseMode)
-	gin := gin.Default()
-	gin.Use(CORSMiddleware())
+	// gin.SetMode(gin.ReleaseMode)
+	// gin := gin.Default()
+	// gin.Use(CORSMiddleware())
 
-	utils.GetGithubTokens(c)
-	// 构造请求
-	utils.FakeRequest(c)
-	gin.ServeHTTP(c.Writer, c.Request)
+	// utils.GetGithubTokens(c)
+	// // 构造请求
+	// utils.FakeRequest(c)
+	// gin.ServeHTTP(c.Writer, c.Request)
+	g := gin.New()
+	// Your handler logic
+	g.POST("/api/chat", func(c *gin.Context) {
+		// ... your handler logic here ...
+		utils.GetGithubTokens(c)
+		utils.FakeRequest(c)
+	})
+
+	// running gin engine
+	g.ServeHTTP(c.Writer, c.Request)
 }
