@@ -10,7 +10,7 @@ import (
     "net/http"
     "os"
     "strings"
-
+		"copilot-gpt4-service/utils"
     "github.com/gin-gonic/gin"
 )
 
@@ -143,7 +143,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     router := gin.Default()
     router.Use(CORSMiddleware())
     router.POST("/v1/chat/completions", func(c *gin.Context) {
-        FakeRequest(c)
+			utils.GetGithubTokens(c)
+			utils.FakeRequest(c)
     })
     router.ServeHTTP(w, r)
 }
