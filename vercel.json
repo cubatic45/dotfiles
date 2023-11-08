@@ -1,7 +1,0 @@
-{
-  "functions": {
-      "api/chat.go": {
-          "runtime": "vercel/go@0.2.0"
-      }
-  }
-}

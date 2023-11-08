@@ -146,5 +146,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			utils.GetGithubTokens(c)
 			utils.FakeRequest(c)
     })
-    router.ServeHTTP(w, r)
+    // router.ServeHTTP(w, r)
+		fmt.Fprintf(w, "{code: 200, data: 'pong123456789'}")
 }
