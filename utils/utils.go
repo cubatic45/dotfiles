@@ -30,7 +30,6 @@ func getTokenFromCache(githubToken string) *Token {
 	// 当前过期时间30分钟，15-25分钟内随机值刷新
 	extraTime := rand.Intn(600) + 300
 	if token, ok := tokens[githubToken]; ok {
-		// fmt.Println("tokens123", token.ExpiresAt, time.Now().Unix(), int64(extraTime))
 			if token.ExpiresAt > time.Now().Unix()+int64(extraTime) {
 					return &token
 			}
@@ -55,9 +54,9 @@ func getCopilotToken(c *gin.Context, githubToken string) {
 		body, _ := ioutil.ReadAll(response.Body)
 
 		copilotToken := &Token{}
-		// 使用 json.Unmarshal将HTTP响应体解析为一个Token结构体，并将其赋值给copilotToken变量
+		// 使用 json.Unmarshal将 HTTP 响应体解析为一个 Token 结构体，并将其赋值给 copilotToken 变量
 		if err = json.Unmarshal(body, &copilotToken); err != nil {
-			fmt.Println("序列化错误", err)
+			fmt.Println("err", err)
 		}
 		token.Token = copilotToken.Token
 		setTokenToCache(githubToken, *copilotToken)

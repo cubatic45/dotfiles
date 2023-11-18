@@ -2,15 +2,15 @@ package main
 
 import (
 	"bytes"
+	"copilot-gpt4-service/config"
+	"copilot-gpt4-service/utils"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"net/http"
-	"copilot-gpt4-service/config"
-	"copilot-gpt4-service/utils"
-	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,9 +51,9 @@ type Choice struct {
 }
 
 type Data struct {
-	Choices []Choice `json:"choices"`
-	Created int      `json:"created"`
-	ID      string   `json:"id"`
+	Choices []Choice `json:"choices,omitempty"`
+	Created int      `json:"created,omitempty"`
+	ID      string   `json:"id,omitempty"`
 }
 
 func genHexStr(length int) string {
@@ -84,7 +84,7 @@ func createHeaders(copilotToken string) map[string]string {
 	return headers
 }
 
-// 根据提供的json数据和headers，构造一个request对象
+// 根据提供的 json 数据和 headers，构造一个 request 对象
 func FakeRequest(c *gin.Context) {
 	content := c.Query("content")
 	url := "https://api.githubcopilot.com/chat/completions"
@@ -104,18 +104,18 @@ func FakeRequest(c *gin.Context) {
 		Stream:      true,
 		Intent:      true,
 	}
-	fmt.Println("jsonBody", jsonBody)
 	_ = c.BindJSON(&jsonBody)
 
 	jsonData, err := json.Marshal(jsonBody)
 	if err != nil {
-		fmt.Println("序列化错误了")
 		return
 	}
+
 	req, _ := http.NewRequest("POST", url, bytes.NewReader(jsonData))
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -123,23 +123,36 @@ func FakeRequest(c *gin.Context) {
 	} else {
 		defer resp.Body.Close()
 		if resp.StatusCode != http.StatusOK {
+			//body, _ := ioutil.ReadAll(resp.Body)
 			return
 		} else {
-			body, _ := ioutil.ReadAll(resp.Body)
-			jsonStr := strings.TrimPrefix(string(body), "data: ")
-			// 这里就是stream数据流
-			c.Data(200, "text/event-stream; charset=utf-8", body)
-			r := &Data{}
-			err = json.Unmarshal([]byte(jsonStr), &r)
-			if err != nil {
-				// fmt.Println("json 反序列化失败: ", err)
-				return
+			c.Writer.Header().Set("Transfer-Encoding", "chunked")
+			c.Writer.Header().Set("X-Accel-Buffering", "no")
+			c.Header("Content-Type", "text/event-stream; charset=utf-8")
+			c.Header("Cache-Control", "no-cache")
+			c.Header("Connection", "keep-alive")
+			body := make([]byte, 1024) // 定义一个缓冲区，每次读取的数据大小为1024字节
+			for {
+				n, err := resp.Body.Read(body)
+				if err != nil && err != io.EOF {
+					// 处理读取错误
+					break
+				}
+				if n > 0 {
+					c.Writer.WriteString(string(body[:n]))
+					c.Writer.Flush()
+					time.Sleep(100 * time.Millisecond)
+				}
+				if err == io.EOF {
+					// 数据读取完毕，退出循环
+					break
+				}
 			}
 		}
 	}
+
 }
 
-// 使用 github token 获取 copilot-chat 的提示接口
 func copilotProxy(c *gin.Context) {
 	// 从请求头部获取 github token，然后获取 copilot token
 	utils.GetGithubTokens(c)
