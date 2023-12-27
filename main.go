@@ -11,6 +11,8 @@ import (
   "math/rand"
   "net/http"
   "time"
+  "bufio"
+  "strings"
 
   "github.com/gin-gonic/gin"
 )
@@ -39,6 +41,7 @@ type JsonData struct {
   N           int64       `json:"n"`
   Stream      bool        `json:"stream"`
   Intent      bool        `json:"intent"`
+  OneTimeReturn bool      `json:"one_time_return"`
 }
 
 type Delta struct {
@@ -103,6 +106,7 @@ func FakeRequest(c *gin.Context) {
     N:           1,
     Stream:      true,
     Intent:      true,
+    OneTimeReturn: false,
   }
   _ = c.BindJSON(&jsonBody)
 
@@ -121,36 +125,77 @@ func FakeRequest(c *gin.Context) {
   if err != nil {
     fmt.Println("发送请求错误")
   } else {
-    defer resp.Body.Close()
-    if resp.StatusCode != http.StatusOK {
-      //body, _ := ioutil.ReadAll(resp.Body)
-      return
+    if jsonBody.OneTimeReturn {
+			if err != nil {
+				// 处理请求错误
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"message": "Internal Server Error",
+				})
+				return
+			}
+			defer resp.Body.Close()
+
+			// 读取后端返回的流式数据并组合到缓冲区中
+			var buffer bytes.Buffer
+			scanner := bufio.NewScanner(resp.Body)
+			for scanner.Scan() {
+				line := scanner.Text()
+				if strings.HasPrefix(line, "data: ") {
+          data := strings.TrimPrefix(line, "data: ")
+            var obj map[string]interface{}
+            if err := json.Unmarshal([]byte(data), &obj); err == nil {
+                if choices, ok := obj["choices"].([]interface{}); ok && len(choices) > 0 {
+                    if choice, ok := choices[0].(map[string]interface{}); ok {
+                        if delta, ok := choice["delta"].(map[string]interface{}); ok {
+                            if content, ok := delta["content"].(string); ok {
+                              buffer.WriteString(content)
+                            }
+                        }
+                    }
+                }
+            }
+				}
+			}
+			if scanner.Err() != nil {
+				// 处理读取错误
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"message": "Internal Server Error",
+				})
+				return
+			}
+			// 将缓冲区中的数据作为响应体返回给客户端
+			c.Data(http.StatusOK, "text/event-stream; charset=utf-8", buffer.Bytes())
     } else {
-      c.Writer.Header().Set("Transfer-Encoding", "chunked")
-      c.Writer.Header().Set("X-Accel-Buffering", "no")
-      c.Header("Content-Type", "text/event-stream; charset=utf-8")
-      c.Header("Cache-Control", "no-cache")
-      c.Header("Connection", "keep-alive")
-      body := make([]byte, 1024) // 定义一个缓冲区，每次读取的数据大小为1024字节
-      for {
-        n, err := resp.Body.Read(body)
-        if err != nil && err != io.EOF {
-          // 处理读取错误
-          break
-        }
-        if n > 0 {
-          c.Writer.WriteString(string(body[:n]))
-          c.Writer.Flush()
-          time.Sleep(100 * time.Millisecond)
-        }
-        if err == io.EOF {
-          // 数据读取完毕，退出循环
-          break
+      defer resp.Body.Close()
+      if resp.StatusCode != http.StatusOK {
+        //body, _ := ioutil.ReadAll(resp.Body)
+        return
+      } else {
+        c.Writer.Header().Set("Transfer-Encoding", "chunked")
+        c.Writer.Header().Set("X-Accel-Buffering", "no")
+        c.Header("Content-Type", "text/event-stream; charset=utf-8")
+        c.Header("Cache-Control", "no-cache")
+        c.Header("Connection", "keep-alive")
+        body := make([]byte, 1024) // 定义一个缓冲区，每次读取的数据大小为1024字节
+        for {
+          n, err := resp.Body.Read(body)
+          if err != nil && err != io.EOF {
+            // 处理读取错误
+            break
+          }
+          if n > 0 {
+            c.Writer.WriteString(string(body[:n]))
+            c.Writer.Flush()
+            time.Sleep(100 * time.Millisecond)
+          }
+          if err == io.EOF {
+            // 数据读取完毕，退出循环
+            break
+          }
         }
       }
     }
   }
-
 }
 
 func copilotProxy(c *gin.Context) {

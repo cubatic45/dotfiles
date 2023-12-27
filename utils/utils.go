@@ -27,7 +27,6 @@ func setTokenToCache(githubToken string, copilotToken Token) {
 
 // 从缓存中获取 copilot token
 func getTokenFromCache(githubToken string) *Token {
-  // 当前过期时间30分钟，15-25分钟内随机值刷新
   extraTime := rand.Intn(600) + 300
   if token, ok := tokens[githubToken]; ok {
       if token.ExpiresAt > time.Now().Unix()+int64(extraTime) {
@@ -54,7 +53,6 @@ func getCopilotToken(c *gin.Context, githubToken string) {
     body, _ := ioutil.ReadAll(response.Body)
 
     copilotToken := &Token{}
-    // 使用 json.Unmarshal将 HTTP 响应体解析为一个 Token 结构体，并将其赋值给 copilotToken 变量
     if err = json.Unmarshal(body, &copilotToken); err != nil {
       fmt.Println("err", err)
     }
@@ -66,7 +64,6 @@ func getCopilotToken(c *gin.Context, githubToken string) {
 
 // 从请求头部获取 github token
 func GetGithubTokens(c *gin.Context) {
-  // 从请求头部获取 Authorization 的值（Bearer ghu_ZMQ8BsYRIB9uyOBdgdnfLr7jKtNPno3Wno0d）
   githubToken := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
   if githubToken == "" {
     c.JSON(http.StatusUnauthorized, gin.H{
