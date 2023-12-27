@@ -3,7 +3,9 @@
 ## 使用方法
 1.访问 http://gpt4copilot.tech
 
-2.在设置的接口地址填入http://gpt4copilot.tech, 在API Key中填入Github Copilot的Token，目前默认使用的是GPT-4模型
+2.在设置的接口地址填入 http://gpt4copilot.tech
+
+3.在API Key中填入Github Copilot的Token
 
 提供两个已经开通了Github Copilot的Token，可以直接使用：
 - ghu_1FShK8KdA9UdoIEVUfqgDD04n0VtEz4GqEhP
@@ -11,6 +13,7 @@
 
 如果自己有Github Copilot的Token，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取
 
+4.支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
 ![步骤1](/assets/step1.png)
 
 ## 实现原理
