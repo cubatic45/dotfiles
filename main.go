@@ -126,21 +126,21 @@ func FakeRequest(c *gin.Context) {
     fmt.Println("发送请求错误")
   } else {
     if jsonBody.OneTimeReturn {
-			if err != nil {
-				// 处理请求错误
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Internal Server Error",
-				})
-				return
-			}
-			defer resp.Body.Close()
+      if err != nil {
+        // 处理请求错误
+        c.JSON(http.StatusInternalServerError, gin.H{
+          "message": "Internal Server Error",
+        })
+        return
+      }
+      defer resp.Body.Close()
 
-			// 读取后端返回的流式数据并组合到缓冲区中
-			var buffer bytes.Buffer
-			scanner := bufio.NewScanner(resp.Body)
-			for scanner.Scan() {
-				line := scanner.Text()
-				if strings.HasPrefix(line, "data: ") {
+      // 读取后端返回的流式数据并组合到缓冲区中
+      var buffer bytes.Buffer
+      scanner := bufio.NewScanner(resp.Body)
+      for scanner.Scan() {
+        line := scanner.Text()
+        if strings.HasPrefix(line, "data: ") {
           data := strings.TrimPrefix(line, "data: ")
             var obj map[string]interface{}
             if err := json.Unmarshal([]byte(data), &obj); err == nil {
@@ -154,17 +154,17 @@ func FakeRequest(c *gin.Context) {
                     }
                 }
             }
-				}
-			}
-			if scanner.Err() != nil {
-				// 处理读取错误
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Internal Server Error",
-				})
-				return
-			}
-			// 将缓冲区中的数据作为响应体返回给客户端
-			c.Data(http.StatusOK, "text/event-stream; charset=utf-8", buffer.Bytes())
+        }
+      }
+      if scanner.Err() != nil {
+        // 处理读取错误
+        c.JSON(http.StatusInternalServerError, gin.H{
+          "message": "Internal Server Error",
+        })
+        return
+      }
+      // 将缓冲区中的数据作为响应体返回给客户端
+      c.Data(http.StatusOK, "text/event-stream; charset=utf-8", buffer.Bytes())
     } else {
       defer resp.Body.Close()
       if resp.StatusCode != http.StatusOK {
