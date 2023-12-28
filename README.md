@@ -10,7 +10,7 @@
 提供三个已经开通了Github Copilot账号的Token，可以直接使用：
 - ghu_kEDPRczuQhVAxBxQD4Rkjv5uBba6zE3i0mNH
 
-大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，目前太多人请求了，Token失效得很快，内部几个人用的话，Token有效期一般是好几个月
+**大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，目前太多不同的IP请求了，Token半个钟就失效了，如果是内部几个人用的话，Token有效期一般是好几个月**
 
 4.支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
 ![步骤1](/assets/step1.png)
