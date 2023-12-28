@@ -20,6 +20,23 @@
 
 客户端设置页面填写的接口地址就是本仓库代码，大家可以自行部署
 
+### 使用Docker部署
+```bash
+git clone https://github.com/aaamoon/copilot-gpt4-service
+```
+
+```bash
+cd copilot-gpt4-service
+```
+
+```bash
+docker build -t copilot-gpt4-service .
+```
+
+```bash
+docker run -d -p 8080:8080 copilot-gpt4-service
+```
+
 ## 实现原理
 
 ![实现原理](/assets/principle.png)
