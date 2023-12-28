@@ -8,7 +8,7 @@
 3.在API Key中填入Github Copilot的Token
 
 提供三个已经开通了Github Copilot账号的Token，可以直接使用：
-- ghu_XUd6BKGjt4UC69rJHPg28FuRnuXtl13Mcwol
+- ghu_dgAZtXu9T2ea1abteVt0V3JiMWf6jl2iQFnY
 
 大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，目前太多人请求了，Token失效得很快，内部几个人用的话，Token有效期一般是好几个月
 
