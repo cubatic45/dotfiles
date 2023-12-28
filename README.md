@@ -8,12 +8,17 @@
 3.在API Key中填入Github Copilot的Token
 
 提供三个已经开通了Github Copilot账号的Token，可以直接使用：
-- ghu_dgAZtXu9T2ea1abteVt0V3JiMWf6jl2iQFnY
+- ghu_Z38jP1UFJkxKVTlwRgE4maam7eMsOc152aDu
 
 大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，目前太多人请求了，Token失效得很快，内部几个人用的话，Token有效期一般是好几个月
 
 4.支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
 ![步骤1](/assets/step1.png)
+
+## 部署
+客户端使用的是[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)
+
+客户端设置页面填写的接口地址就是本仓库代码，大家可以自行部署
 
 ## 实现原理
 
