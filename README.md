@@ -15,7 +15,7 @@
 4.支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
 ![步骤1](/assets/step1.png)
 
-## 部署
+## 个人部署
 
 ### 客户端
 客户端使用的是[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)，里面有详细的部署教程
