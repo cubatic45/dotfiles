@@ -8,10 +8,9 @@
 3.在API Key中填入Github Copilot的Token
 
 提供三个已经开通了Github Copilot账号的Token，可以直接使用：
-- ghu_BvyEfLPXWtyQgr949ReZyMr0EzwZtk49Hwb0
-- ghu_vxqR8k07Ew2AX4Rc95qTaT7KV6ZlWP4f5VT7
+- ghu_uOZ5wJU3Bhg70hKEpwoUyn5Iwrobck39X6U3
 
-大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，不然我怕上面那两个账号顶不住被封禁
+大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，目前太多人请求了，Token失效得很快，内部几个人用的话，Token有效期一般是好几个月
 
 4.支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
 ![步骤1](/assets/step1.png)
