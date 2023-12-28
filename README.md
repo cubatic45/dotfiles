@@ -3,7 +3,7 @@
 ## 使用方法
 1.访问 http://gpt4copilot.tech
 
-2.在设置的接口地址填入 http://gpt4copilot.tech
+2.在设置的接口地址填入本仓库项目部署出来的api地址 http://gpt4copilot.tech
 
 3.在API Key中填入Github Copilot的Token
 
