@@ -7,7 +7,8 @@
 
 3.在API Key中填入Github Copilot的Token
 
-提供两个已经开通了Github Copilot账号的Token，可以直接使用：
+提供三个已经开通了Github Copilot账号的Token，可以直接使用：
+- ghu_OfVPhvzFpptDwEV6jVqrxETAbiNwS30cvgej
 - ghu_1FShK8KdA9UdoIEVUfqgDD04n0VtEz4GqEhP
 - ghu_i6kl7qxf6JG4IkWunh3JlJG3eaOPWV4QgvWp
 
