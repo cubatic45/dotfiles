@@ -26,6 +26,23 @@
 
 TODO：今晚支持下Docker部署
 
+### 使用Docker部署
+```bash
+git clone https://github.com/aaamoon/copilot-gpt4-service
+```
+
+```bash
+cd copilot-gpt4-service
+```
+
+```bash
+docker build -t copilot-gpt4-service .
+```
+
+```bash
+docker run -d -p 8080:8080 copilot-gpt4-service
+```
+
 ## 实现原理
 
 ![实现原理](/assets/principle.png)
