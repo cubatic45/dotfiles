@@ -16,17 +16,13 @@
 ![步骤1](/assets/step1.png)
 
 ## 部署
-1.客户端使用的是[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)
 
-2.客户端设置页面填写的接口地址就是本仓库代码，大家可以自行部署
+### 客户端
+客户端使用的是[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)，里面有详细的部署教程
 
-（1）在拉取本项目后执行go build main.go构建出main文件
+### 服务端
 
-（2）将main文件上传到服务器执行nohup ./main &
-
-TODO：今晚支持下Docker部署
-
-### 使用Docker部署
+#### 使用Docker部署
 ```bash
 git clone https://github.com/aaamoon/copilot-gpt4-service
 ```
