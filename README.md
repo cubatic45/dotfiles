@@ -1,19 +1,22 @@
 # COPILOT-GPT4-SERVICE
 
 ## 使用方法
-1.访问 http://gpt4copilot.tech
+1、访问 http://gpt4copilot.tech
 
-2.在设置的接口地址填入本仓库项目部署出来的api地址 http://gpt4copilot.tech
+2、在设置的接口地址填入本仓库项目部署出来的api地址 http://gpt4copilot.tech
 
-3.在API Key中填入Github Copilot的Token
+3、在API Key中填入Github Copilot的Token
 
 提供三个已经开通了Github Copilot账号的Token，可以直接使用：
 - ~~**ghu_kEDPRczuQhVAxBxQD4Rkjv5uBba6zE3i0mNH**~~
 
 **大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，目前太多不同的IP请求了，我提供出去的Token半个钟就失效了，如果是内部几个人用的话，Token有效期一般是好几个月**
 
-4.支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
 ![步骤1](/assets/step1.png)
+
+4、支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
+
+5、接下来我们就可以无限制使用GPT-4模型了~
 
 ## 个人部署
 
@@ -38,6 +41,9 @@ docker build -t copilot-gpt4-service .
 ```bash
 docker run -d -p 8080:8080 copilot-gpt4-service
 ```
+
+#### Cloudflare Worker 部署
+不方便使用Docker部署的话，可以使用[Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service)版本部署
 
 ## 实现原理
 
