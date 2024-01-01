@@ -1,31 +1,33 @@
 # COPILOT-GPT4-SERVICE
 
+English / [简体中文](./README_CN.md)
+
 ## 使用方法
-1、访问 http://gpt4copilot.tech
+1.Visit http://gpt4copilot.tech
 
-2、在设置的接口地址填入本仓库项目部署出来的api地址 http://gpt4copilot.tech
+2.Fill in the interface address provided by this repository's deployed API: http://gpt4copilot.tech
 
-3、在API Key中填入Github Copilot的Token
+3.Enter your Github Copilot token in the API Key field
 
-提供三个已经开通了Github Copilot账号的Token，可以直接使用：
+Three pre-registered tokens for Github Copilot accounts are available for direct use:
 - ~~**ghu_kEDPRczuQhVAxBxQD4Rkjv5uBba6zE3i0mNH**~~
 
-**大佬们如果有开通Github Copilot的话，可以使用自己的Token，通过[copilot-token接口](https://cocopilot.org/copilot/token)来获取，目前太多不同的IP请求了，我提供出去的Token半个钟就失效了，如果是内部几个人用的话，Token有效期一般是好几个月**
+**If you already have a Github Copilot account, you can use your own token by obtaining it through the[copilot-token API](https://cocopilot.org/copilot/token)，Currently, due to the high number of different IP requests, the tokens I provide become invalid within half an hour. If it's for internal use within a few people, the token is generally valid for several months.**
 
-![步骤1](/assets/step1.png)
+![step](/assets/step.png)
 
-4、支持各种OpenAI模型选择，目前默认使用的是GPT-4模型
+4、Various OpenAI models are supported, and the default is the GPT-4 model.
 
-5、接下来我们就可以无限制使用GPT-4模型了~
+5、Now, we can make unlimited use of the GPT-4 model.
 
-## 个人部署
+## Self-Deployment
 
-### 客户端
-客户端使用的是[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)，里面有详细的部署教程
+### Client
+The client uses[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web), where detailed deployment instructions are available
 
-### 服务端
+### Server
 
-#### 使用Docker部署
+#### Docker Deployment
 ```bash
 git clone https://github.com/aaamoon/copilot-gpt4-service
 ```
@@ -42,20 +44,20 @@ docker build -t copilot-gpt4-service .
 docker run -d -p 8080:8080 copilot-gpt4-service
 ```
 
-#### Cloudflare Worker 部署
-不方便使用Docker部署的话，可以使用[Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service)版本部署
+#### Cloudflare Worker Deployment
+If Docker deployment is inconvenient, you can use the[Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service)version for deployment.
 
-## 实现原理
+## Implementation Principle
 
-![实现原理](/assets/principle.png)
+![Implementation Principle](/assets/principle.png)
 
-## 如何判断是不是 GPT-4 模型
-鲁迅为什么暴打周树人？
-- GPT-3.5 会一本正经的胡说八道
-- GPT-4 表示鲁迅和周树人是同一个人
+## How to Determine if It's the GPT-4 Model
+There are 9 birds in the tree, the hunter shoots one, how many birds are left in the tree？
+- GPT-3.5 8 birds(Only able to answer eight.)
+- GPT-4 None (other birds scared away, there may be no birds left in the trees.)
 
-我爸妈结婚时为什么没有邀请我？
-- GPT-3.5 他们当时认为你还太小，所以没有邀请你。
-- GPT-4 他们结婚时你还没出生。
+Why weren't I invited when my parents got married?
+- GPT-3.5 They considered you too young at that time, so they didn't invite you.
+- GPT-4 They got married before you were born.
 
 
