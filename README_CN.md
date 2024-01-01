@@ -60,4 +60,13 @@ docker run -d -p 8080:8080 copilot-gpt4-service
 - GPT-3.5 他们当时认为你还太小，所以没有邀请你。
 - GPT-4 他们结婚时你还没出生。
 
+## 鸣谢
 
+### 贡献者
+
+[贡献者列表](https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors)
+
+
+## 开源协议
+
+[MIT](https://opensource.org/license/mit/)

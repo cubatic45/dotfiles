@@ -60,4 +60,12 @@ Why weren't I invited when my parents got married?
 - GPT-3.5 They considered you too young at that time, so they didn't invite you.
 - GPT-4 They got married before you were born.
 
+## Special Thanks
 
+### Contributor
+
+[Contributors](https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors)
+
+## LICENSE
+
+[MIT](https://opensource.org/license/mit/)
