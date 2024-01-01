@@ -64,7 +64,9 @@ docker run -d -p 8080:8080 copilot-gpt4-service
 
 ### 贡献者
 
-[贡献者列表](https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors)
+<a href="https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=aaamoon/copilot-gpt4-service" />
+</a>
 
 
 ## 开源协议

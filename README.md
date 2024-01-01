@@ -64,7 +64,10 @@ Why weren't I invited when my parents got married?
 
 ### Contributor
 
-[Contributors](https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors)
+<a href="https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=aaamoon/copilot-gpt4-service" />
+</a>
+
 
 ## LICENSE
 
