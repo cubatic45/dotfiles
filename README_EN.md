@@ -14,7 +14,7 @@ Three pre-registered tokens for Github Copilot accounts are available for direct
 
 **If you already have a Github Copilot account, you can use your own token by obtaining it through the [copilot-token API](https://cocopilot.org/copilot/token)，Currently, due to the high number of different IP requests, the tokens I provide become invalid within half an hour. If it's for internal use within a few people, the token is generally valid for several months.**
 
-![step](/assets/step.png)
+![step](/assets/step1_EN.png)
 
 4. Various OpenAI models are supported, and the default is the GPT-4 model.
 

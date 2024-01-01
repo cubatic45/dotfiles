@@ -14,7 +14,7 @@
 
 **大佬们如果有开通 Github Copilot 的话，可以使用自己的 Token，通过 [copilot-token接口](https://cocopilot.org/copilot/token) 来获取，目前太多不同的IP请求了，我提供出去的 Token 半个钟就失效了，如果是内部几个人用的话，Token 有效期一般是好几个月**
 
-![步骤1](/assets/step_CN.png)
+![步骤1](/assets/step1.png)
 
 4、支持各种 OpenAI 模型选择，目前默认使用的是 GPT-4 模型
 
