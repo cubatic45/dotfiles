@@ -12,7 +12,6 @@ import (
 	"math/rand"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -177,16 +176,16 @@ func FakeRequest(c *gin.Context) {
 				c.Header("Cache-Control", "no-cache")
 				c.Header("Connection", "keep-alive")
 				// Read the response body in chunks and write it to the response writer
-				body := make([]byte, 1024)
+				body := make([]byte, 128)
 				for {
 					n, err := resp.Body.Read(body)
 					if err != nil && err != io.EOF {
-						break
+						c.AbortWithError(http.StatusBadGateway, err)
+						return
 					}
 					if n > 0 {
-						c.Writer.WriteString(string(body[:n]))
+						c.Writer.Write(body[:n])
 						c.Writer.Flush()
-						time.Sleep(100 * time.Millisecond)
 					}
 					if err == io.EOF {
 						break
