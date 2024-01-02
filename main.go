@@ -176,7 +176,7 @@ func FakeRequest(c *gin.Context) {
 				c.Header("Cache-Control", "no-cache")
 				c.Header("Connection", "keep-alive")
 				// Read the response body in chunks and write it to the response writer
-				body := make([]byte, 128)
+				body := make([]byte, 64)
 				for {
 					n, err := resp.Body.Read(body)
 					if err != nil && err != io.EOF {
