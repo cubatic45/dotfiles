@@ -30,18 +30,15 @@
 #### 使用Docker部署
 ```bash
 git clone https://github.com/aaamoon/copilot-gpt4-service
-```
-
-```bash
 cd copilot-gpt4-service
+docker compose up -d
 ```
+P.S 可以在`docker-compose.yml`中修改端口  
 
+更新：  
 ```bash
-docker build -t copilot-gpt4-service .
-```
-
-```bash
-docker run -d -p 8080:8080 copilot-gpt4-service
+git pull
+docker compose up -d --build
 ```
 
 #### Cloudflare Worker 部署

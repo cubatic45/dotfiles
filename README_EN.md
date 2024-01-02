@@ -30,18 +30,15 @@ The client uses [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web),
 #### Docker Deployment
 ```bash
 git clone https://github.com/aaamoon/copilot-gpt4-service
-```
-
-```bash
 cd copilot-gpt4-service
+docker compose up -d
 ```
+P.S You can modify the port in `docker-compose.yml`  
 
+update:  
 ```bash
-docker build -t copilot-gpt4-service .
-```
-
-```bash
-docker run -d -p 8080:8080 copilot-gpt4-service
+git pull
+docker compose up -d --build
 ```
 
 #### Cloudflare Worker Deployment
