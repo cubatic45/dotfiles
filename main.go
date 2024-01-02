@@ -107,7 +107,7 @@ func FakeRequest(c *gin.Context) {
 		Temperature:   0.5,
 		TopP:          1,
 		N:             1,
-		Stream:        true,
+		Stream:        false,
 		Intent:        true,
 		OneTimeReturn: false,
 	}
