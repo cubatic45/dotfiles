@@ -1,6 +1,12 @@
-# COPILOT-GPT4-SERVICE
+<h1 align="center">copilot-gpt4-service</h1>
 
-简体中文 / [English](./README_EN.md)
+<p align="center">
+⚔️ Transforming Github Copilot into ChatGPT
+</p>
+
+<p align="center">
+简体中文 | <a href="README_EN.md">English</a>
+</p>
 
 ## 使用方法
 
@@ -29,7 +35,7 @@
 
 ### 服务端
 
-#### 使用Docker部署
+#### Docker 部署
 
 ##### 一键部署方式
 
@@ -58,7 +64,7 @@ docker compose up -d --build
 
 #### Cloudflare Worker 部署
 
-不方便使用Docker部署的话，可以使用 [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) 版本部署
+不方便使用 Docker 部署的话，可以使用 [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) 版本部署
 
 ## 实现原理
 
