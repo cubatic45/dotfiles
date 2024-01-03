@@ -3,6 +3,7 @@
 简体中文 / [English](./README_EN.md)
 
 ## 使用方法
+
 1、访问 http://gpt4copilot.tech
 
 2、在设置的接口地址填入本仓库项目部署出来的api地址 http://gpt4copilot.tech
@@ -23,25 +24,40 @@
 ## 个人部署
 
 ### 客户端
+
 客户端使用的是 [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)，里面有详细的部署教程
 
 ### 服务端
 
 #### 使用Docker部署
+
+##### 一键部署方式
+
 ```bash
-git clone https://github.com/aaamoon/copilot-gpt4-service
-cd copilot-gpt4-service
+docker run -d \
+  --name copilot-gpt4-service \
+  --restart always \
+  -p 8080:8080 \
+  aaamoon/copilot-gpt4-service:latest
+```
+
+##### 实时构建方式
+
+```bash
+git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service
+# 可以在`docker-compose.yml`中修改端口  
 docker compose up -d
 ```
-P.S 可以在`docker-compose.yml`中修改端口  
 
-更新：  
+如需更新容器，可在源代码文件夹重新拉取代码及构建镜像，命令如下：  
+
 ```bash
 git pull
 docker compose up -d --build
 ```
 
 #### Cloudflare Worker 部署
+
 不方便使用Docker部署的话，可以使用 [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) 版本部署
 
 ## 实现原理
@@ -49,11 +65,14 @@ docker compose up -d --build
 ![实现原理](/assets/principle.png)
 
 ## 如何判断是不是 GPT-4 模型
+
 鲁迅为什么暴打周树人？
+
 - GPT-3.5 会一本正经的胡说八道
 - GPT-4 表示鲁迅和周树人是同一个人
 
 我爸妈结婚时为什么没有邀请我？
+
 - GPT-3.5 他们当时认为你还太小，所以没有邀请你。
 - GPT-4 他们结婚时你还没出生。
 
@@ -64,7 +83,6 @@ docker compose up -d --build
 <a href="https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=aaamoon/copilot-gpt4-service" />
 </a>
-
 
 ## 开源协议
 
