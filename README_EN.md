@@ -1,6 +1,12 @@
-# COPILOT-GPT4-SERVICE
+<h1 align="center">copilot-gpt4-service</h1>
 
-English / [简体中文](./README.md)
+<p align="center">
+⚔️ Transforming Github Copilot into ChatGPT
+</p>
+
+<p align="center">
+English | <a href="README.md">简体中文</a>
+</p>
 
 ## How to use
 1. Visit http://gpt4copilot.tech
@@ -16,7 +22,7 @@ Three pre-registered tokens for Github Copilot accounts are available for direct
 
 ![step](/assets/step1_EN.png)
 
-4. Various OpenAI models are supported, and the default is the GPT-4 model.(According to the expert's test, the model parameters only support GPT-4 and GPT-3.5-turbo. Other models tested were processed with the default 3.5 version (compared to the returned results from the OpenAI API, it is speculated that they are likely the earliest versions, GPT-4-0314 and GPT-3.5-turbo-0301)).
+4. Various OpenAI models are supported, and the default is the GPT-4 model. **(Based on testing, the model parameters only support GPT-4 and GPT-3.5-turbo. Other models tested were processed with the default 3.5 version (compared to the returned results from the OpenAI API, it is speculated that they are likely the earliest versions, GPT-4-0314 and GPT-3.5-turbo-0301)).**
 
 5. Now, we can make unlimited use of the GPT-4 model.
 
@@ -27,7 +33,7 @@ The client uses [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web),
 
 ### Server
 
-#### Deploying with Docker
+#### Docker Deployment
 
 ##### One-click Deployment
 
