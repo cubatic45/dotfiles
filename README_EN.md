@@ -27,15 +27,28 @@ The client uses [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web),
 
 ### Server
 
-#### Docker Deployment
+#### Deploying with Docker
+
+##### One-click Deployment
+
+```compose
+docker run -d \
+  --name copilot-gpt4-service \
+  --restart always \
+  -p 8080:8080 \
+  aaamoon/copilot-gpt4-service:latest
+```
+
+##### Real-time Build
+
 ```bash
-git clone https://github.com/aaamoon/copilot-gpt4-service
-cd copilot-gpt4-service
+git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service
+# You can modify the port in `docker-compose.yml`  
 docker compose up -d
 ```
-P.S You can modify the port in `docker-compose.yml`  
 
-update:  
+If you need to update the container, you can re-pull the code and build the image in the source code folder. The commands are as follows:
+
 ```bash
 git pull
 docker compose up -d --build
