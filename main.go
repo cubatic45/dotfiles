@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"copilot-gpt4-service/config"
 	"copilot-gpt4-service/utils"
@@ -11,7 +10,6 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,7 +39,6 @@ type JsonData struct {
 	TopP          float64     `json:"top_p"`
 	N             int64       `json:"n"`
 	Stream        bool        `json:"stream"`
-	OneTimeReturn bool        `json:"one_time_return"`
 }
 
 type Delta struct {
@@ -97,7 +94,7 @@ func FakeRequest(c *gin.Context) {
 	jsonBody := &JsonData{
 		Messages: []map[string]string{
 			{"role": "system",
-				"content": "\nYou are ChatGPT, a large language model trained by OpenAI.\nKnowledge cutoff: 2021-09\nCurrent model: gpt-4\nCurrent time: 2023/11/7 11: 39: 14\n"},
+				"content": "\nYou are ChatGPT, a large language model trained by OpenAI.\nKnowledge cutoff: 2021-09\nCurrent model: gpt-4\n"},
 			{"role": "user",
 				"content": content},
 		},
@@ -106,7 +103,6 @@ func FakeRequest(c *gin.Context) {
 		TopP:          1,
 		N:             1,
 		Stream:        false,
-		OneTimeReturn: false,
 	}
 	_ = c.BindJSON(&jsonBody)
 
@@ -125,69 +121,30 @@ func FakeRequest(c *gin.Context) {
 	if err != nil {
 		fmt.Println("Encountering an error when sending the request.")
 	} else {
-		if jsonBody.OneTimeReturn {
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Internal Server Error",
-				})
-				return
-			}
-			defer resp.Body.Close()
-
-			// Reading the streaming data returned by the OpenAI backend and assembling it into the buffer.
-			var buffer bytes.Buffer
-			scanner := bufio.NewScanner(resp.Body)
-			for scanner.Scan() {
-				line := scanner.Text()
-				if strings.HasPrefix(line, "data: ") {
-					data := strings.TrimPrefix(line, "data: ")
-					var obj map[string]interface{}
-					if err := json.Unmarshal([]byte(data), &obj); err == nil {
-						if choices, ok := obj["choices"].([]interface{}); ok && len(choices) > 0 {
-							if choice, ok := choices[0].(map[string]interface{}); ok {
-								if delta, ok := choice["delta"].(map[string]interface{}); ok {
-									if content, ok := delta["content"].(string); ok {
-										buffer.WriteString(content)
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if scanner.Err() != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"message": "Internal Server Error",
-				})
-				return
-			}
-			c.Data(http.StatusOK, "text/event-stream; charset=utf-8", buffer.Bytes())
+		defer resp.Body.Close()
+		if resp.StatusCode != http.StatusOK {
+			return
 		} else {
-			defer resp.Body.Close()
-			if resp.StatusCode != http.StatusOK {
-				return
-			} else {
-				// Set the headers for the response
-				c.Writer.Header().Set("Transfer-Encoding", "chunked")
-				c.Writer.Header().Set("X-Accel-Buffering", "no")
-				c.Header("Content-Type", "text/event-stream; charset=utf-8")
-				c.Header("Cache-Control", "no-cache")
-				c.Header("Connection", "keep-alive")
-				// Read the response body in chunks and write it to the response writer
-				body := make([]byte, 64)
-				for {
-					n, err := resp.Body.Read(body)
-					if err != nil && err != io.EOF {
-						c.AbortWithError(http.StatusBadGateway, err)
-						return
-					}
-					if n > 0 {
-						c.Writer.Write(body[:n])
-						c.Writer.Flush()
-					}
-					if err == io.EOF {
-						break
-					}
+			// Set the headers for the response
+			c.Writer.Header().Set("Transfer-Encoding", "chunked")
+			c.Writer.Header().Set("X-Accel-Buffering", "no")
+			c.Header("Content-Type", "text/event-stream; charset=utf-8")
+			c.Header("Cache-Control", "no-cache")
+			c.Header("Connection", "keep-alive")
+			// Read the response body in chunks and write it to the response writer
+			body := make([]byte, 64)
+			for {
+				n, err := resp.Body.Read(body)
+				if err != nil && err != io.EOF {
+					c.AbortWithError(http.StatusBadGateway, err)
+					return
+				}
+				if n > 0 {
+					c.Writer.Write(body[:n])
+					c.Writer.Flush()
+				}
+				if err == io.EOF {
+					break
 				}
 			}
 		}
