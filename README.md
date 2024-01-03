@@ -33,7 +33,7 @@
 
 ##### 一键部署方式
 
-```compose
+```bash
 docker run -d \
   --name copilot-gpt4-service \
   --restart always \

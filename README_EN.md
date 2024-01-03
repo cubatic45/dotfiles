@@ -31,7 +31,7 @@ The client uses [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web),
 
 ##### One-click Deployment
 
-```compose
+```bash
 docker run -d \
   --name copilot-gpt4-service \
   --restart always \
