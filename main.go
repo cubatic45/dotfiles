@@ -41,7 +41,6 @@ type JsonData struct {
 	TopP          float64     `json:"top_p"`
 	N             int64       `json:"n"`
 	Stream        bool        `json:"stream"`
-	Intent        bool        `json:"intent"`
 	OneTimeReturn bool        `json:"one_time_return"`
 }
 
@@ -107,7 +106,6 @@ func FakeRequest(c *gin.Context) {
 		TopP:          1,
 		N:             1,
 		Stream:        false,
-		Intent:        true,
 		OneTimeReturn: false,
 	}
 	_ = c.BindJSON(&jsonBody)
