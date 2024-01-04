@@ -9,7 +9,7 @@
 
 ## 实现原理
 
-&emsp;&emsp;下面介绍一下如何将 Github Copilot Chat 的请求转换为 ChatGPT 请求，同时自定义 prompt 去绕过只能提问编程问题的限制，自行切换 GPT-4 模型无限制免费使用的实现。
+&emsp;&emsp;下面介绍一下 Github Copilot Chat 是如何去请求 ChatGPT 的，了解完这个过程后，我们就能在编辑器以外的地方去调用 Github Copilot Chat，同时自定义 prompt 去绕过只能提问编程问题的限制，实现自行切换 GPT-4 模型无限制免费使用。
 
 ### 获取 ChatGPT Authorization
 
@@ -38,7 +38,7 @@
 
 ## 代码实现
 
-&emsp;&emsp;了解完整个流程后，我们将这个过程使用 Golang 去实现将 GitHub Copilot Chat 请求转换为 ChatGPT 请求。我们可以借助第三方开源 ChatGPT 客户端比如 ChatGPT-Next-Web（`https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web`），只需要填入通过 `https://cocopilot.org/copilot/token` 获取到的 GitHub Copilot Plugin Token 后，即可在界面上轻松地使用 GPT-4。同时我们还可以自定义 prompt 去绕过只能提问编程问题的限制，从而提问任何问题。
+&emsp;&emsp;了解完整个流程后，我们可以按照这个过程使用 Golang 去实现将 GitHub Copilot Chat 请求转换为 ChatGPT 请求。我们可以借助第三方开源 ChatGPT 客户端比如 ChatGPT-Next-Web（`https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web`），只需要填入通过 `https://cocopilot.org/copilot/token` 获取到的 GitHub Copilot Plugin Token 后，即可在界面上轻松地使用 GPT-4。同时我们还可以自定义 prompt 去绕过只能提问编程问题的限制，从而提问任何问题。
 
 服务端 Github 源码: `https://github.com/aaamoon/copilot-gpt4-service`
 
@@ -54,7 +54,9 @@ ChatGPT-Next-Web 演示界面：
 2、在设置界面的接口地址填入本项目部署的后端服务接口地址 `https://gpt4copilot.tech`
 
 3、在 API Key 中填入 GitHub Copilot Plugin Token（可以通过接口 `https://cocopilot.org/copilot/token` 来获取，Token 的格式以 ghu_ 或者 gho_ 开头）
+
 ![步骤1](https://picx.zhimg.com/80/v2-b549a378ef2c813be2ec72d348b8b042.png)
+
 4、自行切换模型，支持 GPT-4 模型
 
 5、接下来我们就可以无限制使用 GPT-4 模型了~
