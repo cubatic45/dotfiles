@@ -68,8 +68,9 @@ docker compose up -d --build
 
 ## 实现原理
 
-[如何将Github Copilot转换为ChatGPT以免费使用GPT-4模型](https://zhuanlan.zhihu.com/p/676055167)
+<a href="principle.md">原理链接</a>
 
+原理流程图：
 ![实现原理](/assets/principle.png)
 
 ## 如何判断是不是 GPT-4 模型

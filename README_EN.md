@@ -67,8 +67,9 @@ If Docker deployment is inconvenient, you can use the [Cloudflare Worker](https:
 
 ## Implementation Principle
 
-- [chinese] [如何将Github Copilot转换为ChatGPT以免费使用GPT-4模型](https://zhuanlan.zhihu.com/p/676055167)
+<a href="principle.md">Principle Link</a>
 
+Principle process image:
 ![Implementation Principle](/assets/principle.png)
 
 ## How to Determine if It's the GPT-4 Model
