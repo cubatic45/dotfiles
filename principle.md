@@ -46,11 +46,11 @@ GitHub Copilot Chat 原生集成在 VS Code 和 Visual Studio 中，为编辑器
 
 ## 使用流程
 
-我将客户端部署在了`http://gpt4copilot.tech`，下面是一个简单的使用流程，建议有条件的朋友可以自行部署客户端和服务端。
+我将客户端和服务端都部署在了`https://gpt4copilot.tech`，下面是一个简单的使用流程，建议有条件的朋友可以自行部署客户端和服务端。
 
-1、访问 http://gpt4copilot.tech
+1、访问 `https://gpt4copilot.tech`
 
-2、在设置界面的接口地址填入本项目部署的后端服务接口地址`http://gpt4copilot.tech`
+2、在设置界面的接口地址填入本项目部署的后端服务接口地址`https://gpt4copilot.tech`
 
 3、在 API Key 中填入 GitHub Copilot Plugin Token（可以通过接口`https://cocopilot.org/copilot/token`来获取，Token 的格式以 ghu_ 或者 gho_ 开头）
 ![步骤1](https://picx.zhimg.com/80/v2-b4e801541500d81ca18fbe5cb8d21b71.png)

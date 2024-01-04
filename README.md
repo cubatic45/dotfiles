@@ -10,9 +10,9 @@
 
 ## 使用方法
 
-1、访问 http://gpt4copilot.tech
+1、访问 https://gpt4copilot.tech
 
-2、在设置的接口地址填入本仓库项目部署出来的 API 地址`http://gpt4copilot.tech`
+2、在设置的接口地址填入本仓库项目部署出来的 API 地址`https://gpt4copilot.tech`
 
 3、在API Key中填入 Github Copilot Token
 

@@ -9,9 +9,9 @@ English | <a href="README.md">简体中文</a>
 </p>
 
 ## How to use
-1. Visit http://gpt4copilot.tech
+1. Visit https://gpt4copilot.tech
 
-2. Fill in the interface address provided by this repository's deployed API: `http://gpt4copilot.tech`
+2. Fill in the interface address provided by this repository's deployed API: `https://gpt4copilot.tech`
 
 3. Enter your Github Copilot token in the API Key field
 
