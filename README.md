@@ -1,7 +1,7 @@
 <h1 align="center">copilot-gpt4-service</h1>
 
 <p align="center">
-⚔️ Transforming Github Copilot into ChatGPT
+⚔️ 将 Github Copilot 转换为 ChatGPT
 </p>
 
 <p align="center">
