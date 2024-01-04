@@ -14,7 +14,7 @@
 
 2、在设置的接口地址填入本仓库项目部署出来的 API 地址 `https://gpt4copilot.tech`
 
-3、在API Key中填入 Github Copilot Token
+3、在 API Key 中填入 Github Copilot Token
 
 提供三个已经开通了 Github Copilot 账号的 Token，可以直接使用：
 - ~~**ghu_kEDPRczuQhVAxBxQD4Rkjv5uBba6zE3i0mNH**~~

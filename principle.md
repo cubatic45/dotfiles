@@ -54,7 +54,7 @@ ChatGPT-Next-Web 演示界面：
 2、在设置界面的接口地址填入本项目部署的后端服务接口地址 `https://gpt4copilot.tech`
 
 3、在 API Key 中填入 GitHub Copilot Plugin Token（可以通过接口 `https://cocopilot.org/copilot/token` 来获取，Token 的格式以 ghu_ 或者 gho_ 开头）
-![步骤1](https://picx.zhimg.com/80/v2-b4e801541500d81ca18fbe5cb8d21b71.png)
+![步骤1](https://picx.zhimg.com/80/v2-b549a378ef2c813be2ec72d348b8b042.png)
 4、自行切换模型，支持 GPT-4 模型
 
 5、接下来我们就可以无限制使用 GPT-4 模型了~
