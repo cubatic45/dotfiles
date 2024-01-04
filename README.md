@@ -12,7 +12,7 @@
 
 1、访问 http://gpt4copilot.tech
 
-2、在设置的接口地址填入本仓库项目部署出来的api地址 http://gpt4copilot.tech
+2、在设置的接口地址填入本仓库项目部署出来的 API 地址`http://gpt4copilot.tech`
 
 3、在API Key中填入 Github Copilot Token
 
@@ -67,6 +67,8 @@ docker compose up -d --build
 不方便使用 Docker 部署的话，可以使用 [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) 版本部署
 
 ## 实现原理
+
+[如何将Github Copilot转换为ChatGPT以免费使用GPT-4模型](https://zhuanlan.zhihu.com/p/676055167)
 
 ![实现原理](/assets/principle.png)
 

@@ -11,7 +11,7 @@ English | <a href="README.md">简体中文</a>
 ## How to use
 1. Visit http://gpt4copilot.tech
 
-2. Fill in the interface address provided by this repository's deployed API: http://gpt4copilot.tech
+2. Fill in the interface address provided by this repository's deployed API: `http://gpt4copilot.tech`
 
 3. Enter your Github Copilot token in the API Key field
 
@@ -29,6 +29,7 @@ Three pre-registered tokens for Github Copilot accounts are available for direct
 ## Self-Deployment
 
 ### Client
+
 The client uses [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web), where detailed deployment instructions are available
 
 ### Server
@@ -61,18 +62,24 @@ docker compose up -d --build
 ```
 
 #### Cloudflare Worker Deployment
+
 If Docker deployment is inconvenient, you can use the [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) version for deployment.
 
 ## Implementation Principle
 
+- [chinese] [如何将Github Copilot转换为ChatGPT以免费使用GPT-4模型](https://zhuanlan.zhihu.com/p/676055167)
+
 ![Implementation Principle](/assets/principle.png)
 
 ## How to Determine if It's the GPT-4 Model
+
 There are 9 birds in the tree, the hunter shoots one, how many birds are left in the tree？
+
 - GPT-3.5 8 birds(Only able to answer eight.)
 - GPT-4 None (other birds scared away, there may be no birds left in the trees.)
 
 Why weren't I invited when my parents got married?
+
 - GPT-3.5 They considered you too young at that time, so they didn't invite you.
 - GPT-4 They got married before you were born.
 
