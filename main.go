@@ -159,5 +159,10 @@ func main() {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.POST("/v1/chat/completions", chatCompletions)
+	router.GET("/", func(context *gin.Context) {
+		context.JSON(200, gin.H{
+			"message": "ok",
+		})
+	})
 	router.Run(":8080")
 }
