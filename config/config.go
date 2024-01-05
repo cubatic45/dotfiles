@@ -1,3 +1,3 @@
 package config
 
-var CoToken string
+var Authorization string

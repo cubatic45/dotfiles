@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CORSMiddleware handles Cross-Origin Resource Sharing (CORS) for requests.
+// Handle the Cross-Origin Resource Sharing (CORS) for requests.
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -31,14 +31,14 @@ func CORSMiddleware() gin.HandlerFunc {
 	}
 }
 
-// JsonData represents the JSON data structure for the request body.
+// Represent the JSON data structure for the request body.
 type JsonData struct {
-	Messages      interface{} `json:"messages"`
-	Model         string      `json:"model"`
-	Temperature   float64     `json:"temperature"`
-	TopP          float64     `json:"top_p"`
-	N             int64       `json:"n"`
-	Stream        bool        `json:"stream"`
+	Messages    interface{} `json:"messages"`
+	Model       string      `json:"model"`
+	Temperature float64     `json:"temperature"`
+	TopP        float64     `json:"top_p"`
+	N           int64       `json:"n"`
+	Stream      bool        `json:"stream"`
 }
 
 type Delta struct {
@@ -56,7 +56,7 @@ type Data struct {
 	ID      string   `json:"id,omitempty"`
 }
 
-// genHexStr generates a random hexadecimal string of the specified length.
+// Generate a random hexadecimal string of the specified length.
 func genHexStr(length int) string {
 	bytes := make([]byte, length/2)
 	if _, err := rand.Read(bytes); err != nil {
@@ -65,10 +65,10 @@ func genHexStr(length int) string {
 	return hex.EncodeToString(bytes)
 }
 
-// createHeaders creates the request headers.
-func createHeaders(copilotToken string) map[string]string {
+// Create request headers to mock Github Copilot Chat requests.
+func createHeaders(authorization string) map[string]string {
 	headers := make(map[string]string, 0)
-	headers["Authorization"] = "Bearer " + copilotToken
+	headers["Authorization"] = "Bearer " + authorization
 	headers["X-Request-Id"] = genHexStr(8) + "-" + genHexStr(4) + "-" + genHexStr(4) + "-" + genHexStr(4) + "-" + genHexStr(12)
 	headers["Vscode-Sessionid"] = genHexStr(8) + "-" + genHexStr(4) + "-" + genHexStr(4) + "-" + genHexStr(4) + "-" + genHexStr(25)
 	headers["Vscode-Machineid"] = genHexStr(64)
@@ -85,12 +85,11 @@ func createHeaders(copilotToken string) map[string]string {
 	return headers
 }
 
-// FakeRequest handles the fake request.
-func FakeRequest(c *gin.Context) {
+func mainRequest(c *gin.Context) {
 	content := c.Query("content")
 	url := "https://api.githubcopilot.com/chat/completions"
-	copilotToken := config.CoToken
-	headers := createHeaders(copilotToken)
+	authorization := config.Authorization
+	headers := createHeaders(authorization)
 	jsonBody := &JsonData{
 		Messages: []map[string]string{
 			{"role": "system",
@@ -98,11 +97,11 @@ func FakeRequest(c *gin.Context) {
 			{"role": "user",
 				"content": content},
 		},
-		Model:         "gpt-4",
-		Temperature:   0.5,
-		TopP:          1,
-		N:             1,
-		Stream:        false,
+		Model:       "gpt-4",
+		Temperature: 0.5,
+		TopP:        1,
+		N:           1,
+		Stream:      false,
 	}
 	_ = c.BindJSON(&jsonBody)
 
@@ -151,15 +150,14 @@ func FakeRequest(c *gin.Context) {
 	}
 }
 
-// copilotProxy handles the Copilot proxy.
-func copilotProxy(c *gin.Context) {
-	utils.GetGithubTokens(c)
-	FakeRequest(c)
+func chatCompletions(c *gin.Context) {
+	utils.GetAuthorization(c)
+	mainRequest(c)
 }
 
 func main() {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
-	router.POST("/v1/chat/completions", copilotProxy)
+	router.POST("/v1/chat/completions", chatCompletions)
 	router.Run(":8080")
 }
