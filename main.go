@@ -210,9 +210,9 @@ func main() {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.POST("/v1/chat/completions", chatCompletions)
-    router.GET("/v1/models", createMockModelsResponse)
-    router.NoRoute(func(c *gin.Context) {
-        c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
-    })
+	router.GET("/v1/models", createMockModelsResponse)
+	router.NoRoute(func(c *gin.Context) {
+		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
+	})
 	router.Run(":8080")
 }
