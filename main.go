@@ -151,7 +151,9 @@ func mainRequest(c *gin.Context) {
 }
 
 func chatCompletions(c *gin.Context) {
-	utils.GetAuthorization(c)
+	if !utils.GetAuthorization(c) {
+		return
+	}
 	mainRequest(c)
 }
 
