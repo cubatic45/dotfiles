@@ -13,7 +13,7 @@ English | <a href="README.md">简体中文</a>
 
 2. Fill in the interface address provided by this repository's deployed API: `https://gpt4copilot.tech`
 
-3. Enter your Github Copilot token in the API Key field
+3. Enter your Github Copilot Plugin Token in the API Key field
 
 Three pre-registered tokens for Github Copilot accounts are available for direct use:
 - ~~**ghu_kEDPRczuQhVAxBxQD4Rkjv5uBba6zE3i0mNH**~~
