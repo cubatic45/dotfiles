@@ -27,6 +27,11 @@
 
 5、接下来我们就可以无限制使用 GPT-4 模型了~
 
+## 异常 HTTP 响应状态码解析
+
+- 401: 使用的 Github Copilot Plugin Token 过期了或者错误，请重新获取
+- 403: 使用的账号没有开通 Github Copilot
+
 ## 个人部署
 
 ### 客户端

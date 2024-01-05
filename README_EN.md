@@ -26,6 +26,11 @@ Three pre-registered tokens for Github Copilot accounts are available for direct
 
 5. Now, we can make unlimited use of the GPT-4 model.
 
+## Exception HTTP response status code parsing
+
+- 401: The Github Copilot Plugin token used has expired or is incorrect, please obtain it again.
+- 403: The account you are using does not have Github Copilot activated.
+
 ## Self-Deployment
 
 ### Client
