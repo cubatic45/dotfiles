@@ -45,8 +45,14 @@ func getAuthorizationFromToken(c *gin.Context, copilotToken string) {
 		req, _ := http.NewRequest("GET", getAuthorizationUrl, nil)
 		req.Header.Set("Authorization", "token "+copilotToken)
 		response, err := client.Do(req)
-		if err != nil || response.StatusCode != 200 {
-			c.JSON(response.StatusCode, gin.H{"error": err.Error()})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "code": response.StatusCode})
+			return
+		}
+		if response.StatusCode != 200 {
+			body, _ := ioutil.ReadAll(response.Body)
+			c.JSON(response.StatusCode, gin.H{"error": string(body), "code": response.StatusCode})
+			return
 		}
 		defer response.Body.Close()
 
