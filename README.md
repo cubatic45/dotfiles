@@ -95,7 +95,7 @@ docker compose up -d --build
 ### 贡献者
 
 <a href="https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=aaamoon/copilot-gpt4-service" />
+  <img src="https://contrib.rocks/image?repo=aaamoon/copilot-gpt4-service&anon=0" />
 </a>
 
 ## 开源协议
