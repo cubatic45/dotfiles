@@ -8,6 +8,7 @@ on:
       - 'CODE_OF_CONDUCT.md'
       - 'principle.md'
       - '.editorconfig'
+      - '.chart/**'
   workflow_dispatch:
 
 env:
