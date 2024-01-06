@@ -12,7 +12,7 @@
 
 1、访问 https://gpt4copilot.tech
 
-2、在设置的接口地址填入本仓库项目部署出来的 API 地址 `https://gpt4copilot.tech`
+2、在设置的接口地址填入本仓库项目部署出来的服务端 API 地址 `https://gpt4copilot.tech`（**强烈建议自行部署服务端，因为不清楚后续 Github 会不会检测到从该服务端 IP 发出太多不同 Token 的请求导致有风险存在**）
 
 3、在 API Key 中填入 Github Copilot Plugin Token
 

@@ -11,7 +11,7 @@ English | <a href="README.md">简体中文</a>
 ## How to use
 1. Visit https://gpt4copilot.tech
 
-2. Fill in the interface address provided by this repository's deployed API: `https://gpt4copilot.tech`
+2. Enter the server API address deployed in the repository project in the set interface address: `https://gpt4copilot.tech` (**It is strongly recommended to deploy the server yourself, because it is unclear whether Github will detect that there are too many requests for different tokens from this server IP and cause risk**)
 
 3. Enter your Github Copilot Plugin Token in the API Key field
 
