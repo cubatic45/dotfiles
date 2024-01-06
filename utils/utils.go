@@ -4,7 +4,7 @@ import (
 	"copilot-gpt4-service/config"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -46,18 +46,22 @@ func getAuthorizationFromToken(c *gin.Context, copilotToken string) bool {
 		req.Header.Set("Authorization", "token "+copilotToken)
 		response, err := client.Do(req)
 		if err != nil {
+			if response == nil {
+				// handle connection not available
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return false
+			}
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "code": response.StatusCode})
 			return false
 		}
 		if response.StatusCode != 200 {
-			body, _ := ioutil.ReadAll(response.Body)
+			body, _ := io.ReadAll(response.Body)
 			c.JSON(response.StatusCode, gin.H{"error": string(body), "code": response.StatusCode})
 			return false
 		}
-		println("123")
 		defer response.Body.Close()
 
-		body, _ := ioutil.ReadAll(response.Body)
+		body, _ := io.ReadAll(response.Body)
 
 		newAuthorization := &Authorization{}
 		if err = json.Unmarshal(body, &newAuthorization); err != nil {
