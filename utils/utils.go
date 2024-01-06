@@ -37,7 +37,7 @@ func getAuthorizationFromCache(copilotToken string) *Authorization {
 }
 
 // When obtaining the Authorization, first attempt to retrieve it from the cache. If it is not available in the cache, retrieve it through an HTTP request and then set it in the cache.
-func getAuthorizationFromToken(c *gin.Context, copilotToken string) {
+func getAuthorizationFromToken(c *gin.Context, copilotToken string) bool {
 	authorization := getAuthorizationFromCache(copilotToken)
 	if authorization.Token == "" {
 		getAuthorizationUrl := "https://api.github.com/copilot_internal/v2/token"
@@ -45,9 +45,16 @@ func getAuthorizationFromToken(c *gin.Context, copilotToken string) {
 		req, _ := http.NewRequest("GET", getAuthorizationUrl, nil)
 		req.Header.Set("Authorization", "token "+copilotToken)
 		response, err := client.Do(req)
-		if err != nil || response.StatusCode != 200 {
-			c.JSON(response.StatusCode, gin.H{"error": err.Error()})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "code": response.StatusCode})
+			return false
 		}
+		if response.StatusCode != 200 {
+			body, _ := ioutil.ReadAll(response.Body)
+			c.JSON(response.StatusCode, gin.H{"error": string(body), "code": response.StatusCode})
+			return false
+		}
+		println("123")
 		defer response.Body.Close()
 
 		body, _ := ioutil.ReadAll(response.Body)
@@ -60,17 +67,18 @@ func getAuthorizationFromToken(c *gin.Context, copilotToken string) {
 		setAuthorizationToCache(copilotToken, *newAuthorization)
 	}
 	config.Authorization = authorization.Token
+	return true
 }
 
 // Retrieve the GitHub Copilot Plugin Token from the request header.
-func GetAuthorization(c *gin.Context) {
+func GetAuthorization(c *gin.Context) bool {
 	copilotToken := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
 	if copilotToken == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Unauthorized",
 		})
-		return
+		return false
 	}
 	// Obtain the Authorization from the GitHub Copilot Plugin Token.
-	getAuthorizationFromToken(c, copilotToken)
+	return getAuthorizationFromToken(c, copilotToken)
 }

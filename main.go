@@ -139,7 +139,17 @@ func mainRequest(c *gin.Context) {
 					return
 				}
 				if n > 0 {
-					c.Writer.Write(body[:n])
+					rlt_body := body[:n]
+
+					// Add the missing fields to the response body
+					if bytes.Contains(rlt_body, []byte(`"choices":`)) && !bytes.Contains(rlt_body, []byte(`"object":`)) {
+						rlt_body = bytes.ReplaceAll(rlt_body, []byte(`"choices":`), []byte(`"object": "chat.completion.chunk", "choices":`))
+					}
+					if bytes.Contains(rlt_body, []byte(`"choices":`)) && !bytes.Contains(rlt_body, []byte(`"model":`)) {
+						rlt_body = bytes.ReplaceAll(rlt_body, []byte(`"choices":`), []byte(`"model": "gpt-4", "choices":`))
+					}
+
+					c.Writer.Write(rlt_body)
 					c.Writer.Flush()
 				}
 				if err == io.EOF {
@@ -151,14 +161,59 @@ func mainRequest(c *gin.Context) {
 }
 
 func chatCompletions(c *gin.Context) {
-	utils.GetAuthorization(c)
+	if !utils.GetAuthorization(c) {
+		return
+	}
 	mainRequest(c)
 }
+
+
+func createMockModel(modelId string) gin.H {
+	return gin.H{
+		"id": modelId,
+		"object": "model",
+		"created": 1677610602,
+		"owned_by": "openai",
+		"permission": []gin.H{
+			{
+				"id": "modelperm-" + genHexStr(12),
+				"object": "model_permission",
+				"created": 1677610602,
+				"allow_create_engine": false,
+				"allow_sampling": true,
+				"allow_logprobs": true,
+				"allow_search_indices": false,
+				"allow_view": true,
+				"allow_fine_tuning": false,
+				"organization": "*",
+				"group": nil,
+				"is_blocking": false,
+			},
+		},
+		"root": modelId,
+		"parent": nil,
+	}
+}
+
+func createMockModelsResponse(c *gin.Context) {
+    c.JSON(http.StatusOK, gin.H{
+        "object": "list",
+        "data": []gin.H{
+			createMockModel("gpt-3.5-turbo"),
+			createMockModel("gpt-4"),
+        },
+    })
+}
+
 
 func main() {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.POST("/v1/chat/completions", chatCompletions)
+	router.GET("/v1/models", createMockModelsResponse)
+	router.NoRoute(func(c *gin.Context) {
+		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
+	})
 	router.GET("/", func(context *gin.Context) {
 		context.JSON(200, gin.H{
 			"message": "ok",

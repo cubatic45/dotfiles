@@ -11,7 +11,7 @@ English | <a href="README.md">简体中文</a>
 ## How to use
 1. Visit https://gpt4copilot.tech
 
-2. Fill in the interface address provided by this repository's deployed API: `https://gpt4copilot.tech`
+2. Enter the server API address deployed in the repository project in the set interface address: `https://gpt4copilot.tech` (**It is strongly recommended to deploy the server yourself, because it is unclear whether Github will detect that there are too many requests for different tokens from this server IP and cause risk**)
 
 3. Enter your Github Copilot Plugin Token in the API Key field
 
@@ -25,6 +25,11 @@ Three pre-registered tokens for Github Copilot accounts are available for direct
 4. Switch models on your own, support the GPT-4 model. **(Based on testing, the model parameters only support GPT-4 and GPT-3.5-turbo. Other models tested were processed with the default 3.5 version (compared to the returned results from the OpenAI API, it is speculated that they are likely the earliest versions, GPT-4-0314 and GPT-3.5-turbo-0301)).**
 
 5. Now, we can make unlimited use of the GPT-4 model.
+
+## Exception HTTP response status code parsing
+
+- 401: The Github Copilot Plugin token used has expired or is incorrect, please obtain it again.
+- 403: The account you are using does not have Github Copilot activated.
 
 ## Self-Deployment
 

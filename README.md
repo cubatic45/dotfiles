@@ -12,7 +12,7 @@
 
 1、访问 https://gpt4copilot.tech
 
-2、在设置的接口地址填入本仓库项目部署出来的 API 地址 `https://gpt4copilot.tech`
+2、在设置的接口地址填入本仓库项目部署出来的服务端 API 地址 `https://gpt4copilot.tech`（**强烈建议自行部署服务端，因为不清楚后续 Github 会不会检测到从该服务端 IP 发出太多不同 Token 的请求导致有风险存在**）
 
 3、在 API Key 中填入 Github Copilot Plugin Token
 
@@ -26,6 +26,11 @@
 4、自行切换模型，支持 GPT-4 模型 **（据测试：模型参数仅支持 GPT-4 和 GPT-3.5-turbo ，实测使用其他模型均会以默认的 3.5 处理（对比 OpenAI API 的返回结果，猜测应该是最早的版本 GPT-4-0314 和 GPT-3.5-turbo-0301 ））**
 
 5、接下来我们就可以无限制使用 GPT-4 模型了~
+
+## 异常 HTTP 响应状态码解析
+
+- 401: 使用的 Github Copilot Plugin Token 过期了或者错误，请重新获取
+- 403: 使用的账号没有开通 Github Copilot
 
 ## 个人部署
 
