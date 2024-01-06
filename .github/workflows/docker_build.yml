@@ -1,14 +1,20 @@
 name: Docker Build and Push
 on:
+  push:
+    paths-ignore:
+      - 'README*'
+      - 'LICENSE'
+      - 'assets/**'
+      - 'CODE_OF_CONDUCT.md'
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
+    
 env:
   IMAGE_REPOSITORY: aaamoon/copilot-gpt4-service
 
 jobs:
   docker-release:
     name: Publish Docker images
+    if: github.repository == 'aaamoon/copilot-gpt4-service'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
