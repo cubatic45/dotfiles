@@ -1,13 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"copilot-gpt4-service/config"
 	"copilot-gpt4-service/utils"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io"
 	"math/rand"
 	"net/http"
 
@@ -130,31 +130,25 @@ func mainRequest(c *gin.Context) {
 			c.Header("Content-Type", "text/event-stream; charset=utf-8")
 			c.Header("Cache-Control", "no-cache")
 			c.Header("Connection", "keep-alive")
-			// Read the response body in chunks and write it to the response writer
-			body := make([]byte, 64)
-			for {
-				n, err := resp.Body.Read(body)
-				if err != nil && err != io.EOF {
-					c.AbortWithError(http.StatusBadGateway, err)
-					return
-				}
-				if n > 0 {
-					rlt_body := body[:n]
+			// Scan the response body line by line
+			scanner := bufio.NewScanner(resp.Body)
+			for scanner.Scan() {
+				line := scanner.Bytes()
 
-					// Add the missing fields to the response body
-					if bytes.Contains(rlt_body, []byte(`"choices":`)) && !bytes.Contains(rlt_body, []byte(`"object":`)) {
-						rlt_body = bytes.ReplaceAll(rlt_body, []byte(`"choices":`), []byte(`"object": "chat.completion.chunk", "choices":`))
-					}
-					if bytes.Contains(rlt_body, []byte(`"choices":`)) && !bytes.Contains(rlt_body, []byte(`"model":`)) {
-						rlt_body = bytes.ReplaceAll(rlt_body, []byte(`"choices":`), []byte(`"model": "gpt-4", "choices":`))
-					}
+				if bytes.Contains(line, []byte(`"choices":`)) && !bytes.Contains(line, []byte(`"object":`)) {
+					line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(`"object": "chat.completion.chunk", "choices":`))
+				}
+				if bytes.Contains(line, []byte(`"choices":`)) && !bytes.Contains(line, []byte(`"model":`)) {
+					line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(`"model": "gpt-4", "choices":`))
+				}
 
-					c.Writer.Write(rlt_body)
-					c.Writer.Flush()
-				}
-				if err == io.EOF {
-					break
-				}
+				c.Writer.Write(line)
+				c.Writer.Write([]byte("\n")) // Add newline to the end of each line
+				c.Writer.Flush()
+			}
+			if err := scanner.Err(); err != nil {
+				c.AbortWithError(http.StatusBadGateway, err)
+				return
 			}
 		}
 	}
