@@ -6,8 +6,10 @@ on:
       - 'LICENSE'
       - 'assets/**'
       - 'CODE_OF_CONDUCT.md'
+      - 'principle.md'
+      - '.editorconfig'
   workflow_dispatch:
-    
+
 env:
   IMAGE_REPOSITORY: aaamoon/copilot-gpt4-service
 
