@@ -12,6 +12,17 @@ then
     npm i @githubnext/github-copilot-cli -g
 fi
 
+# Check if the token file exists
+if [ -f ~/.copilot-cli-access-token ]; then
+    echo "Existing token: $(cat ~/.copilot-cli-access-token)"
+    read -p "Do you want to reauthorize? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]
+    then
+        exit 1
+    fi
+fi
+
 # Retrieve the token
 github-copilot-cli auth
 
