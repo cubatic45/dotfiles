@@ -12,13 +12,14 @@
 
 1. 部署 copilot-gpt4-service 服务，并配置 API 地址，如：`https://youcopilotgpt4service.com`;
 2. 获取你的 GitHub 账号 Github Copilot Plugin Token（详见下文）；
-3. 使用第三方客户端，如：[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 服务的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
+3. 使用第三方客户端，如：[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 服务的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
 
 ## 客户端
 
 使用 copilot-gpt4-service，需要配合第三方客户端，目前已测试支持以下客户端：
 
-- [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web) (推荐)
+- [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (推荐)
+- [Chatbox](https://github.com/Bin-Huang/chatbox)：支持 Windows, Mac, Linux 平台
 - [OpenCat APP](https://opencat.app/)：支持 iOS、Mac 平台
 - [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087) ：支持 iOS、Mac 平台
 
@@ -54,7 +55,7 @@ git pull && docker compose up -d --build
 
 ### Kubernetes 部署
 
-Copilot GPT-4 Service 也可以通过 Kubernetes 部署，具体部署方式如下：
+支持通过 Kubernetes 部署，具体部署方式如下：
 
 ```shell
 git clone https://github.com/aaamoon/copilot-gpt4-service.git
@@ -65,7 +66,7 @@ helm upgrade copilot-gpt4-service . --namespace copilot-gpt4-service --create-na
 
 ### Cloudflare Worker
 
-也可以使用 [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) 实现，具体使用方式见 [cf-copilot-service](htttps://github.com/wpv-chan/cf-copilot-service)。
+支持通过 Cloudflare Worker 部署，具体使用方式见 [cf-copilot-service](htttps://github.com/wpv-chan/cf-copilot-service)。
 
 ## 获取 Copilot Token
 
@@ -77,7 +78,7 @@ helm upgrade copilot-gpt4-service . --namespace copilot-gpt4-service --create-na
 
 获取 Github Copilot Plugin Token 的方式目前有两种方式：
 
-1. 通过安装[Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) 授权获取（推荐）。
+1. 通过安装 [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) 授权获取（推荐）。
 2. 通过 [https://cocopilot.org](https://cocopilot.org/copilot/token) 第三方接口授权获取。
 
 #### 通过 Github Copilot CLI 授权获取
@@ -96,12 +97,6 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-ser
 ### 第三方接口授权获取
 
 通过 [https://cocopilot.org](https://cocopilot.org/copilot/token) 第三方接口授权获取，需要注意的是，该接口是第三方开发者提供的，不保证安全性，请谨慎使用。
-
-## 原理
-
-Copilot GPT-4 Service 服务端实现原理详见 [principle.md](principle.md)，下面是简单的流程图。
-
-![实现原理](/assets/principle.png)
 
 ## 常见问题
 

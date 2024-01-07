@@ -5,9 +5,7 @@ on:
     paths-ignore:
       - 'README*'
       - 'LICENSE'
-      - 'assets/**'
       - 'CODE_OF_CONDUCT.md'
-      - 'principle.md'
       - '.editorconfig'
       - '.chart/**'
   pull_request:
@@ -26,7 +24,7 @@ jobs:
       GOOS: ${{ matrix.goos }}
       GOARCH: ${{ matrix.goarch }}
       CGO_ENABLED: 0
-      
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
