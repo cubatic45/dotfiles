@@ -26,5 +26,9 @@ fi
 # Retrieve the token
 github-copilot-cli auth
 
-# View the token
-cat ~/.copilot-cli-access-token
+# Check if the token file exists
+if [ -f ~/.copilot-cli-access-token ]; then
+    echo "Your Copilot token is: $(cat ~/.copilot-cli-access-token)"
+else
+    echo "Token not found. Please try again."
+fi
