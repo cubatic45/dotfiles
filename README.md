@@ -10,8 +10,8 @@
 
 ## 如何使用
 
-1. 部署 copilot-gpt4-service 服务，并配置 API 地址，如：`https://youcopilotgpt4service.com` 格式;
-2. 获取你的 GitHub 账号 Github Copilot Plugin Token（需要开通账号Github Copilot服务），获取方式见如下 **【获取 Github Copilot Plugin Token】**；
+1. 部署 copilot-gpt4-service 服务，并配置 API 地址，如：`https://youcopilotgpt4service.com`;
+2. 获取你的 GitHub 账号 Github Copilot Plugin Token（详见下文）；
 3. 使用第三方客户端，如：[ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 服务的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
 
 ## 客户端
@@ -24,7 +24,7 @@
 
 ## 服务端
 
-copilot-gpt4-service 服务的部署方式目前包含 Docker 部署、源码部署、 Cloudflare Worker 实现版本。
+copilot-gpt4-service 服务的部署方式目前包含 Docker 部署、源码部署、Kubernetes 部署、Cloudflare Worker 实现，下面分别介绍。
 
 ### Docker 部署
 
@@ -52,17 +52,22 @@ docker compose up -d
 git pull && docker compose up -d --build
 ```
 
+### Kubernetes 部署
+
+Copilot GPT-4 Service 也可以通过 Kubernetes 部署，具体部署方式如下：
+
+```shell
+git clone https://github.com/aaamoon/copilot-gpt4-service.git
+# git clone git@github.com:aaamoon/copilot-gpt4-service.git
+cd copilot-gpt4-service/.chart
+helm upgrade copilot-gpt4-service . --namespace copilot-gpt4-service --create-namespace --install  
+```
+
 ### Cloudflare Worker
 
 也可以使用 [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) 实现，具体使用方式见 [cf-copilot-service](htttps://github.com/wpv-chan/cf-copilot-service)。
 
-## 原理
-
-Copilot GPT-4 Service 服务端实现原理详见 [principle.md](principle.md)，下面是简单的流程图。
-
-![实现原理](/assets/principle.png)
-
-## 获取 Github Copilot Plugin Token
+## 获取 Copilot Token
 
 ### 前提条件
 
@@ -91,6 +96,12 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-ser
 ### 第三方接口授权获取
 
 通过 [https://cocopilot.org](https://cocopilot.org/copilot/token) 第三方接口授权获取，需要注意的是，该接口是第三方开发者提供的，不保证安全性，请谨慎使用。
+
+## 原理
+
+Copilot GPT-4 Service 服务端实现原理详见 [principle.md](principle.md)，下面是简单的流程图。
+
+![实现原理](/assets/principle.png)
 
 ## 常见问题
 
