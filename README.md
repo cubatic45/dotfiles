@@ -66,7 +66,7 @@ helm upgrade copilot-gpt4-service . --namespace copilot-gpt4-service --create-na
 
 ### Cloudflare Worker
 
-支持通过 Cloudflare Worker 部署，具体使用方式见 [cf-copilot-service](htttps://github.com/wpv-chan/cf-copilot-service)。
+支持通过 Cloudflare Worker 部署，具体使用方式见 [cf-copilot-service](https://github.com/wpv-chan/cf-copilot-service)。
 
 ## 获取 Copilot Token
 
