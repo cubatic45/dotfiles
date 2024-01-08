@@ -4,7 +4,10 @@ go 1.20
 
 require github.com/gin-gonic/gin v1.7.4
 
-require github.com/mattn/go-sqlite3 v1.14.19 // indirect
+require (
+	github.com/joho/godotenv v1.5.1 // indirect
+	github.com/mattn/go-sqlite3 v1.14.19 // indirect
+)
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect

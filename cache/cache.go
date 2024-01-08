@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"copilot-gpt4-service/config"
 	"copilot-gpt4-service/tools"
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
@@ -8,7 +9,7 @@ import (
 )
 
 // Cache_Instance is a global variable that is used to access the cache.
-var Cache_Instance *Cache = NewCache(true, "db/cache.sqlite3")
+var Cache_Instance *Cache = NewCache(config.ConfigInstance.Cache, config.ConfigInstance.CachePath)
 
 type Authorization struct {
 	Token     string `json:"token"`

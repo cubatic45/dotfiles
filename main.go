@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"copilot-gpt4-service/config"
 	"copilot-gpt4-service/utils"
 	"encoding/hex"
 	"encoding/json"
@@ -227,5 +228,6 @@ func main() {
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
-	router.Run(":8080")
+	// router.Run(":8080")
+	router.Run(config.ConfigInstance.Host + ":" + config.ConfigInstance.Port)
 }
