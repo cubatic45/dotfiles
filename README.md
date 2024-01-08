@@ -66,22 +66,18 @@ helm upgrade copilot-gpt4-service . --namespace copilot-gpt4-service --create-na
 
 ### Cloudflare Worker
 
-支持通过 Cloudflare Worker 部署，具体使用方式见 [cf-copilot-service](htttps://github.com/wpv-chan/cf-copilot-service)。
+支持通过 Cloudflare Worker 部署，具体使用方式见 [cf-copilot-service](https://github.com/wpv-chan/cf-copilot-service)。
 
 ## 获取 Copilot Token
 
-### 前提条件
-
-- 你的账号需要开通 Github Copilot 服务
-
-### 获取方式
+首先，你的账号需要开通 Github Copilot 服务
 
 获取 Github Copilot Plugin Token 的方式目前有两种方式：
 
 1. 通过安装 [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) 授权获取（推荐）。
 2. 通过 [https://cocopilot.org](https://cocopilot.org/copilot/token) 第三方接口授权获取。
 
-#### 通过 Github Copilot CLI 授权获取
+### 通过 Github Copilot CLI 授权获取
 
 **Linux/MacOS平台获取**
 
