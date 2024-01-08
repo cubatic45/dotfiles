@@ -27,6 +27,17 @@
 
 copilot-gpt4-service 服务的部署方式目前包含 Docker 部署、源码部署、Kubernetes 部署、Cloudflare Worker 实现，下面分别介绍。
 
+### 配置方式
+
+使用环境变量或环境变量配置文件 `config.env` 配置服务（环境变量优先级高于 `config.env`），默认配置项如下：  
+
+```env
+HOST=localhost # 服务监听地址
+PORT=8080 # 服务监听端口
+CACHE=true # 是否启用持久化
+CACHE_PATH=db/cache.sqlite3 # 持久化缓存的路径（仅当 CACHE=true 时有效）
+```
+
 ### Docker 部署
 
 #### 一键部署方式

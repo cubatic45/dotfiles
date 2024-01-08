@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"copilot-gpt4-service/config"
+	"copilot-gpt4-service/cache"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -13,31 +13,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var authorizations = make(map[string]Authorization)
-
-type Authorization struct {
-	Token     string `json:"token"`
-	ExpiresAt int64  `json:"expires_at"`
-}
-
 // Set the Authorization in the cache.
-func setAuthorizationToCache(copilotToken string, authorization Authorization) {
-	authorizations[copilotToken] = authorization
+func setAuthorizationToCache(copilotToken string, authorization cache.Authorization) {
+	// authorizations[copilotToken] = authorization
+	cache.CacheInstance.Set(copilotToken, authorization)
 }
 
 // Obtain the Authorization from the cache.
-func getAuthorizationFromCache(copilotToken string) *Authorization {
+func getAuthorizationFromCache(copilotToken string) *cache.Authorization {
 	extraTime := rand.Intn(600) + 300
-	if authorization, ok := authorizations[copilotToken]; ok {
+	if authorization, ok := cache.CacheInstance.Get(copilotToken); ok {
 		if authorization.ExpiresAt > time.Now().Unix()+int64(extraTime) {
 			return &authorization
 		}
 	}
-	return &Authorization{}
+	return &cache.Authorization{}
 }
 
 // When obtaining the Authorization, first attempt to retrieve it from the cache. If it is not available in the cache, retrieve it through an HTTP request and then set it in the cache.
-func getAuthorizationFromToken(c *gin.Context, copilotToken string) bool {
+func GetAuthorizationFromToken(copilotToken string) (string, bool) {
 	authorization := getAuthorizationFromCache(copilotToken)
 	if authorization.Token == "" {
 		getAuthorizationUrl := "https://api.github.com/copilot_internal/v2/token"
@@ -48,41 +42,45 @@ func getAuthorizationFromToken(c *gin.Context, copilotToken string) bool {
 		if err != nil {
 			if response == nil {
 				// handle connection not available
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-				return false
+				// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return "", false
 			}
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "code": response.StatusCode})
-			return false
+			// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "code": response.StatusCode})
+			return "", false
 		}
 		if response.StatusCode != 200 {
-			body, _ := io.ReadAll(response.Body)
-			c.JSON(response.StatusCode, gin.H{"error": string(body), "code": response.StatusCode})
-			return false
+			// body, _ := io.ReadAll(response.Body)
+			// c.JSON(response.StatusCode, gin.H{"error": string(body), "code": response.StatusCode})
+			return "", false
 		}
 		defer response.Body.Close()
 
 		body, _ := io.ReadAll(response.Body)
 
-		newAuthorization := &Authorization{}
+		newAuthorization := &cache.Authorization{}
 		if err = json.Unmarshal(body, &newAuthorization); err != nil {
 			fmt.Println("err", err)
 		}
 		authorization.Token = newAuthorization.Token
 		setAuthorizationToCache(copilotToken, *newAuthorization)
 	}
-	config.Authorization = authorization.Token
-	return true
+	return authorization.Token, true
 }
 
 // Retrieve the GitHub Copilot Plugin Token from the request header.
-func GetAuthorization(c *gin.Context) bool {
+func GetAuthorization(c *gin.Context) (string, bool) {
 	copilotToken := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
 	if copilotToken == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized",
-		})
-		return false
+		return "", false
+	} else {
+		return copilotToken, true
 	}
+	// if copilotToken == "" {
+	// 	c.JSON(http.StatusUnauthorized, gin.H{
+	// 		"message": "Unauthorized",
+	// 	})
+	// 	return false
+	// }
 	// Obtain the Authorization from the GitHub Copilot Plugin Token.
-	return getAuthorizationFromToken(c, copilotToken)
+	// return getAuthorizationFromToken(c, copilotToken)
 }

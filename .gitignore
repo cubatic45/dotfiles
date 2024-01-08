@@ -1,0 +1,5 @@
+.vscode
+
+config.env
+cache.sqlite3
+/db

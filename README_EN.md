@@ -27,6 +27,17 @@ To use copilot-gpt4-service, you need to use it with a third-party client. The f
 
 The deployment methods for copilot-gpt4-service currently include Docker deployment, source code deployment, Kubernetes deployment, and Cloudflare Worker implementation. They are described below.
 
+### Configuration
+
+Use environment variables or environment variable configuration file `config.env` to configure the service (environment variables take precedence over `config.env`), the default configuration items are as follows:  
+
+```env
+HOST=localhost # Service listening address
+PORT=8080 # Service listening port
+CACHE=true # Whether to enable persistence
+CACHE_PATH=db/cache.sqlite3 # Path to persistent cache (only used when CACHE=true)
+```
+
 ### Docker Deployment
 
 #### One-click Deployment

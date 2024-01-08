@@ -85,11 +85,35 @@ func createHeaders(authorization string) map[string]string {
 	return headers
 }
 
-func mainRequest(c *gin.Context) {
+func chatCompletions(c *gin.Context) {
 	content := c.Query("content")
 	url := "https://api.githubcopilot.com/chat/completions"
-	authorization := config.Authorization
-	headers := createHeaders(authorization)
+
+	// Get app token from request header
+	appToken, ok := utils.GetAuthorization(c)
+	if !ok {
+		c.JSON(
+			http.StatusUnauthorized,
+			gin.H{
+				"error": "Unauthorized",
+			},
+		)
+		return
+	}
+
+	// copilotToken := config.Authorization
+	copilotToken, ok := utils.GetAuthorizationFromToken(appToken)
+	if !ok {
+		c.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"error": "Failed to get authorization from token",
+			},
+		)
+		return
+	}
+
+	headers := createHeaders(copilotToken)
 	jsonBody := &JsonData{
 		Messages: []map[string]string{
 			{"role": "system",
@@ -154,13 +178,6 @@ func mainRequest(c *gin.Context) {
 	}
 }
 
-func chatCompletions(c *gin.Context) {
-	if !utils.GetAuthorization(c) {
-		return
-	}
-	mainRequest(c)
-}
-
 func createMockModel(modelId string) gin.H {
 	return gin.H{
 		"id":       modelId,
@@ -211,5 +228,6 @@ func main() {
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
-	router.Run(":8080")
+	// router.Run(":8080")
+	router.Run(config.ConfigInstance.Host + ":" + config.ConfigInstance.Port)
 }
