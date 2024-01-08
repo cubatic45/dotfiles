@@ -21,7 +21,7 @@ by_idea_copilot_plugin() {
   if [ -f "${IDEA_COPILOT_PLUGIN_CONFIG_PATH}" ]; then
     echo -e "Your IDEA Github Copilot token: ${green}$(cat ${IDEA_COPILOT_PLUGIN_CONFIG_PATH})${plain}"
   else
-    echo -e "${red}IDEA Github Copilot token not found. You need to install IDEA Github Copilot plugin first，and then authorize it. ${yellow}Plgins -> Marketplace -> Search Github Copilot -> Install${plain}."
+    echo -e "${red}IDEA Github Copilot token not found. You need to install IDEA Github Copilot plugin first，and then authorize it. ${yellow}Plugins -> Marketplace -> Search Github Copilot -> Install${plain}."
   fi
   if [[ $# == 0 ]]; then
     before_show_menu
