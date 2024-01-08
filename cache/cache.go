@@ -8,8 +8,8 @@ import (
 	"os"
 )
 
-// Cache_Instance is a global variable that is used to access the cache.
-var Cache_Instance *Cache = NewCache(config.ConfigInstance.Cache, config.ConfigInstance.CachePath)
+// CacheInstance is a global variable that is used to access the cache.
+var CacheInstance *Cache = NewCache(config.ConfigInstance.Cache, config.ConfigInstance.CachePath)
 
 type Authorization struct {
 	Token     string `json:"token"`

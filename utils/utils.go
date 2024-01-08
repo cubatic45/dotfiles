@@ -16,13 +16,13 @@ import (
 // Set the Authorization in the cache.
 func setAuthorizationToCache(copilotToken string, authorization cache.Authorization) {
 	// authorizations[copilotToken] = authorization
-	cache.Cache_Instance.Set(copilotToken, authorization)
+	cache.CacheInstance.Set(copilotToken, authorization)
 }
 
 // Obtain the Authorization from the cache.
 func getAuthorizationFromCache(copilotToken string) *cache.Authorization {
 	extraTime := rand.Intn(600) + 300
-	if authorization, ok := cache.Cache_Instance.Get(copilotToken); ok {
+	if authorization, ok := cache.CacheInstance.Get(copilotToken); ok {
 		if authorization.ExpiresAt > time.Now().Unix()+int64(extraTime) {
 			return &authorization
 		}
