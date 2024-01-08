@@ -1,17 +1,19 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
+
 	"bufio"
 	"bytes"
-	"copilot-gpt4-service/config"
-	"copilot-gpt4-service/utils"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/rand"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"copilot-gpt4-service/config"
+	"copilot-gpt4-service/utils"
+	"copilot-gpt4-service/log"
 )
 
 // Handle the Cross-Origin Resource Sharing (CORS) for requests.
@@ -216,6 +218,11 @@ func createMockModelsResponse(c *gin.Context) {
 }
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
+	if config.ConfigInstance.Debug {
+		gin.SetMode(gin.DebugMode)
+	}
+
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.POST("/v1/chat/completions", chatCompletions)
@@ -228,6 +235,10 @@ func main() {
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
+
+	log.ZLog.Log.Info().Msgf("Cache enabled: %t, Cache path: %s, Deubg: %t", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Debug)
+	log.ZLog.Log.Info().Msgf("Starting server on http://%s:%s", config.ConfigInstance.Host, config.ConfigInstance.Port)
+
 	// router.Run(":8080")
 	router.Run(config.ConfigInstance.Host + ":" + config.ConfigInstance.Port)
 }
