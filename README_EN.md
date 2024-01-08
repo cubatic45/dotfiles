@@ -1,7 +1,7 @@
 <h1 align="center">copilot-gpt4-service</h1>
 
 <p align="center">
-⚔️ Convert Github Copilot to ChatGPT
+⚔️ Convert Github Copilot into ChatGPT
 </p>
 
 <p align="center">
@@ -9,39 +9,27 @@ English | <a href="README.md">简体中文</a>
 </p>
 
 ## How to use
-1. Visit https://gpt4copilot.tech
 
-2. Enter the server API address deployed in the repository project in the set interface address: `https://gpt4copilot.tech` (**It is strongly recommended to deploy the server yourself, because it is unclear whether Github will detect that there are too many requests for different tokens from this server IP and cause risk**)
+1. Deploy the copilot-gpt4-service and configure the API address, such as `https://youcopilotgpt4service.com`.
+2. Obtain your GitHub account's Github Copilot Plugin Token (see below for details).
+3. Use a third-party client, such as [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), and enter the API address of the copilot-gpt4-service and the Github Copilot Plugin Token in the settings to use the GPT-4 model for conversation.
 
-3. Enter your Github Copilot Plugin Token in the API Key field
+## Clients
 
-Three pre-registered tokens for Github Copilot accounts are available for direct use:
-- ~~**ghu_kEDPRczuQhVAxBxQD4Rkjv5uBba6zE3i0mNH**~~
+To use copilot-gpt4-service, you need to use it with a third-party client. The following clients have been tested and are supported:
 
-**If you already have a Github Copilot account, you can use your own token by obtaining it through the [copilot-token API](https://cocopilot.org/copilot/token)，Currently, due to the high number of different IP requests, the tokens I provide become invalid within half an hour. If it's for internal use within a few people, the token is generally valid for several months.**
+- [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (recommended)
+- [Chatbox](https://github.com/Bin-Huang/chatbox): Supports Windows, Mac, and Linux platforms
+- [OpenCat APP](https://opencat.app/): Supports iOS and Mac platforms
+- [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087): Supports iOS and Mac platforms
 
-![step](/assets/step1_EN.png)
+## Server
 
-4. Switch models on your own, support the GPT-4 model. **(Based on testing, the model parameters only support GPT-4 and GPT-3.5-turbo. Other models tested were processed with the default 3.5 version (compared to the returned results from the OpenAI API, it is speculated that they are likely the earliest versions, GPT-4-0314 and GPT-3.5-turbo-0301)).**
+The deployment methods for copilot-gpt4-service currently include Docker deployment, source code deployment, Kubernetes deployment, and Cloudflare Worker implementation. They are described below.
 
-5. Now, we can make unlimited use of the GPT-4 model.
+### Docker Deployment
 
-## Exception HTTP response status code parsing
-
-- 401: The Github Copilot Plugin token used has expired or is incorrect, please obtain it again.
-- 403: The account you are using does not have Github Copilot activated.
-
-## Self-Deployment
-
-### Client
-
-The client uses [ChatGPT-Next-Web](https://github.com/Yidadaa/ChatGPT-Next-Web), where detailed deployment instructions are available
-
-### Server
-
-#### Docker Deployment
-
-##### One-click Deployment
+#### One-click Deployment
 
 ```bash
 docker run -d \
@@ -51,31 +39,70 @@ docker run -d \
   aaamoon/copilot-gpt4-service:latest
 ```
 
-##### Real-time Build
+#### Code Build
 
 ```bash
 git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service
-# You can modify the port in `docker-compose.yml`  
+# Modify the port in docker-compose.yml if necessary
 docker compose up -d
 ```
 
-If you need to update the container, you can re-pull the code and build the image in the source code folder. The commands are as follows:
+To update the container, pull the code again and rebuild the image in the source code folder using the following command:
 
 ```bash
-git pull
-docker compose up -d --build
+git pull && docker compose up -d --build
 ```
 
-#### Cloudflare Worker Deployment
+### Kubernetes Deployment
 
-If Docker deployment is inconvenient, you can use the [Cloudflare Worker](https://github.com/wpv-chan/cf-copilot-service) version for deployment.
+Supports deployment through Kubernetes, the specific deployment method is as follows:
 
-## Implementation Principle
+```shell
+git clone https://github.com/aaamoon/copilot-gpt4-service.git
+# git clone git@github.com:aaamoon/copilot-gpt4-service.git
+cd copilot-gpt4-service/.chart
+helm upgrade copilot-gpt4-service . --namespace copilot-gpt4-service --create-namespace --install  
+```
 
-<a href="principle.md">Principle Link</a>
+### Cloudflare Worker
 
-Principle process image:
-![Implementation Principle](/assets/principle.png)
+Supports deployment through Cloudflare Worker, see [cf-copilot-service](https://github.com/wpv-chan/cf-copilot-service) for specific usage.
+
+## Obtaining Copilot Token
+
+### Prerequisites
+
+- Your account needs to have Github Copilot service enabled.
+
+### Methods of Obtaining
+
+There are currently two ways to obtain the Github Copilot Plugin Token:
+
+1. Obtain it by installing [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) and authorizing (recommended).
+2. Obtain it through the third-party interface [https://cocopilot.org](https://cocopilot.org/copilot/token). Please note that this interface is provided by a third-party developer and its security cannot be guaranteed, so please use it with caution.
+
+#### Obtaining through Github Copilot CLI
+
+**For Linux/MacOS Platforms**
+
+```bash
+# The script below will automatically install Github Copilot CLI and obtain the Github Copilot Plugin Token through authorization
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.sh)"
+```
+
+**For Windows Platform**
+
+Download the batch script and double-click to run it: [get_copilot_token.bat](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.bat).
+
+#### Obtaining through Third-Party Interface
+
+Obtain it through the third-party interface [https://cocopilot.org](https://cocopilot.org/copilot/token). Please note that this interface is provided by a third-party developer and its security cannot be guaranteed, so please use it with caution.
+
+## Frequently Asked Questions
+
+### Model support
+
+According to the test, the model parameters support GPT-4 and GPT-3.5-turbo, and the actual test will be processed at the default 3.5 when using other models (compared with the return results of the OpenAI API, guess it should be the earliest versions of GPT-4-0314 and GPT-3.5-turbo-0301)
 
 ## How to Determine if It's the GPT-4 Model
 
@@ -89,14 +116,18 @@ Why weren't I invited when my parents got married?
 - GPT-3.5 They considered you too young at that time, so they didn't invite you.
 - GPT-4 They got married before you were born.
 
-## Special Thanks
+### Explanation of HTTP Response Status Codes
 
-### Contributor
+- 401: The Github Copilot Plugin Token used has expired or is incorrect. Please obtain it again.
+- 403: The account used does not have Github Copilot enabled.
+
+## Acknowledgements
+
+### Contributors
 
 <a href="https://github.com/aaamoon/copilot-gpt4-service/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=aaamoon/copilot-gpt4-service&anon=0" />
 </a>
-
 
 ## LICENSE
 

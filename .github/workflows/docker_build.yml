@@ -4,9 +4,7 @@ on:
     paths-ignore:
       - 'README*'
       - 'LICENSE'
-      - 'assets/**'
       - 'CODE_OF_CONDUCT.md'
-      - 'principle.md'
       - '.editorconfig'
       - '.chart/**'
   workflow_dispatch:
