@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"time"
 	"math/rand"
 	"net/http"
 
@@ -217,6 +218,23 @@ func createMockModelsResponse(c *gin.Context) {
 	})
 }
 
+func LoggerHandler() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        t := time.Now()
+
+        log.ZLog.Log.Info().Msgf("Request Info:\nMethod: %s\nHost: %s\nURL: %s",
+            c.Request.Method, c.Request.Host, c.Request.URL)
+        log.ZLog.Log.Debug().Msgf("Request Header:\n%v", c.Request.Header)
+
+        c.Next()
+
+        latency := time.Since(t)
+        log.ZLog.Log.Info().Msgf("Response Time: %s\nStatus: %s",
+            latency.String(), c.Writer.Status())
+        log.ZLog.Log.Debug().Msgf("Response Header:\n%v", c.Writer.Header())
+    }
+}
+
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	if config.ConfigInstance.Debug {
@@ -225,6 +243,8 @@ func main() {
 
 	router := gin.Default()
 	router.Use(CORSMiddleware())
+	router.Use(LoggerHandler())
+
 	router.POST("/v1/chat/completions", chatCompletions)
 	router.GET("/v1/models", createMockModelsResponse)
 	router.GET("/healthz", func(context *gin.Context) {
