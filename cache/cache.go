@@ -1,12 +1,14 @@
 package cache
 
 import (
+	"copilot-gpt4-service/tools"
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
+	"os"
 )
 
 // Cache_Instance is a global variable that is used to access the cache.
-var Cache_Instance *Cache = NewCache(true, "cache.sqlite3")
+var Cache_Instance *Cache = NewCache(true, "db/cache.sqlite3")
 
 type Authorization struct {
 	Token     string `json:"token"`
@@ -31,13 +33,28 @@ func NewCache(cache bool, cache_path string) *Cache {
 }
 
 // Connect to the database or initialize the map
+
 func (c *Cache) connect() {
 	if c.cache && c.Db == nil {
+		// if dir not exists, create it
+		// dir := path.Dir(c.cache_path)
+		// if _, err := os.Stat(dir); os.IsNotExist(err) {
+		// 	err := os.MkdirAll(dir, os.ModePerm)
+		// 	if err != nil {
+		// 		panic(err)
+		// 	}
+		// }
+		if err := tools.MkdirAllIfNotExists(c.cache_path, os.ModePerm); err != nil {
+			panic(err)
+		}
+
+		// connect to database
 		var err error
 		c.Db, err = sql.Open("sqlite3", c.cache_path)
 		if err != nil {
 			panic(err)
 		}
+		// create table if not exists
 		_, err = c.Db.Exec("CREATE TABLE IF NOT EXISTS cache(app_token TEXT PRIMARY KEY, c_token TEXT, expires_at INTEGER)")
 	} else if !c.cache && c.Data == nil {
 		c.Data = make(map[string]Authorization)
