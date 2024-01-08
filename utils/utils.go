@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"copilot-gpt4-service/cache"
 	"copilot-gpt4-service/config"
 	"encoding/json"
 	"fmt"
@@ -13,27 +14,21 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var authorizations = make(map[string]Authorization)
-
-type Authorization struct {
-	Token     string `json:"token"`
-	ExpiresAt int64  `json:"expires_at"`
-}
-
 // Set the Authorization in the cache.
-func setAuthorizationToCache(copilotToken string, authorization Authorization) {
-	authorizations[copilotToken] = authorization
+func setAuthorizationToCache(copilotToken string, authorization cache.Authorization) {
+	// authorizations[copilotToken] = authorization
+	cache.Cache_Instance.Set(copilotToken, authorization)
 }
 
 // Obtain the Authorization from the cache.
-func getAuthorizationFromCache(copilotToken string) *Authorization {
+func getAuthorizationFromCache(copilotToken string) *cache.Authorization {
 	extraTime := rand.Intn(600) + 300
-	if authorization, ok := authorizations[copilotToken]; ok {
+	if authorization, ok := cache.Cache_Instance.Get(copilotToken); ok {
 		if authorization.ExpiresAt > time.Now().Unix()+int64(extraTime) {
 			return &authorization
 		}
 	}
-	return &Authorization{}
+	return &cache.Authorization{}
 }
 
 // When obtaining the Authorization, first attempt to retrieve it from the cache. If it is not available in the cache, retrieve it through an HTTP request and then set it in the cache.
@@ -63,12 +58,13 @@ func getAuthorizationFromToken(c *gin.Context, copilotToken string) bool {
 
 		body, _ := io.ReadAll(response.Body)
 
-		newAuthorization := &Authorization{}
+		newAuthorization := &cache.Authorization{}
 		if err = json.Unmarshal(body, &newAuthorization); err != nil {
 			fmt.Println("err", err)
 		}
 		authorization.Token = newAuthorization.Token
 		setAuthorizationToCache(copilotToken, *newAuthorization)
+		fmt.Println("Got new token")
 	}
 	config.Authorization = authorization.Token
 	return true
