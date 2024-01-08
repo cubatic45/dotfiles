@@ -8,7 +8,7 @@
 English | <a href="README.md">简体中文</a>
 </p>
 
-## How to Use
+## How to use
 
 1. Deploy the copilot-gpt4-service and configure the API address, such as `https://youcopilotgpt4service.com`.
 2. Obtain your GitHub account's Github Copilot Plugin Token (see below for details).
@@ -99,6 +99,10 @@ Download the batch script and double-click to run it: [get_copilot_token.bat](ht
 Obtain it through the third-party interface [https://cocopilot.org](https://cocopilot.org/copilot/token). Please note that this interface is provided by a third-party developer and its security cannot be guaranteed, so please use it with caution.
 
 ## Frequently Asked Questions
+
+### Model support
+
+According to the test, the model parameters support GPT-4 and GPT-3.5-turbo, and the actual test will be processed at the default 3.5 when using other models (compared with the return results of the OpenAI API, guess it should be the earliest versions of GPT-4-0314 and GPT-3.5-turbo-0301)
 
 ## How to Determine if It's the GPT-4 Model
 

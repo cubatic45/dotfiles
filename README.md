@@ -100,6 +100,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-ser
 
 ## 常见问题
 
+### 模型支持情况
+
+据测试：模型参数支持 GPT-4 和 GPT-3.5-turbo ，实测使用其他模型均会以默认的 3.5 处理（对比 OpenAI API 的返回结果，猜测应该是最早的版本 GPT-4-0314 和 GPT-3.5-turbo-0301 ）
+
 ### 如何判断是不是 GPT-4 模型
 
 鲁迅为什么暴打周树人？
