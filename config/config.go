@@ -25,10 +25,10 @@ func NewConfig() *Config {
 	}
 
 	return &Config{
+		Host:      getEnvOrDefault("HOST", "localhost"),
 		Port:      getEnvOrDefault("PORT", "8080"),
 		Cache:     getEnvOrDefaultBool("CACHE", true),
 		CachePath: getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
-		Host:      getEnvOrDefault("HOST", "localhost"),
 	}
 }
 
