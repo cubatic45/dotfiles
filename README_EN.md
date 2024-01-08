@@ -70,18 +70,14 @@ Supports deployment through Cloudflare Worker, see [cf-copilot-service](https://
 
 ## Obtaining Copilot Token
 
-### Prerequisites
-
-- Your account needs to have Github Copilot service enabled.
-
-### Methods of Obtaining
+Your account needs to have Github Copilot service enabled.
 
 There are currently two ways to obtain the Github Copilot Plugin Token:
 
 1. Obtain it by installing [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) and authorizing (recommended).
 2. Obtain it through the third-party interface [https://cocopilot.org](https://cocopilot.org/copilot/token). Please note that this interface is provided by a third-party developer and its security cannot be guaranteed, so please use it with caution.
 
-#### Obtaining through Github Copilot CLI
+### Obtaining through Github Copilot CLI
 
 **For Linux/MacOS Platforms**
 
@@ -94,7 +90,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-ser
 
 Download the batch script and double-click to run it: [get_copilot_token.bat](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.bat).
 
-#### Obtaining through Third-Party Interface
+### Obtaining through Third-Party Interface
 
 Obtain it through the third-party interface [https://cocopilot.org](https://cocopilot.org/copilot/token). Please note that this interface is provided by a third-party developer and its security cannot be guaranteed, so please use it with caution.
 
