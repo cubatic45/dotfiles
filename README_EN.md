@@ -14,6 +14,23 @@ English | <a href="README.md">简体中文</a>
 2. Obtain your GitHub account's Github Copilot Plugin Token (see below for details).
 3. Use a third-party client, such as [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), and enter the API address of the copilot-gpt4-service and the Github Copilot Plugin Token in the settings to use the GPT-4 model for conversation.
 
+## Deployment Methods
+
+### Best Deployment Methods
+As verified by the community, the best deployment methods are:
+1. Local deployment
+2. Server integration with [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (this service is not publicly available)
+3. Server deployment for personal use (e.g., in multi-client scenarios like [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087))
+
+### Not Recommended Approaches
+1. Providing an interface as a public service
+   Making multiple token requests from the same IP address can be flagged as abnormal behavior.
+2. Offering public services using the same client web interface (e.g., ChatGPT-Next-Web) with the default API and API Key
+   Making too many requests with the same token can be flagged as abnormal behavior.
+3. Deploying with serverless providers
+   Serverless providers have short service lifecycles and frequently change IP addresses, which can be flagged as abnormal behavior.
+
+
 ## Clients
 
 To use copilot-gpt4-service, you need to use it with a third-party client. The following clients have been tested and are supported:
@@ -25,7 +42,7 @@ To use copilot-gpt4-service, you need to use it with a third-party client. The f
 
 ## Server
 
-The deployment methods for copilot-gpt4-service currently include Docker deployment, source code deployment, Kubernetes deployment, and Cloudflare Worker implementation. They are described below.
+The deployment methods for copilot-gpt4-service currently include Docker deployment, source code deployment, Kubernetes deployment implementation. They are described below.
 
 ### Configuration
 
@@ -81,10 +98,6 @@ helm install copilot-gpt4-service aaamoon/copilot-gpt4-service \
   --set chatgpt-next-web.service.type=NodePort \
   --set chatgpt-next-web.service.nodePort=30080
 ```
-
-### Cloudflare Worker
-
-Supports deployment through Cloudflare Worker, see [cf-copilot-service](https://github.com/wpv-chan/cf-copilot-service) for specific usage.
 
 ## Obtaining Copilot Token
 

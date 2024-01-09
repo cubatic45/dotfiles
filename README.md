@@ -14,6 +14,22 @@
 2. 获取你的 GitHub 账号 Github Copilot Plugin Token（详见下文）；
 3. 使用第三方客户端，如：[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 服务的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
 
+## 部署方式
+
+### 最佳部署方式
+经社区验证，最佳部署方式为: 
+1. 本地部署
+2. 服务器集成 [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) 部署, 本服务不公开
+3. 服务器部署, 公开但个人使用 (例如多客户端使用场景 [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087))
+
+### 不建议的方案
+1. 以公共服务的方式提供接口
+    多个 Token 在同一个 IP 地址进行请求, 容易被判定为异常行为
+2. 同客户端 Web(例如 ChatGPT-Next-Web) 以默认 API 以及 API Key 的方式提供公共服务
+    同一个 Token 请求频率过高, 容易被判定为异常行为
+3. Serverless 类型的提供商进行部署
+    服务生命周期短, 更换 IP 地址频繁, 容易被判定为异常行为.
+
 ## 客户端
 
 使用 copilot-gpt4-service，需要配合第三方客户端，目前已测试支持以下客户端：
@@ -25,7 +41,7 @@
 
 ## 服务端
 
-copilot-gpt4-service 服务的部署方式目前包含 Docker 部署、源码部署、Kubernetes 部署、Cloudflare Worker 实现，下面分别介绍。
+copilot-gpt4-service 服务的部署方式目前包含 Docker 部署、源码部署、Kubernetes 部署实现，下面分别介绍。
 
 ### 配置方式
 
@@ -82,10 +98,6 @@ helm install copilot-gpt4-service aaamoon/copilot-gpt4-service \
   --set chatgpt-next-web.service.nodePort=30080
 ```
 
-### Cloudflare Worker
-
-支持通过 Cloudflare Worker 部署，具体使用方式见 [cf-copilot-service](https://github.com/wpv-chan/cf-copilot-service)。
-
 ## 获取 Copilot Token
 
 首先，你的账号需要开通 Github Copilot 服务
@@ -134,6 +146,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-ser
 
 - 401: 使用的 Github Copilot Plugin Token 过期了或者错误，请重新获取
 - 403: 使用的账号没有开通 Github Copilot
+
 
 ## 鸣谢
 
