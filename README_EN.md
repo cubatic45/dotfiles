@@ -22,7 +22,7 @@ As verified and discussed by the community, the best practice approach is.
 
 1. Local deployment for personal use only;
 2. Deploy with your own server integration [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), the service is not public;
-3. server deployment, public but for personal use (e.g. multi-client scenarios [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https:// apps.apple.com/us/app/chatx-ai-chat-client/id6446304087)).
+3. server deployment, public but for personal use (e.g. multi-client scenarios [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087)).
 
 ### Not Recommended Approaches
 
