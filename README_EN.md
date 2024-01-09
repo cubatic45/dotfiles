@@ -10,9 +10,9 @@ English | <a href="README.md">简体中文</a>
 
 ## How to use
 
-1. Deploy the copilot-gpt4-service and configure the API address, such as `https://youcopilotgpt4service.com`.
-2. Obtain your GitHub account's Github Copilot Plugin Token (see below for details).
-3. Use a third-party client, such as [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), and enter the API address of the copilot-gpt4-service and the Github Copilot Plugin Token in the settings to use the GPT-4 model for conversation.
+1. Install and start the copilot-gpt4-service. After local startup, the API address is: `http://127.0.0.1:8080`;
+2. Get your GitHub account Github Copilot Plugin Token (see below for details);
+3. Install a third-party client, e.g., [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), and fill in the settings with the API address of copilot-gpt4-service and the Github Copilot Plugin Token in the settings, and you can use the GPT-4 model to have a conversation.
 
 ## Deployment Methods
 
@@ -20,7 +20,7 @@ English | <a href="README.md">简体中文</a>
 
 As verified and discussed by the community, the best practice approach is.
 
-1. Local deployment for personal use only;
+1. Local deployment for personal use only(Recommend);
 2. Deploy with your own server integration [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), the service is not public;
 3. server deployment, public but for personal use (e.g. multi-client scenarios [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https:// apps.apple.com/us/app/chatx-ai-chat-client/id6446304087)).
 
@@ -34,7 +34,7 @@ As verified and discussed by the community, the best practice approach is.
    Serverless providers have short service lifecycles and frequently change IP addresses, which can be flagged as abnormal behavior.
 4. Other abusive behaviors or profiteering behaviors.
 
-**Very important: The above not recommended methods may cause Github Copilot to be banned, and it may not be possible to unban after being banned.**
+** ⚠️ Very important: The above not recommended methods may cause Github Copilot to be banned, and it may not be possible to unban after being banned.**
 
 ## Clients
 

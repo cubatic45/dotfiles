@@ -10,9 +10,9 @@
 
 ## 如何使用
 
-1. 部署 copilot-gpt4-service 服务，并配置 API 地址，如：`https://youcopilotgpt4service.com`;
+1. 安装并启动 copilot-gpt4-service 服务，如本地启动后，API地址为：`http://127.0.0.1:8080`;
 2. 获取你的 GitHub 账号 Github Copilot Plugin Token（详见下文）；
-3. 使用第三方客户端，如：[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 服务的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
+3. 安装第三方客户端，如：[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
 
 ## 部署方式
 
@@ -20,7 +20,7 @@
 
 经社区验证和讨论，最佳实践方式为:
 
-1. 本地部署，仅个人使用；
+1. 本地部署，仅个人使用（推荐）；
 2. 自用服务器集成 [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) 部署, 服务不公开；
 3. 服务器部署, 公开但个人使用 (例如多客户端使用场景 [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087))。
 
@@ -33,7 +33,7 @@
     服务生命周期短, 更换 IP 地址频繁, 容易被判定为异常行为.
 4. 其他滥用行为或牟利等行为。
 
-### 非常重要
+### ⚠️ 非常重要
 
 **非常重要：以上不建议的方式，均可能会导致 Github Copilot 被封禁，且封禁后可能无法解封。**
 
