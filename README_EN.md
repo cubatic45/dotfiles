@@ -10,7 +10,7 @@ English | <a href="README.md">简体中文</a>
 
 ## How to use
 
-1. Install and start the copilot-gpt4-service. After local startup, the API address is: `http://127.0.0.1:8080`;
+1. Install and start the copilot-gpt4-service service, e.g., after local startup, the API default address is: `http://127.0.0.1:8080`;
 2. Get your GitHub account Github Copilot Plugin Token (see below for details);
 3. Install a third-party client, e.g., [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), and fill in the settings with the API address of copilot-gpt4-service and the Github Copilot Plugin Token in the settings, and you can use the GPT-4 model to have a conversation.
 
@@ -34,7 +34,7 @@ As verified and discussed by the community, the best practice approach is.
    Serverless providers have short service lifecycles and frequently change IP addresses, which can be flagged as abnormal behavior.
 4. Other abusive behaviors or profiteering behaviors.
 
-** ⚠️ Very important: The above not recommended methods may cause Github Copilot to be banned, and it may not be possible to unban after being banned.**
+**⚠️ Very important: The above not recommended methods may cause Github Copilot to be banned, and it may not be possible to unban after being banned.**
 
 ## Clients
 

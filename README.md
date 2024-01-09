@@ -10,7 +10,7 @@
 
 ## 如何使用
 
-1. 安装并启动 copilot-gpt4-service 服务，如本地启动后，API地址为：`http://127.0.0.1:8080`;
+1. 安装并启动 copilot-gpt4-service 服务，如本地启动后，API默认地址为：`http://127.0.0.1:8080`;
 2. 获取你的 GitHub 账号 Github Copilot Plugin Token（详见下文）；
 3. 安装第三方客户端，如：[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
 
