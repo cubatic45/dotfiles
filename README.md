@@ -38,6 +38,7 @@ CACHE=true # 是否启用持久化
 CACHE_PATH=db/cache.sqlite3 # 持久化缓存的路径（仅当 CACHE=true 时有效）
 DEBUG=false # 是否启用调试模式，启用后会输出更多日志
 LOGGING=true # 是否启用日志
+LOG_LEVEL=info # 日志级别，可选值：panic、fatal、error、warn、info、debug、trace（注意：仅当 LOGGING=true 时有效）
 ```
 
 ### Docker 部署

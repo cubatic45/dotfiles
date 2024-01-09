@@ -236,9 +236,10 @@ func LoggerHandler() gin.HandlerFunc {
 }
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
 	if config.ConfigInstance.Debug {
 		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
 	}
 
 	router := gin.Default()
@@ -256,7 +257,7 @@ func main() {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
 
-	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, Deubg: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging, config.ConfigInstance.Debug)
+	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Deubg: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging,  config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
 	fmt.Printf("Starting server on http://%s:%s\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
 
 	// router.Run(":8080")
