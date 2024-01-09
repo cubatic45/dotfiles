@@ -253,12 +253,19 @@ func main() {
 			"message": "ok",
 		})
 	})
+	router.GET("/", func(context *gin.Context) {
+		context.String(http.StatusOK, `非常重要：请不要将此服务公开，仅供个人使用，否则账户或Copilot将被封禁。 Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned. 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたはCopilotが禁止されます。`)
+	})
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
 
 	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Deubg: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging,  config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
-	fmt.Printf("Starting server on http://%s:%s\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
+	fmt.Printf("Starting server on http://%s:%s\n\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
+
+	fmt.Println("\033[31m非常重要：请不要将此服务公开，仅供个人使用，否则账户或Copilot将被封禁。\033[0m")
+	fmt.Println("\033[31mVery important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned.\033[0m")
+	fmt.Println("\033[31m非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたはCopilotが禁止されます。\033[0m\n")
 
 	// router.Run(":8080")
 	router.Run(config.ConfigInstance.Host + ":" + config.ConfigInstance.Port)
