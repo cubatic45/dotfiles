@@ -36,7 +36,8 @@ HOST=localhost # Service listening address
 PORT=8080 # Service listening port
 CACHE=true # Whether to enable persistence
 CACHE_PATH=db/cache.sqlite3 # Path to persistent cache (only used when CACHE=true)
-DEBUG=false
+DEBUG=false # Whether to enable debug mode, more logs will be output when enabled
+LOGGING=true # Whether to enable logging
 ```
 
 ### Docker Deployment

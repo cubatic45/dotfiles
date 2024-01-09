@@ -256,8 +256,8 @@ func main() {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
 
-	log.ZLog.Log.Info().Msgf("Cache enabled: %t, Cache path: %s, Deubg: %t", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Debug)
-	log.ZLog.Log.Info().Msgf("Starting server on http://%s:%s", config.ConfigInstance.Host, config.ConfigInstance.Port)
+	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, Deubg: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging, config.ConfigInstance.Debug)
+	fmt.Printf("Starting server on http://%s:%s\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
 
 	// router.Run(":8080")
 	router.Run(config.ConfigInstance.Host + ":" + config.ConfigInstance.Port)

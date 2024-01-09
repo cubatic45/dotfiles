@@ -12,6 +12,7 @@ type Config struct {
 	CachePath string
 	Host      string
 	Debug     bool
+	Logging   bool
 }
 
 var ConfigInstance *Config = NewConfig()
@@ -31,6 +32,7 @@ func NewConfig() *Config {
 		Cache:     getEnvOrDefaultBool("CACHE", true),
 		CachePath: getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
 		Debug:     getEnvOrDefaultBool("DEBUG", false),
+		Logging:   getEnvOrDefaultBool("LOGGING", true),
 	}
 }
 
