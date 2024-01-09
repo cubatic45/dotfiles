@@ -16,20 +16,25 @@ English | <a href="README.md">简体中文</a>
 
 ## Deployment Methods
 
-### Best Deployment Methods
-As verified by the community, the best deployment methods are:
-1. Local deployment
-2. Server integration with [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (this service is not publicly available)
-3. Server deployment for personal use (e.g., in multi-client scenarios like [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087))
+### Best practice approach
+
+As verified and discussed by the community, the best practice approach is.
+
+1. Local deployment for personal use only;
+2. Deploy with your own server integration [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web), the service is not public;
+3. server deployment, public but for personal use (e.g. multi-client scenarios [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https:// apps.apple.com/us/app/chatx-ai-chat-client/id6446304087)).
 
 ### Not Recommended Approaches
+
 1. Providing an interface as a public service
    Making multiple token requests from the same IP address can be flagged as abnormal behavior.
 2. Offering public services using the same client web interface (e.g., ChatGPT-Next-Web) with the default API and API Key
    Making too many requests with the same token can be flagged as abnormal behavior.
 3. Deploying with serverless providers
    Serverless providers have short service lifecycles and frequently change IP addresses, which can be flagged as abnormal behavior.
+4. Other abusive behaviors or profiteering behaviors.
 
+**Very important: The above not recommended methods may cause Github Copilot to be banned, and it may not be possible to unban after being banned.**
 
 ## Clients
 
@@ -109,7 +114,7 @@ Your account needs to have Github Copilot service enabled.
 There are currently two ways to obtain the Github Copilot Plugin Token:
 
 1. Obtain it by installing [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) and authorizing (recommended).
-2. Obtain it through the third-party interface [https://cocopilot.org](https://cocopilot.org/copilot/token). Please note that this interface is provided by a third-party developer and its security cannot be guaranteed, so please use it with caution.
+2. Authorized access through a third-party interface, not recommended because it is not secure.
 
 ### Obtaining through Github Copilot CLI
 
@@ -123,10 +128,6 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-ser
 **For Windows Platform**
 
 Download the batch script and double-click to run it: [get_copilot_token.bat](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.bat).
-
-### Obtaining through Third-Party Interface
-
-Obtain it through the third-party interface [https://cocopilot.org](https://cocopilot.org/copilot/token). Please note that this interface is provided by a third-party developer and its security cannot be guaranteed, so please use it with caution.
 
 ## Frequently Asked Questions
 
