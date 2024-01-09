@@ -77,6 +77,7 @@ docker run -d \
   --name copilot-gpt4-service \
   --restart always \
   -p 8080:8080 \
+  -e HOST=0.0.0.0 \
   aaamoon/copilot-gpt4-service:latest
 ```
 
