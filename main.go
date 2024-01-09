@@ -8,13 +8,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"time"
 	"math/rand"
 	"net/http"
+	"time"
 
 	"copilot-gpt4-service/config"
-	"copilot-gpt4-service/utils"
 	"copilot-gpt4-service/log"
+	"copilot-gpt4-service/utils"
 )
 
 // Handle the Cross-Origin Resource Sharing (CORS) for requests.
@@ -162,11 +162,20 @@ func chatCompletions(c *gin.Context) {
 			for scanner.Scan() {
 				line := scanner.Bytes()
 
-				if bytes.Contains(line, []byte(`"choices":`)) && !bytes.Contains(line, []byte(`"object":`)) {
-					line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(`"object": "chat.completion.chunk", "choices":`))
+				var object string
+				if jsonBody.Stream {
+					object = "chat.completion.chunk"
+				} else {
+					object = "chat.completion"
 				}
-				if bytes.Contains(line, []byte(`"choices":`)) && !bytes.Contains(line, []byte(`"model":`)) {
-					line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(`"model": "gpt-4", "choices":`))
+
+				if bytes.Contains(line, []byte(`"choices":`)) {
+					if !bytes.Contains(line, []byte(`"object":`)) {
+						line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(fmt.Sprintf(`"object": "%s", "choices":`, object)))
+					}
+					if !bytes.Contains(line, []byte(`"model":`)) {
+						line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(fmt.Sprintf(`"model": "%s", "choices":`, jsonBody.Model)))
+					}
 				}
 
 				c.Writer.Write(line)
@@ -219,20 +228,20 @@ func createMockModelsResponse(c *gin.Context) {
 }
 
 func LoggerHandler() gin.HandlerFunc {
-    return func(c *gin.Context) {
-        t := time.Now()
+	return func(c *gin.Context) {
+		t := time.Now()
 
-        log.ZLog.Log.Info().Msgf("Request Info:\nMethod: %s\nHost: %s\nURL: %s",
-            c.Request.Method, c.Request.Host, c.Request.URL)
-        log.ZLog.Log.Debug().Msgf("Request Header:\n%v", c.Request.Header)
+		log.ZLog.Log.Info().Msgf("Request Info:\nMethod: %s\nHost: %s\nURL: %s",
+			c.Request.Method, c.Request.Host, c.Request.URL)
+		log.ZLog.Log.Debug().Msgf("Request Header:\n%v", c.Request.Header)
 
-        c.Next()
+		c.Next()
 
-        latency := time.Since(t)
-        log.ZLog.Log.Info().Msgf("Response Time: %s\nStatus: %s",
-            latency.String(), c.Writer.Status())
-        log.ZLog.Log.Debug().Msgf("Response Header:\n%v", c.Writer.Header())
-    }
+		latency := time.Since(t)
+		log.ZLog.Log.Info().Msgf("Response Time: %s\nStatus: %s",
+			latency.String(), c.Writer.Status())
+		log.ZLog.Log.Debug().Msgf("Response Header:\n%v", c.Writer.Header())
+	}
 }
 
 func main() {
@@ -254,18 +263,18 @@ func main() {
 		})
 	})
 	router.GET("/", func(context *gin.Context) {
-		context.String(http.StatusOK, `非常重要：请不要将此服务公开，仅供个人使用，否则账户或Copilot将被封禁。 Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned. 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたはCopilotが禁止されます。`)
+		context.String(http.StatusOK, `非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned. 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。`)
 	})
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
 
-	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Deubg: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging,  config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
+	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Deubg: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging, config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
 	fmt.Printf("Starting server on http://%s:%s\n\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
 
-	fmt.Println("\033[31m非常重要：请不要将此服务公开，仅供个人使用，否则账户或Copilot将被封禁。\033[0m")
+	fmt.Println("\033[31m 非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。\033[0m")
 	fmt.Println("\033[31mVery important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned.\033[0m")
-	fmt.Println("\033[31m非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたはCopilotが禁止されます。\033[0m\n")
+	fmt.Println("\033[31m 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。\033[0m\n")
 
 	// router.Run(":8080")
 	router.Run(config.ConfigInstance.Host + ":" + config.ConfigInstance.Port)
