@@ -273,7 +273,7 @@ func main() {
 	fmt.Printf("Starting server on http://%s:%s\n\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
 
 	fmt.Println("\033[31m 非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。\033[0m")
-	fmt.Println("\033[31mVery important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned.\033[0m")
+	fmt.Println("\033[31m Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned.\033[0m")
 	fmt.Println("\033[31m 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。\033[0m\n")
 
 	// router.Run(":8080")
