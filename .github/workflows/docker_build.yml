@@ -7,7 +7,14 @@ on:
       - 'CODE_OF_CONDUCT.md'
       - '.editorconfig'
       - '.chart/**'
+      - '.github/**'
+      - '.gitignore'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Docker image version, e.g. 20240109.1、latest.'
+        required: false
+        default: 'latest'
 
 env:
   IMAGE_REPOSITORY: aaamoon/copilot-gpt4-service
@@ -35,13 +42,20 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Docker build and push
+      - name: Get Version from input
+        run: |
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+      - name: Get Version from git commit id
+        if: github.event_name == 'push'
+        run: |
+          echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Docker build and push with version
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
           tags: |
-            ${{ env.IMAGE_REPOSITORY }}:latest
+            ${{ env.IMAGE_REPOSITORY }}:${{ env.VERSION }}
           platforms: |
             linux/amd64
             linux/arm64
