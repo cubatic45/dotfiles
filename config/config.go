@@ -11,6 +11,9 @@ type Config struct {
 	Cache     bool
 	CachePath string
 	Host      string
+	Debug     bool
+	Logging   bool
+	LogLevel string
 }
 
 var ConfigInstance *Config = NewConfig()
@@ -29,6 +32,9 @@ func NewConfig() *Config {
 		Port:      getEnvOrDefault("PORT", "8080"),
 		Cache:     getEnvOrDefaultBool("CACHE", true),
 		CachePath: getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
+		Debug:     getEnvOrDefaultBool("DEBUG", false),
+		Logging:   getEnvOrDefaultBool("LOGGING", true),
+		LogLevel: getEnvOrDefault("LOG_LEVEL", "info"),
 	}
 }
 
