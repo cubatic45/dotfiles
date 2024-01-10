@@ -27,10 +27,13 @@ As verified and discussed by the community, the best practice approach is.
 ### Not Recommended Approaches
 
 1. Providing an interface as a public service
-   Making multiple token requests from the same IP address can be flagged as abnormal behavior.
+
+    Making multiple token requests from the same IP address can be flagged as abnormal behavior.
 2. Offering public services using the same client web interface (e.g., ChatGPT-Next-Web) with the default API and API Key
+
    Making too many requests with the same token can be flagged as abnormal behavior.
 3. Deploying with serverless providers
+
    Serverless providers have short service lifecycles and frequently change IP addresses, which can be flagged as abnormal behavior.
 4. Other abusive behaviors or profiteering behaviors.
 

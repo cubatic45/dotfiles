@@ -25,12 +25,16 @@
 3. 服务器部署, 公开但个人使用 (例如多客户端使用场景 [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087))。
 
 ### 不建议方式
+
 1. 以公共服务的方式提供接口
+
     多个 Token 在同一个 IP 地址进行请求, 容易被判定为异常行为
 2. 同客户端 Web(例如 ChatGPT-Next-Web) 以默认 API 以及 API Key 的方式提供公共服务
+
     同一个 Token 请求频率过高, 容易被判定为异常行为
 3. Serverless 类型的提供商进行部署
-    服务生命周期短, 更换 IP 地址频繁, 容易被判定为异常行为.
+
+    服务生命周期短, 更换 IP 地址频繁, 容易被判定为异常行为
 4. 其他滥用行为或牟利等行为。
 
 ### ⚠️ 非常重要
