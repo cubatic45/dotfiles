@@ -238,7 +238,7 @@ func LoggerHandler() gin.HandlerFunc {
 		c.Next()
 
 		latency := time.Since(t)
-		log.ZLog.Log.Info().Msgf("Response Time: %s\nStatus: %s",
+		log.ZLog.Log.Info().Msgf("Response Time: %s\nStatus: %d",
 			latency.String(), c.Writer.Status())
 		log.ZLog.Log.Debug().Msgf("Response Header:\n%v", c.Writer.Header())
 	}
