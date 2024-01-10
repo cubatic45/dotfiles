@@ -141,11 +141,6 @@ According to the test, the model parameters support GPT-4 and GPT-3.5-turbo, and
 
 ## How to Determine if It's the GPT-4 Model
 
-There are 9 birds in the tree, the hunter shoots one, how many birds are left in the tree？
-
-- GPT-3.5 8 birds(Only able to answer eight.)
-- GPT-4 None (other birds scared away, there may be no birds left in the trees.)
-
 Why weren't I invited when my parents got married?
 
 - GPT-3.5 They considered you too young at that time, so they didn't invite you.
