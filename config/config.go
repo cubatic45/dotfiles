@@ -2,8 +2,10 @@ package config
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"os"
+	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -13,7 +15,7 @@ type Config struct {
 	Host      string
 	Debug     bool
 	Logging   bool
-	LogLevel string
+	LogLevel  string
 }
 
 var ConfigInstance *Config = NewConfig()
@@ -34,7 +36,7 @@ func NewConfig() *Config {
 		CachePath: getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
 		Debug:     getEnvOrDefaultBool("DEBUG", false),
 		Logging:   getEnvOrDefaultBool("LOGGING", true),
-		LogLevel: getEnvOrDefault("LOG_LEVEL", "info"),
+		LogLevel:  getEnvOrDefault("LOG_LEVEL", "info"),
 	}
 }
 
@@ -51,5 +53,9 @@ func getEnvOrDefaultBool(key string, defaultValue bool) bool {
 	if value == "" {
 		return defaultValue
 	}
-	return value == "true" || value == "1" || value == "TRUE" || value == "True"
+	s, err := strconv.ParseBool(value)
+	if err != nil {
+		return false
+	}
+	return s
 }

@@ -28,22 +28,22 @@ func NewLogger() *Logger {
 
 	LOG_LEVEL := config.ConfigInstance.LogLevel
 	switch LOG_LEVEL {
-		case "debug":
-			zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		case "warn":
-			zerolog.SetGlobalLevel(zerolog.WarnLevel)
-		case "error":
-			zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-		case "fatal":
-			zerolog.SetGlobalLevel(zerolog.FatalLevel)
-		case "panic":
-			zerolog.SetGlobalLevel(zerolog.PanicLevel)
-		case "trace":
-			zerolog.SetGlobalLevel(zerolog.TraceLevel)
-		case "no":
-			zerolog.SetGlobalLevel(zerolog.NoLevel)
-		default:
-			zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	case "debug":
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	case "warn":
+		zerolog.SetGlobalLevel(zerolog.WarnLevel)
+	case "error":
+		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	case "fatal":
+		zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	case "panic":
+		zerolog.SetGlobalLevel(zerolog.PanicLevel)
+	case "trace":
+		zerolog.SetGlobalLevel(zerolog.TraceLevel)
+	case "no":
+		zerolog.SetGlobalLevel(zerolog.NoLevel)
+	default:
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
 	if !config.ConfigInstance.Logging {
