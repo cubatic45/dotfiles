@@ -104,13 +104,13 @@ func chatCompletions(c *gin.Context) {
 		return
 	}
 
-	// copilotToken := config.Authorization
-	copilotToken, ok := utils.GetAuthorizationFromToken(appToken)
-	if !ok {
+	copilotToken, statusCode, errorInfo := utils.GetAuthorizationFromToken(appToken)
+	if len(errorInfo) != 0 {
 		c.JSON(
-			http.StatusInternalServerError,
+			statusCode,
 			gin.H{
-				"error": "Failed to get authorization from token",
+				"error": errorInfo,
+				"code":  statusCode,
 			},
 		)
 		return

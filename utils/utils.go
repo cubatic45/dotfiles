@@ -15,7 +15,6 @@ import (
 
 // Set the Authorization in the cache.
 func setAuthorizationToCache(copilotToken string, authorization cache.Authorization) {
-	// authorizations[copilotToken] = authorization
 	cache.CacheInstance.Set(copilotToken, authorization)
 }
 
@@ -31,7 +30,7 @@ func getAuthorizationFromCache(copilotToken string) *cache.Authorization {
 }
 
 // When obtaining the Authorization, first attempt to retrieve it from the cache. If it is not available in the cache, retrieve it through an HTTP request and then set it in the cache.
-func GetAuthorizationFromToken(copilotToken string) (string, bool) {
+func GetAuthorizationFromToken(copilotToken string) (string, int, string) {
 	authorization := getAuthorizationFromCache(copilotToken)
 	if authorization.Token == "" {
 		getAuthorizationUrl := "https://api.github.com/copilot_internal/v2/token"
@@ -41,17 +40,13 @@ func GetAuthorizationFromToken(copilotToken string) (string, bool) {
 		response, err := client.Do(req)
 		if err != nil {
 			if response == nil {
-				// handle connection not available
-				// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-				return "", false
+				return "", http.StatusInternalServerError, err.Error()
 			}
-			// c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "code": response.StatusCode})
-			return "", false
+			return "", http.StatusInternalServerError, err.Error()
 		}
 		if response.StatusCode != 200 {
-			// body, _ := io.ReadAll(response.Body)
-			// c.JSON(response.StatusCode, gin.H{"error": string(body), "code": response.StatusCode})
-			return "", false
+			body, _ := io.ReadAll(response.Body)
+			return "", response.StatusCode, string(body)
 		}
 		defer response.Body.Close()
 
@@ -64,7 +59,7 @@ func GetAuthorizationFromToken(copilotToken string) (string, bool) {
 		authorization.Token = newAuthorization.Token
 		setAuthorizationToCache(copilotToken, *newAuthorization)
 	}
-	return authorization.Token, true
+	return authorization.Token, http.StatusOK, ""
 }
 
 // Retrieve the GitHub Copilot Plugin Token from the request header.
@@ -75,12 +70,4 @@ func GetAuthorization(c *gin.Context) (string, bool) {
 	} else {
 		return copilotToken, true
 	}
-	// if copilotToken == "" {
-	// 	c.JSON(http.StatusUnauthorized, gin.H{
-	// 		"message": "Unauthorized",
-	// 	})
-	// 	return false
-	// }
-	// Obtain the Authorization from the GitHub Copilot Plugin Token.
-	// return getAuthorizationFromToken(c, copilotToken)
 }
