@@ -30,7 +30,7 @@ func getAuthorizationFromCache(copilotToken string) *cache.Authorization {
 }
 
 // When obtaining the Authorization, first attempt to retrieve it from the cache. If it is not available in the cache, retrieve it through an HTTP request and then set it in the cache.
-func GetAuthorizationFromToken(copilotToken string) (string, string) {
+func GetAuthorizationFromToken(copilotToken string) (string, int, string) {
 	authorization := getAuthorizationFromCache(copilotToken)
 	if authorization.Token == "" {
 		getAuthorizationUrl := "https://api.github.com/copilot_internal/v2/token"
@@ -40,13 +40,13 @@ func GetAuthorizationFromToken(copilotToken string) (string, string) {
 		response, err := client.Do(req)
 		if err != nil {
 			if response == nil {
-				return "", err.Error()
+				return "", http.StatusInternalServerError, err.Error()
 			}
-			return "", err.Error()
+			return "", http.StatusInternalServerError, err.Error()
 		}
 		if response.StatusCode != 200 {
 			body, _ := io.ReadAll(response.Body)
-			return "", string(body)
+			return "", response.StatusCode, string(body)
 		}
 		defer response.Body.Close()
 
@@ -59,7 +59,7 @@ func GetAuthorizationFromToken(copilotToken string) (string, string) {
 		authorization.Token = newAuthorization.Token
 		setAuthorizationToCache(copilotToken, *newAuthorization)
 	}
-	return authorization.Token, ""
+	return authorization.Token, http.StatusOK, ""
 }
 
 // Retrieve the GitHub Copilot Plugin Token from the request header.
