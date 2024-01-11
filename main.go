@@ -174,7 +174,7 @@ func chatCompletions(c *gin.Context) {
 					object = "chat.completion"
 				}
 
-				if len(line) > 0 && !bytes.Contains(line, []byte("data: [Done]")) {
+				if len(line) > 0 && !bytes.Contains(line, []byte("data: [DONE]")) {
 					tmp := strings.TrimPrefix(string(line), "data: ")
 					data := &Data{}
 					if err := json.Unmarshal([]byte(tmp), &data); err != nil {
