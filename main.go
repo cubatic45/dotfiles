@@ -269,7 +269,7 @@ func main() {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
 
-	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Deubg: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging, config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
+	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Debug: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging, config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
 	fmt.Printf("Starting server on http://%s:%s\n\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
 
 	fmt.Println("\033[31m 非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。\033[0m")
