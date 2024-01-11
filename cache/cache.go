@@ -109,9 +109,7 @@ func (c *Cache) Delete(app_token string) error {
 		}
 		return nil
 	} else {
-		if _, ok := c.Data[app_token]; ok {
-			delete(c.Data, app_token)
-		}
+		delete(c.Data, app_token)
 		return nil
 	}
 }
