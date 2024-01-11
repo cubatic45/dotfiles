@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 
 	"bufio"
@@ -45,7 +47,8 @@ type JsonData struct {
 }
 
 type Delta struct {
-	Content string `json:"content"`
+	Role    string `json:"role,omitempty"`
+	Content string `json:"content,omitempty"`
 }
 
 type Choice struct {
@@ -57,6 +60,8 @@ type Data struct {
 	Choices []Choice `json:"choices,omitempty"`
 	Created int      `json:"created,omitempty"`
 	ID      string   `json:"id,omitempty"`
+	Object  string   `json:"object,omitempty"`
+	Model   string   `json:"model,omitempty"`
 }
 
 // Generate a random hexadecimal string of the specified length.
@@ -169,13 +174,30 @@ func chatCompletions(c *gin.Context) {
 					object = "chat.completion"
 				}
 
-				if bytes.Contains(line, []byte(`"choices":`)) {
-					if !bytes.Contains(line, []byte(`"object":`)) {
-						line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(fmt.Sprintf(`"object": "%s", "choices":`, object)))
+				if len(line) > 0 && !bytes.Contains(line, []byte("data: [Done]")) {
+					tmp := strings.TrimPrefix(string(line), "data: ")
+					data := &Data{}
+					if err := json.Unmarshal([]byte(tmp), &data); err != nil {
+						fmt.Println(err)
 					}
-					if !bytes.Contains(line, []byte(`"model":`)) {
-						line = bytes.ReplaceAll(line, []byte(`"choices":`), []byte(fmt.Sprintf(`"model": "%s", "choices":`, jsonBody.Model)))
+					if len(data.Choices) == 0 {
+						continue
 					}
+					if data.Object == "" {
+						data.Object = object
+					}
+					if data.Model == "" {
+						data.Model = jsonBody.Model
+					}
+					if data.Created == 0 {
+						data.Created = int(time.Now().Unix())
+					}
+
+					newLine, err := json.Marshal(data)
+					if err != nil {
+						fmt.Println(err)
+					}
+					line = []byte(fmt.Sprintf("data: %s", string(newLine)))
 				}
 
 				c.Writer.Write(line)
