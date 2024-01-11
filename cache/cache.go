@@ -4,8 +4,9 @@ import (
 	"copilot-gpt4-service/config"
 	"copilot-gpt4-service/tools"
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
 	"os"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // CacheInstance is a global variable that is used to access the cache.
@@ -57,6 +58,9 @@ func (c *Cache) connect() {
 		}
 		// create table if not exists
 		_, err = c.Db.Exec("CREATE TABLE IF NOT EXISTS cache(app_token TEXT PRIMARY KEY, c_token TEXT, expires_at INTEGER)")
+		if err != nil {
+			panic(err)
+		}
 	} else if !c.cache && c.Data == nil {
 		c.Data = make(map[string]Authorization)
 	}
