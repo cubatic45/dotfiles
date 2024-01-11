@@ -2,8 +2,10 @@ package config
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"os"
+	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -51,5 +53,9 @@ func getEnvOrDefaultBool(key string, defaultValue bool) bool {
 	if value == "" {
 		return defaultValue
 	}
-	return value == "true" || value == "1" || value == "TRUE" || value == "True"
+	s, err := strconv.ParseBool(value)
+	if err != nil {
+		return false
+	}
+	return s
 }
