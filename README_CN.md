@@ -103,12 +103,14 @@ git pull && docker compose up -d --build
 
 支持通过 Kubernetes 部署，具体部署方式如下：
 
-```shell
+```bash
 helm repo add aaamoon https://charts.kii.la && helm repo update # 源由 github pages 提供
 helm install copilot-gpt4-service aaamoon/copilot-gpt4-service
+```
 
+## 与 ChatGPT-Next-Web 一起安装
 
-## 与Chat GPT Next Web一起安装
+```bash
 helm install copilot-gpt4-service aaamoon/copilot-gpt4-service \
   --set chatgpt-next-web.enabled=true \
   --set chatgpt-next-web.config.OPENAI_API_KEY=[ your openai api key ] \ # copilot 获取的 token
