@@ -51,9 +51,15 @@ type Delta struct {
 	Content string `json:"content,omitempty"`
 }
 
+type Message struct {
+	Role    string `json:"role,omitempty"`
+	Content string `json:"content,omitempty"`
+}
+
 type Choice struct {
-	Delta Delta `json:"delta"`
-	Index int   `json:"index"`
+	Delta   Delta   `json:"delta,omitempty"`
+	Message Message `json:"message,omitempty"`
+	Index   int     `json:"index"`
 }
 
 type Data struct {
@@ -197,7 +203,11 @@ func chatCompletions(c *gin.Context) {
 					if err != nil {
 						fmt.Println(err)
 					}
-					line = []byte(fmt.Sprintf("data: %s", string(newLine)))
+					if jsonBody.Stream {
+						line = []byte(fmt.Sprintf("data: %s", string(newLine)))
+					} else {
+						line = newLine
+					}
 				}
 
 				c.Writer.Write(line)
