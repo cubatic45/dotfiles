@@ -59,9 +59,9 @@ by_copilot_cli() {
 
   # Check if the token file exists
   if [ -f "${COPILOT_CLI_CONFIG_PATH}" ]; then
-      echo "Your Github Copilot CLI token : ${green}$(cat ${COPILOT_CLI_CONFIG_PATH})${plain}"
+      echo -e "Your Github Copilot CLI token : ${green}$(cat ${COPILOT_CLI_CONFIG_PATH})${plain}"
   else
-      echo "${red}Github Copilot CLI token not found. Please try again.${plain}"
+      echo -e "${red}Github Copilot CLI token not found. Please try again.${plain}"
   fi
   if [[ $# == 0 ]]; then
     before_show_menu
