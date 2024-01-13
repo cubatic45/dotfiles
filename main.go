@@ -80,7 +80,7 @@ func genHexStr(length int) string {
 }
 
 // Create request headers to mock Github Copilot Chat requests.
-func createHeaders(authorization string) map[string]string {
+func createHeaders(authorization string, stream bool) map[string]string {
 	headers := make(map[string]string, 0)
 	headers["Authorization"] = "Bearer " + authorization
 	headers["X-Request-Id"] = genHexStr(8) + "-" + genHexStr(4) + "-" + genHexStr(4) + "-" + genHexStr(4) + "-" + genHexStr(12)
@@ -90,7 +90,11 @@ func createHeaders(authorization string) map[string]string {
 	headers["Editor-Plugin-Version"] = "copilot-chat/0.8.0"
 	headers["Openai-Organization"] = "github-copilot"
 	headers["Openai-Intent"] = "conversation-panel"
-	headers["Content-Type"] = "text/event-stream; charset=utf-8"
+	if stream {
+		headers["Content-Type"] = "text/event-stream; charset=utf-8"
+	} else {
+		headers["Content-Type"] = "application/json; charset=utf-8"
+	}
 	headers["User-Agent"] = "GitHubCopilotChat/0.8.0"
 	headers["Accept"] = "*/*"
 	headers["Accept-Encoding"] = "gzip,deflate,br"
@@ -127,7 +131,6 @@ func chatCompletions(c *gin.Context) {
 		return
 	}
 
-	headers := createHeaders(copilotToken)
 	jsonBody := &JsonData{
 		Messages: []map[string]string{
 			{"role": "system",
@@ -147,6 +150,8 @@ func chatCompletions(c *gin.Context) {
 	if err != nil {
 		return
 	}
+
+	headers := createHeaders(copilotToken, jsonBody.Stream)
 
 	req, _ := http.NewRequest("POST", url, bytes.NewReader(jsonData))
 	for k, v := range headers {
