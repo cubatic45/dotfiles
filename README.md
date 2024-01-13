@@ -153,6 +153,12 @@ Why weren't I invited when my parents got married?
 - 401: The Github Copilot Plugin Token used has expired or is incorrect. Please obtain it again.
 - 403: The account used does not have Github Copilot enabled.
 
+### Got "Failed to authenticate: You do not have access to GitHub Copilot CLI"
+
+If you're using an account that hasn't used Copilot before (e.g. with a recently activated student pack or pro), you can try to create an [Codespaces](https://github.com/codespaces) then install Copilot extension inside. This may take you to the [Copilot signup](https://github.com/github-copilot/free_signup) page.
+
+Don't trust the "Please join the waitlist" tips because copilot-cli is [now in public beta](https://github.blog/changelog/2023-11-08-github-copilot-in-the-cli-now-in-public-beta/).
+
 ## Acknowledgements
 
 ### Contributors
