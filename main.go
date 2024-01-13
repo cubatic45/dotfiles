@@ -170,7 +170,11 @@ func chatCompletions(c *gin.Context) {
 			// Set the headers for the response
 			c.Writer.Header().Set("Transfer-Encoding", "chunked")
 			c.Writer.Header().Set("X-Accel-Buffering", "no")
-			c.Header("Content-Type", "text/event-stream; charset=utf-8")
+			if(jsonBody.Stream) {
+				c.Header("Content-Type", "text/event-stream; charset=utf-8")
+			} else {
+				c.Header("Content-Type", "application/json; charset=utf-8")
+			}
 			c.Header("Cache-Control", "no-cache")
 			c.Header("Connection", "keep-alive")
 			// Scan the response body line by line
