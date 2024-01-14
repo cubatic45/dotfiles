@@ -1,3 +1,13 @@
+/*
+ * @Author: Vincent Young
+ * @Date: 2024-01-13 19:10:40
+ * @LastEditors: Vincent Young
+ * @LastEditTime: 2024-01-13 19:49:26
+ * @FilePath: /copilot-gpt4-service/config/config.go
+ * @Telegram: https://t.me/missuo
+ *
+ * Copyright © 2024 by Vincent, All Rights Reserved.
+ */
 package config
 
 import (
@@ -9,13 +19,14 @@ import (
 )
 
 type Config struct {
-	Port      string
-	Cache     bool
-	CachePath string
-	Host      string
-	Debug     bool
-	Logging   bool
-	LogLevel  string
+	Port         string
+	Cache        bool
+	CachePath    string
+	Host         string
+	Debug        bool
+	Logging      bool
+	LogLevel     string
+	CopilotToken string
 }
 
 var ConfigInstance *Config = NewConfig()
@@ -30,13 +41,14 @@ func NewConfig() *Config {
 	}
 
 	return &Config{
-		Host:      getEnvOrDefault("HOST", "localhost"),
-		Port:      getEnvOrDefault("PORT", "8080"),
-		Cache:     getEnvOrDefaultBool("CACHE", true),
-		CachePath: getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
-		Debug:     getEnvOrDefaultBool("DEBUG", false),
-		Logging:   getEnvOrDefaultBool("LOGGING", true),
-		LogLevel:  getEnvOrDefault("LOG_LEVEL", "info"),
+		Host:         getEnvOrDefault("HOST", "localhost"),
+		Port:         getEnvOrDefault("PORT", "8080"),
+		Cache:        getEnvOrDefaultBool("CACHE", true),
+		CachePath:    getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
+		Debug:        getEnvOrDefaultBool("DEBUG", false),
+		Logging:      getEnvOrDefaultBool("LOGGING", true),
+		LogLevel:     getEnvOrDefault("LOG_LEVEL", "info"),
+		CopilotToken: getEnvOrDefault("COPILOT_TOKEN", ""),
 	}
 }
 

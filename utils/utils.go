@@ -2,6 +2,7 @@ package utils
 
 import (
 	"copilot-gpt4-service/cache"
+	"copilot-gpt4-service/config"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -61,10 +62,14 @@ func GetAuthorizationFromToken(copilotToken string) (string, int, string) {
 
 // Retrieve the GitHub Copilot Plugin Token from the request header.
 func GetAuthorization(c *gin.Context) (string, bool) {
-	copilotToken := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
-	if copilotToken == "" {
-		return "", false
+	if config.ConfigInstance.CopilotToken == "" {
+		copilotToken := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
+		if copilotToken == "" {
+			return "", false
+		} else {
+			return copilotToken, true
+		}
 	} else {
-		return copilotToken, true
+		return config.ConfigInstance.CopilotToken, true
 	}
 }
