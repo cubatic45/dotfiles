@@ -10,7 +10,7 @@
 
 ## 如何使用
 
-1. 安装并启动 copilot-gpt4-service 服务，如本地启动后，API默认地址为：`http://127.0.0.1:8080`;
+1. 安装并启动 copilot-gpt4-service 服务，如本地启动后，API 默认地址为：`http://127.0.0.1:8080`;
 2. 获取你的 GitHub 账号 Github Copilot Plugin Token（详见下文）；
 3. 安装第三方客户端，如：[ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web)，在设置中填入 copilot-gpt4-service 的 API 地址和 Github Copilot Plugin Token，即可使用 GPT-4 模型进行对话。
 
@@ -18,23 +18,23 @@
 
 ### 最佳实践方式
 
-经社区验证和讨论，最佳实践方式为:
+经社区验证和讨论，最佳实践方式为：
 
 1. 本地部署，仅个人使用（推荐）；
-2. 自用服务器集成 [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) 部署, 服务不公开；
-3. 服务器部署, 公开但个人使用 (例如多客户端使用场景 [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087))。
+2. 自用服务器集成 [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) 部署，服务不公开；
+3. 服务器部署，公开但个人使用 (例如多客户端使用场景 [Chatbox](https://github.com/Bin-Huang/chatbox), [OpenCat APP](https://opencat.app/), [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087))。
 
 ### 不建议方式
 
 1. 以公共服务的方式提供接口
 
-    多个 Token 在同一个 IP 地址进行请求, 容易被判定为异常行为
+    多个 Token 在同一个 IP 地址进行请求，容易被判定为异常行为
 2. 同客户端 Web(例如 ChatGPT-Next-Web) 以默认 API 以及 API Key 的方式提供公共服务
 
-    同一个 Token 请求频率过高, 容易被判定为异常行为
+    同一个 Token 请求频率过高，容易被判定为异常行为
 3. Serverless 类型的提供商进行部署
 
-    服务生命周期短, 更换 IP 地址频繁, 容易被判定为异常行为
+    服务生命周期短，更换 IP 地址频繁，容易被判定为异常行为
 4. 其他滥用行为或牟利等行为。
 
 ### ⚠️ 非常重要
@@ -145,7 +145,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-ser
 
 ### 模型支持情况
 
-据测试：模型参数支持 GPT-4 和 GPT-3.5-turbo ，实测使用其他模型均会以默认的 3.5 处理（对比 OpenAI API 的返回结果，猜测应该是最早的版本 GPT-4-0314 和 GPT-3.5-turbo-0301 ）
+据测试：模型参数支持 GPT-4 和 GPT-3.5-turbo，实测使用其他模型均会以默认的 3.5 处理（对比 OpenAI API 的返回结果，猜测应该是最早的版本 GPT-4-0314 和 GPT-3.5-turbo-0301）
 
 ### 如何判断是不是 GPT-4 模型
 
