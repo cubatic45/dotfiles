@@ -9,13 +9,14 @@ import (
 )
 
 type Config struct {
-	Port      string
-	Cache     bool
-	CachePath string
-	Host      string
-	Debug     bool
-	Logging   bool
-	LogLevel  string
+	Port         string
+	Cache        bool
+	CachePath    string
+	Host         string
+	Debug        bool
+	Logging      bool
+	LogLevel     string
+	CopilotToken string
 }
 
 var ConfigInstance *Config = NewConfig()
@@ -30,13 +31,14 @@ func NewConfig() *Config {
 	}
 
 	return &Config{
-		Host:      getEnvOrDefault("HOST", "localhost"),
-		Port:      getEnvOrDefault("PORT", "8080"),
-		Cache:     getEnvOrDefaultBool("CACHE", true),
-		CachePath: getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
-		Debug:     getEnvOrDefaultBool("DEBUG", false),
-		Logging:   getEnvOrDefaultBool("LOGGING", true),
-		LogLevel:  getEnvOrDefault("LOG_LEVEL", "info"),
+		Host:         getEnvOrDefault("HOST", "localhost"),
+		Port:         getEnvOrDefault("PORT", "8080"),
+		Cache:        getEnvOrDefaultBool("CACHE", true),
+		CachePath:    getEnvOrDefault("CACHE_PATH", "db/cache.sqlite3"),
+		Debug:        getEnvOrDefaultBool("DEBUG", false),
+		Logging:      getEnvOrDefaultBool("LOGGING", true),
+		LogLevel:     getEnvOrDefault("LOG_LEVEL", "info"),
+		CopilotToken: getEnvOrDefault("COPILOT_TOKEN", ""),
 	}
 }
 
