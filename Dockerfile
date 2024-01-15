@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 # Construct the application.
-RUN CGO_ENABLED=0 GOOS=linux go build -o copilot-gpt4-service .
+RUN CGO_ENABLED=1 GOOS=linux go build -o copilot-gpt4-service .
 
 # Second phase: Execution phase.
 FROM alpine:latest
