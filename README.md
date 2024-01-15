@@ -107,6 +107,10 @@ helm install copilot-gpt4-service aaamoon/copilot-gpt4-service
 
 ## Support HTTPS
 
+<details> <summary> Use Caddy to support HTTPS </summary>
+
+<p>
+
 Using [Caddy](https://caddyserver.com/docs/) can easily provide HTTPS support for port services, automatically manage certificates, worry-free.
 
 Here's an example of using Caddy on a Debian/Ubuntu system, for other systems please refer to the [Caddy official documentation](https://caddyserver.com/docs/).
@@ -151,6 +155,10 @@ sudo systemctl status caddy
 ```
 
 If the command is executed successfully, you can now access the copilot-gpt4-service service via `https://your.domain.com`.
+
+</p>
+
+</details>
 
 ## Installation with ChatGPT-Next-Web
 

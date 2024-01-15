@@ -113,7 +113,11 @@ helm install copilot-gpt4-service aaamoon/copilot-gpt4-service
 
 ## 支持 HTTPS
 
-使用 [Caddy](https://caddyserver.com/docs/) 可以很方便地为端口服务提供 HTTPS 支持，自动管理证书，省心省力。
+<details> <summary> 使用 Caddy 支持 HTTPS </summary>
+
+<p>
+
+[Caddy](https://caddyserver.com/docs/) 可以很方便地为端口服务提供 HTTPS 支持，自动管理证书，省心省力。
 
 以下是一个 Debian/Ubuntu 系统上使用 Caddy 的示例，其他系统请参考 [Caddy 官方文档](https://caddyserver.com/docs/)。
 
@@ -157,6 +161,10 @@ sudo systemctl status caddy
 ```
 
 如果命令执行成功，此时就可以通过 `https://your.domain.com` 访问 copilot-gpt4-service 服务了。
+
+</p>
+
+</details>
 
 ## 与 ChatGPT-Next-Web 一起安装
 
