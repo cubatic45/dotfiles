@@ -1,13 +1,3 @@
-/*
- * @Author: Vincent Young
- * @Date: 2024-01-13 19:10:40
- * @LastEditors: Vincent Young
- * @LastEditTime: 2024-01-13 19:49:26
- * @FilePath: /copilot-gpt4-service/config/config.go
- * @Telegram: https://t.me/missuo
- *
- * Copyright © 2024 by Vincent, All Rights Reserved.
- */
 package config
 
 import (
