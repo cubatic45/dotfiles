@@ -1,9 +1,11 @@
-FROM golang:latest AS builder
+FROM golang:alpine AS builder
 
 WORKDIR /app
 
 # Duplicate the application code.
 COPY . .
+
+RUN apk update && apk upgrade && apk add build-base
 
 # Construct the application.
 RUN CGO_ENABLED=1 GOOS=linux go build -o copilot-gpt4-service .
