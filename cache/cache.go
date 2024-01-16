@@ -52,7 +52,7 @@ func (c *Cache) connect() {
 
 		// connect to database
 		var err error
-		c.Db, err = sql.Open("sqlite3", c.cache_path)
+		c.Db, err = sql.Open("sqlite", c.cache_path)
 		if err != nil {
 			panic(err)
 		}
