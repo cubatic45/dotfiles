@@ -3,14 +3,12 @@ FROM --platform=$BUILDPLATFORM golang:alpine as builder
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
-ENV CGO_ENABLED=1 GOOS=linux
+ENV CGO_ENABLED=0 GOOS=linux
 
 WORKDIR /app
 
 # Duplicate the application code.
 COPY . .
-
-RUN apk update && apk upgrade && apk add build-base
 
 RUN go mod vendor
 
@@ -29,7 +27,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     fi
 
 # Second phase: Execution phase.
-FROM alpine:latest
+FROM scratch
 
 WORKDIR /app
 
