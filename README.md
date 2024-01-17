@@ -29,12 +29,15 @@ As verified and discussed by the community, the best practice approach is.
 1. Providing an interface as a public service
 
     Making multiple token requests from the same IP address can be flagged as abnormal behavior.
+
 2. Offering public services using the same client web interface (e.g., ChatGPT-Next-Web) with the default API and API Key
 
-   Making too many requests with the same token can be flagged as abnormal behavior.
+    Making too many requests with the same token can be flagged as abnormal behavior.
+
 3. Deploying with serverless providers
 
-   Serverless providers have short service lifecycles and frequently change IP addresses, which can be flagged as abnormal behavior.
+    Serverless providers have short service lifecycles and frequently change IP addresses, which can be flagged as abnormal behavior.
+
 4. Other abusive behaviors or profiteering behaviors.
 
 **⚠️ Very important: The above not recommended methods may cause Github Copilot to be banned, and it may not be possible to unban after being banned.**
@@ -43,10 +46,10 @@ As verified and discussed by the community, the best practice approach is.
 
 To use copilot-gpt4-service, you need to use it with a third-party client. The following clients have been tested and are supported:
 
-- [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (recommended)
-- [Chatbox](https://github.com/Bin-Huang/chatbox): Supports Windows, Mac, and Linux platforms
-- [OpenCat APP](https://opencat.app/): Supports iOS and Mac platforms
-- [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087): Supports iOS and Mac platforms
+-   [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (recommended)
+-   [Chatbox](https://github.com/Bin-Huang/chatbox): Supports Windows, Mac, and Linux platforms
+-   [OpenCat APP](https://opencat.app/): Supports iOS and Mac platforms
+-   [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087): Supports iOS and Mac platforms
 
 ## Server
 
@@ -54,7 +57,7 @@ The deployment methods for copilot-gpt4-service currently include Docker deploym
 
 ### Configuration
 
-Use environment variables or environment variable configuration file `config.env` to configure the service (environment variables take precedence over `config.env`), the default configuration items are as follows:  
+Use environment variables or environment variable configuration file `config.env` to configure the service (environment variables take precedence over `config.env`), the default configuration items are as follows:
 
 ```env
 HOST=localhost # Service listening address
@@ -102,6 +105,66 @@ helm repo add aaamoon https://charts.kii.la && helm repo update # Source by gith
 helm install copilot-gpt4-service aaamoon/copilot-gpt4-service
 ```
 
+## Support HTTPS
+
+<details> <summary> Use Caddy to support HTTPS </summary>
+
+<p>
+
+Using [Caddy](https://caddyserver.com/docs/) can easily provide HTTPS support for port services, automatically manage certificates, worry-free.
+
+Here's an example of using Caddy on a Debian/Ubuntu system, for other systems please refer to the [Caddy official documentation](https://caddyserver.com/docs/).
+
+### Install Caddy
+
+```bash
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+```
+
+### Configure Caddy
+
+```bash
+sudo vi /etc/caddy/Caddyfile
+```
+
+If you are going to use the domain name `your.domain.com`, please make sure of the following:
+
+-   Please perform DNS resolution first and resolve your domain name to the server IP address.
+-   Open port 80 and port 443, and the port is not occupied by other programs, such as Nginx, Xray, etc.
+
+Then add the following content to Caddyfile:
+
+```bash
+your.domain.com {
+    reverse_proxy localhost:8080
+}
+```
+
+### Start Caddy
+
+Execute the following command to start Caddy:
+
+```bash
+# Start Caddy
+sudo systemctl start caddy
+
+# Set Caddy to start automatically
+sudo systemctl enable caddy
+
+# View Caddy running status
+sudo systemctl status caddy
+```
+
+If the command is executed successfully, you can now access the copilot-gpt4-service service via `https://your.domain.com`.
+
+</p>
+
+</details>
+
 ## Installation with ChatGPT-Next-Web
 
 ```bash
@@ -145,13 +208,13 @@ According to the test, the model parameters support GPT-4 and GPT-3.5-turbo, and
 
 Why weren't I invited when my parents got married?
 
-- GPT-3.5 They considered you too young at that time, so they didn't invite you.
-- GPT-4 They got married before you were born.
+-   GPT-3.5 They considered you too young at that time, so they didn't invite you.
+-   GPT-4 They got married before you were born.
 
 ### Explanation Of HTTP Response Status Codes
 
-- 401: The Github Copilot Plugin Token used has expired or is incorrect. Please obtain it again.
-- 403: The account used does not have Github Copilot enabled.
+-   401: The Github Copilot Plugin Token used has expired or is incorrect. Please obtain it again.
+-   403: The account used does not have Github Copilot enabled.
 
 ### Got "Failed to authenticate: You do not have access to GitHub Copilot CLI"
 
