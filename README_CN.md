@@ -137,7 +137,12 @@ sudo apt install caddy
 sudo vi /etc/caddy/Caddyfile
 ```
 
-假如你准备使用的域名为 `your.domain.com`，请先进行 DNS 解析，将域名解析到服务器 IP 地址，然后在 Caddyfile 中添加以下内容：
+假如你准备使用的域名为 `your.domain.com`，请确保以下条件：
+
+-   请先进行 DNS 解析，将你的域名解析到服务器 IP 地址。
+-   开放 80 端口和 443 端口，并且端口没有被其他程序占用，如 Nginx、Xray 等。
+
+然后在 Caddyfile 中添加以下内容：
 
 ```bash
 your.domain.com {
@@ -147,7 +152,7 @@ your.domain.com {
 
 ### 启动 Caddy
 
-请先确保 443 端口没有被其他程序占用，如 Nginx、Xray 等，然后执行以下命令启动 Caddy：
+执行以下命令启动 Caddy：
 
 ```bash
 # 启动 Caddy
@@ -160,7 +165,7 @@ sudo systemctl enable caddy
 sudo systemctl status caddy
 ```
 
-如果命令执行成功，此时就可以通过 `https://your.domain.com` 访问 copilot-gpt4-service 服务了。
+如果一切顺利，那此时就可以通过 `https://your.domain.com` 访问 copilot-gpt4-service 服务了。
 
 </p>
 

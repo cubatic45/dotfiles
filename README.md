@@ -131,7 +131,12 @@ sudo apt install caddy
 sudo vi /etc/caddy/Caddyfile
 ```
 
-If you are going to use the domain name `your.domain.com`, please first perform DNS resolution, resolve the domain name to the server IP address, and then add the following content to Caddyfile:
+If you are going to use the domain name `your.domain.com`, please make sure of the following:
+
+-   Please perform DNS resolution first and resolve your domain name to the server IP address.
+-   Open port 80 and port 443, and the port is not occupied by other programs, such as Nginx, Xray, etc.
+
+Then add the following content to Caddyfile:
 
 ```bash
 your.domain.com {
@@ -141,7 +146,7 @@ your.domain.com {
 
 ### Start Caddy
 
-Please make sure that port 443 is not occupied by other programs, such as Nginx, Xray, etc., and then execute the following command to start Caddy:
+Execute the following command to start Caddy:
 
 ```bash
 # Start Caddy
