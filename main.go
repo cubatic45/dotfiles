@@ -131,6 +131,10 @@ func chatCompletions(c *gin.Context) {
 	}
 
 	jsonBody := &JsonData{
+		Messages: []map[string]string{
+			{"role": "system",
+				"content": "\nYou are ChatGPT, a large language model trained by OpenAI.\nKnowledge cutoff: 2021-09\nCurrent model: gpt-4\n"},
+		},
 		Model:       "gpt-4",
 		Temperature: 0.5,
 		TopP:        1,
