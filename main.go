@@ -104,7 +104,6 @@ func createHeaders(authorization string, stream bool) map[string]string {
 }
 
 func chatCompletions(c *gin.Context) {
-	content := c.Query("content")
 	url := "https://api.githubcopilot.com/chat/completions"
 
 	// Get app token from request header
@@ -132,12 +131,6 @@ func chatCompletions(c *gin.Context) {
 	}
 
 	jsonBody := &JsonData{
-		Messages: []map[string]string{
-			{"role": "system",
-				"content": "\nYou are ChatGPT, a large language model trained by OpenAI.\nKnowledge cutoff: 2021-09\nCurrent model: gpt-4\n"},
-			{"role": "user",
-				"content": content},
-		},
 		Model:       "gpt-4",
 		Temperature: 0.5,
 		TopP:        1,
