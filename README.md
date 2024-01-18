@@ -182,8 +182,33 @@ Your account needs to have Github Copilot service enabled.
 
 There are currently two ways to obtain the Github Copilot Plugin Token:
 
-1. Obtain it by installing [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) and authorizing (recommended).
-2. Authorized access through a third-party interface, not recommended because it is not secure.
+1. Obtain it through the Python script, only the requests library is required (recommended).
+2. Obtain it by installing [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) and authorizing (recommended).
+3. Authorized access through a third-party interface, not recommended because it is not secure.
+
+### Obtaining Through Python Script
+
+First, install the requests library:
+
+```bash
+pip install requests
+```
+
+Then, run the following command to obtain the Github Copilot Plugin Token:
+
+**For Linux/MacOS Platforms**
+
+```bash
+python3 <(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)
+```
+
+You can set proxy by setting environment variables or modifying the 3th line of the script.
+
+**For Windows Platform**
+
+Download the Python script and double-click to run it: [get_copilot_token.py](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py).
+
+You can set proxy by modifying the 3th line of the script.
 
 ### Obtaining Through Github Copilot CLI
 

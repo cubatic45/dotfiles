@@ -1,7 +1,16 @@
+#!/usr/bin/env python3
+
+PROXY = {
+    "http": "",
+    "https": ""
+}
+
 import time
 import typing
 from enum import Enum
 import sys
+import os
+import re
 
 try:
     import requests
@@ -30,7 +39,7 @@ def getLoginInfo(proxy=None) -> (LoginError, typing.Union[dict, Exception]):
     }
 
     try:
-        resp = requests.post(url, headers=HEADERS, json=body, proxies=proxy)
+        resp = requests.post(url, headers=HEADERS, json=body, proxies=proxy, timeout=10)
     except requests.exceptions.ConnectionError:
         return LoginError.NETWORK_ERROR, None
     except Exception as e:
@@ -46,7 +55,7 @@ def pollAuth(device_code: str, proxy=None) -> (LoginError, str):
     }
     
     try:
-        resp = requests.post(url, headers=HEADERS, json=body, proxies=proxy)
+        resp = requests.post(url, headers=HEADERS, json=body, proxies=proxy, timeout=10)
     except requests.exceptions.ConnectionError:
         return LoginError.NETWORK_ERROR, None
     except Exception as e:
@@ -79,7 +88,7 @@ def getToken(proxy=None) -> (LoginError, str):
     print(f"Please open {login_info['verification_uri']} in browser and enter {login_info['user_code']} to login.")
     # poll for auth status
     while True:
-        err, access_token = pollAuth(login_info['device_code'])
+        err, access_token = pollAuth(login_info['device_code'], proxy)
         if err is None:
             return None, access_token
         elif err == LoginError.AUTH_PENDING:
@@ -97,12 +106,12 @@ def getToken(proxy=None) -> (LoginError, str):
         time.sleep(interval)
 
 if __name__ == "__main__":
-    proxy = None
-    # proxy = {
-    #     "http": "",
-    #     "https": ""
-    # }
-    err, token = getToken(proxy)
+    for k, v in PROXY.items():
+        if v == "":
+            PROXY[k] = os.getenv(f"{k}_proxy".upper()) or os.getenv(f"{k}_proxy".lower()) or ""
+            if re.match(r"^.+://.+$", PROXY[k]) is None and PROXY[k] != "":
+                PROXY[k] = "http://" + PROXY[k]
+    err, token = getToken(PROXY)
     if err is None:
         print("Your token is:")
         print(token)
