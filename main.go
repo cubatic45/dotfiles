@@ -57,9 +57,9 @@ type Message struct {
 }
 
 type Choice struct {
-	Delta   Delta   `json:"delta,omitempty"`
-	Message Message `json:"message,omitempty"`
-	Index   int     `json:"index"`
+	Delta   *Delta   `json:"delta,omitempty"`
+	Message *Message `json:"message,omitempty"`
+	Index   int      `json:"index"`
 }
 
 type Data struct {
@@ -170,7 +170,7 @@ func chatCompletions(c *gin.Context) {
 			// Set the headers for the response
 			c.Writer.Header().Set("Transfer-Encoding", "chunked")
 			c.Writer.Header().Set("X-Accel-Buffering", "no")
-			if(jsonBody.Stream) {
+			if jsonBody.Stream {
 				c.Header("Content-Type", "text/event-stream; charset=utf-8")
 			} else {
 				c.Header("Content-Type", "application/json; charset=utf-8")
