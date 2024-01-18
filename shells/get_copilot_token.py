@@ -81,7 +81,7 @@ def getToken(proxy=None) -> (LoginError, str):
     while True:
         err, access_token = pollAuth(login_info['device_code'])
         if err is None:
-            return access_token
+            return None, access_token
         elif err == LoginError.AUTH_PENDING:
             pass
         elif err == LoginError.EXPIRED_TOKEN:
