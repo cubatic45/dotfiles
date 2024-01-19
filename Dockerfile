@@ -7,12 +7,12 @@ ENV CGO_ENABLED=0 GOOS=linux
 
 WORKDIR /app
 
-# Duplicate the application code.
 COPY . .
 
-RUN go mod vendor
+RUN apk add --update-cache ca-certificates tzdata && \
+    go mod vendor && \
+    rm -rf /var/cache/apk/*
 
-# Construct the application.
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg \
     if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
@@ -26,16 +26,15 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
         exit 1; \
     fi
 
-# Second phase: Execution phase.
+
 FROM scratch
 
 WORKDIR /app
 
-# Duplicate the built binary file from the first phase.
 COPY --from=builder /app/copilot-gpt4-service .
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-# Expose the necessary ports required by the application.
 EXPOSE 8080
 
-# Execute the application.
 CMD ["./copilot-gpt4-service"]
