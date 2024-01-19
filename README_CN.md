@@ -188,8 +188,34 @@ helm install copilot-gpt4-service aaamoon/copilot-gpt4-service \
 
 获取 Github Copilot Plugin Token 的方式目前有两种方式：
 
-1. 通过安装 [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) 授权获取（推荐）。
-2. 通过第三方接口授权获取，不推荐，因为不安全。
+1. 通过 Python 脚本获取，只需要 requests 库（推荐）。
+2. 通过安装 [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) 授权获取（推荐）。
+3. 通过第三方接口授权获取，不推荐，因为不安全。
+
+### 通过 Python 脚本获取
+
+首先确保安装了 Python 3.7+，然后安装 requests 库：
+
+```bash
+pip install requests
+```
+
+然后执行
+
+**Linux/MacOS 平台获取**
+
+```bash
+python3 <(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)
+```
+
+可通过设置环境变量或修改脚本第3行的字典设置代理。
+
+**Windows 平台获取**
+
+下载脚本，双击运行即可：[get_copilot_token.py](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)。
+
+可修改脚本第3行的字典设置代理。
+
 
 ### 通过 Github Copilot CLI 授权获取
 
