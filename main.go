@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"time"
 
 	"copilot-gpt4-service/config"
@@ -167,7 +169,7 @@ func chatCompletions(c *gin.Context) {
 			// Set the headers for the response
 			c.Writer.Header().Set("Transfer-Encoding", "chunked")
 			c.Writer.Header().Set("X-Accel-Buffering", "no")
-			if(jsonBody.Stream) {
+			if jsonBody.Stream {
 				c.Header("Content-Type", "text/event-stream; charset=utf-8")
 			} else {
 				c.Header("Content-Type", "application/json; charset=utf-8")
@@ -265,6 +267,61 @@ func createMockModelsResponse(c *gin.Context) {
 	})
 }
 
+// proxy endpoint handler
+func proxy(c *gin.Context) {
+	sp := strings.Split(c.Param("path"), "/")
+	if len(sp) < 3 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid proxy path"})
+		return
+	}
+
+	proto := sp[1]
+	host := sp[2]
+	path := strings.Join(sp[3:], "/")
+	if path != "" {
+		path = "/" + path
+	}
+	url, err := url.Parse(fmt.Sprintf("%s://%s%s", proto, host, path))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	method := c.Request.Header.Get("Method")
+	c.Request.Header.Del("Method")
+	if method == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Method header is not set"})
+		return
+	}
+	proxyReq, err := http.NewRequest(method, url.String(), c.Request.Body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	proxyReq.Header = c.Request.Header
+
+	resp, err := http.DefaultClient.Do(proxyReq)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+
+	_, err = io.Copy(c.Writer, resp.Body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+}
+
 func LoggerHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
@@ -300,6 +357,11 @@ func main() {
 			"message": "ok",
 		})
 	})
+
+	if config.ConfigInstance.Proxy {
+		router.Any("/proxy/*path", proxy)
+	}
+
 	router.GET("/", func(context *gin.Context) {
 		context.String(http.StatusOK, `非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned. 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。`)
 	})

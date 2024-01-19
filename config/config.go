@@ -17,6 +17,7 @@ type Config struct {
 	Logging      bool
 	LogLevel     string
 	CopilotToken string
+	Proxy        bool
 }
 
 var ConfigInstance *Config = NewConfig()
@@ -39,6 +40,7 @@ func NewConfig() *Config {
 		Logging:      getEnvOrDefaultBool("LOGGING", true),
 		LogLevel:     getEnvOrDefault("LOG_LEVEL", "info"),
 		CopilotToken: getEnvOrDefault("COPILOT_TOKEN", ""),
+		Proxy:        getEnvOrDefaultBool("PROXY", false),
 	}
 }
 
