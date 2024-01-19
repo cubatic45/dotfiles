@@ -267,8 +267,8 @@ func createMockModelsResponse(c *gin.Context) {
 	})
 }
 
-// proxy endpoint handler
-func proxy(c *gin.Context) {
+// corsProxyNextChat endpoint handler for proxying requests from nextChat desktop app
+func corsProxyNextChat(c *gin.Context) {
 	sp := strings.Split(c.Param("path"), "/")
 	if len(sp) < 3 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid proxy path"})
@@ -357,17 +357,17 @@ func main() {
 			"message": "ok",
 		})
 	})
-
-	if config.ConfigInstance.Proxy {
-		router.Any("/proxy/*path", proxy)
-	}
-
 	router.GET("/", func(context *gin.Context) {
 		context.String(http.StatusOK, `非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned. 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。`)
 	})
 	router.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
+
+	if config.ConfigInstance.CORSProxyNextChat {
+		router.Any("/cors-proxy-nextchat/*path", corsProxyNextChat)
+		fmt.Println("\033[33mWARNING: CORS_PROXY_NEXTCHAT is enabled. This is a potential security risk if your service is not private.\033[0m")
+	}
 
 	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Debug: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging, config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
 	fmt.Printf("Starting server on http://%s:%s\n\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
