@@ -67,7 +67,7 @@ CACHE_PATH=db/cache.sqlite3 # Path to persistent cache (only used when CACHE=tru
 DEBUG=false # Whether to enable debug mode, more logs will be output when enabled
 LOGGING=true # Whether to enable logging
 LOG_LEVEL=info # Log level, optional values: panic, fatal, error, warn, info, debug, trace (Note: Only effective when LOGGING=true)
-CORS_PROXY_NEXTCHAT=false # Whether to enable CORS proxy for NextChat on `$HOST:$PORT/cors-proxy-nextchat/` endpoint
+CORS_PROXY_NEXTCHAT=false # When enabled will serve a proxy for NextChat on `/cors-proxy-nextchat/`. Enables the use of settings sync in desktop application
 ```
 
 ### Docker Deployment
