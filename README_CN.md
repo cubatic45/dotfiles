@@ -73,8 +73,7 @@ CACHE_PATH=db/cache.sqlite3 # 持久化缓存的路径（仅当 CACHE=true 时�
 DEBUG=false # 是否启用调试模式，启用后会输出更多日志
 LOGGING=true # 是否启用日志
 LOG_LEVEL=info # 日志级别，可选值：panic、fatal、error、warn、info、debug、trace（注意：仅当 LOGGING=true 时有效）
-CORS_PROXY_NEXTCHAT=false # 当启用时，将在 /cors-proxy-nextchat/ 上为 NextChat 提供代理服务。启用桌面应用程序中的设置同步功能。
-
+CORS_PROXY_NEXTCHAT=false # 启用后，可以通过路由 /cors-proxy-nextchat/ 上为 NextChat 提供代理服务。配置 NextChat 云同步时，如本地部署方式则设置代理地址为：http://localhost:8080/cors-proxy-nextchat/
 ```
 
 ### Docker 部署
