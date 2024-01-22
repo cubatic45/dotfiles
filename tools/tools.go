@@ -95,7 +95,7 @@ func PrintStructFieldsAndValues(s interface{}, title string) {
 	for i := 0; i < v.NumField(); i++ {
 		field := v.Field(i)
 		if field.CanInterface() {
-			fmt.Printf(" - %-20s :\033[32m %v\033[0m\n",  typeOfS.Field(i).Name, field.Interface())
+			fmt.Printf(" - %-20s:\033[32m %v\033[0m\n",  typeOfS.Field(i).Name, field.Interface())
 		}
 	}
 	fmt.Println()
