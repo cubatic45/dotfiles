@@ -6,7 +6,7 @@ import (
 	"database/sql"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 // CacheInstance is a global variable that is used to access the cache.
@@ -52,7 +52,7 @@ func (c *Cache) connect() {
 
 		// connect to database
 		var err error
-		c.Db, err = sql.Open("sqlite3", c.cache_path)
+		c.Db, err = sql.Open("sqlite", c.cache_path)
 		if err != nil {
 			panic(err)
 		}

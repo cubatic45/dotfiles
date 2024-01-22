@@ -50,20 +50,34 @@
 
 ## 客户端
 
-使用 copilot-gpt4-service，需要配合第三方客户端，目前已测试支持以下客户端：
+使用 **copilot-gpt4-service** 服务，需要使用第三方客户端，目前已验证支持以下客户端：
 
--   [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (推荐)
--   [Chatbox](https://github.com/Bin-Huang/chatbox)：支持 Windows, Mac, Linux 平台
--   [OpenCat APP](https://opencat.app/)：支持 iOS、Mac 平台
--   [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087) ：支持 iOS、Mac 平台
+-   [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (推荐)。
+-   [Chatbox](https://github.com/Bin-Huang/chatbox)：支持 Windows, Mac, Linux 平台。
+-   [OpenCat APP](https://opencat.app/)：支持 iOS、Mac 平台。
+-   [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087) ：支持 iOS、Mac 平台。
 
 ## 服务端
 
-copilot-gpt4-service 服务的部署方式目前包含 Docker 部署、源码部署、Kubernetes 部署实现，下面分别介绍。
+copilot-gpt4-service 服务的部署方式目前包含 Docker 部署、二进制启动、Kubernetes 部署、源码启动实现。
 
-### 配置方式
+### 服务配置
 
-使用环境变量或环境变量配置文件 `config.env` 配置服务（环境变量优先级高于 `config.env`），默认配置项如下：
+可使用命令行参数或环境变量或环境变量配置文件 `config.env` 配置服务（可复制项目根目录 `config.env.example` 为 `config.env` 修改），默认服务配置项如下：
+
+```yaml
+HOST=0.0.0.0 # 服务监听地址，默认为 0.0.0.0。
+PORT=8080 # 服务监听端口，默认为 8080。
+CACHE=true # 是否启用持久化，默认为 true。
+CACHE_PATH=db/cache.sqlite3 # 持久化缓存的路径（仅当 CACHE=true 时有效），默认为 db/cache.sqlite3。
+DEBUG=false # 是否启用调试模式，启用后会输出更多日志，默认为 false。
+LOGGING=true # 是否启用日志，默认为 true。
+LOG_LEVEL=info # 日志级别，可选值：panic、fatal、error、warn、info、debug、trace（注意：仅当 LOGGING=true 时有效），默认为 info。
+COPILOT_TOKEN=ghp_xxxxxxx # 默认的 Github Copilot Token，如果设置此项，则请求时携带的 Token 将被忽略。默认为空。
+CORS_PROXY_NEXTCHAT=false # 启用后，可以通过路由 /cors-proxy-nextchat/ 上为 NextChat 提供代理服务。配置 NextChat 云同步时，如本地部署方式则设置代理地址为：http://localhost:8080/cors-proxy-nextchat/
+```
+
+**注意：** 以上配置项均可通过命令行参数或环境变量进行配置，命令行参数优先级最高，环境变量优先级次之，配置文件优先级最低。命令行参数名称为为环境变量名称的小写形式，如 `HOST` 对应的命令行参数为 `host`。
 
 ```env
 HOST=localhost # 服务监听地址
@@ -78,22 +92,37 @@ CORS_PROXY_NEXTCHAT=false # 启用后，可以通过路由 /cors-proxy-nextchat/
 
 ### Docker 部署
 
+Docker 部署需要先安装 Docker，然后执行相应命令。
+
 #### 一键部署方式
+
+使用默认配置参数启动服务，如下：
 
 ```bash
 docker run -d \
   --name copilot-gpt4-service \
   --restart always \
   -p 8080:8080 \
-  -e HOST=0.0.0.0 \
   aaamoon/copilot-gpt4-service:latest
 ```
 
-#### 代码构建方式
+启动也可通过环境变量或命令行携带参数配置，如下启动通过环境变量设置 **HOST**、通过命令行参数设置 **LOG_LEVEL**。
 
 ```bash
+docker run -d \
+  --name copilot-gpt4-service \
+  -e HOST=0.0.0.0 \
+  --restart always \
+  -p 8080:8080 \
+  aaamoon/copilot-gpt4-service:latest -log_level=debug
+```
+
+#### Compose 启动
+
+```bash
+# 拉取源代码
 git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service
-# 可在 docker-compose.yml 中修改端口
+# Compose 启动，可通过修改 docker-compose.yml 文件进行启动参数配置
 docker compose up -d
 ```
 
@@ -103,6 +132,23 @@ docker compose up -d
 git pull && docker compose up -d --build
 ```
 
+### 二进制启动
+
+可以拉取源码自行编译二进制执行文件或从官方下载对应系统架构的二进制执行文件，然后执行以下命令启动（注意 **copilot-gpt4-service** 为二进制执行文件名称，请根据实际名称进行替换）：
+
+```bash
+# 快速启动（使用默认配置，如果执行文件所在文件夹有 config.env 文件，则优先使用 config.env 文件配置）
+./copilot-gpt4-service
+
+# 通过命令行修改监听端口
+./copilot-gpt4-service -port 3000
+
+# 查看帮助，查看可用参数
+./copilot-gpt4-service -h
+```
+
+**注意：** 运行前请确保已经设置可执行权限，如没有可执行权限，可通过 `chmod +x copilot-gpt4-service` 命令设置。
+
 ### Kubernetes 部署
 
 支持通过 Kubernetes 部署，具体部署方式如下：
@@ -110,6 +156,14 @@ git pull && docker compose up -d --build
 ```bash
 helm repo add aaamoon https://charts.kii.la && helm repo update # 源由 github pages 提供
 helm install copilot-gpt4-service aaamoon/copilot-gpt4-service
+```
+
+### 源码启动
+
+拉取代码，直接启动，适合开发环境使用，请确保本地已经安装 Go 环境。
+
+```bash
+git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service && go run .
 ```
 
 ## 支持 HTTPS
@@ -189,8 +243,33 @@ helm install copilot-gpt4-service aaamoon/copilot-gpt4-service \
 
 获取 Github Copilot Plugin Token 的方式目前有两种方式：
 
-1. 通过安装 [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) 授权获取（推荐）。
-2. 通过第三方接口授权获取，不推荐，因为不安全。
+1. 通过 Python 脚本获取，只需要 requests 库（推荐）。
+2. 通过安装 [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) 授权获取（推荐）。
+3. 通过第三方接口授权获取，不推荐，因为不安全。
+
+### 通过 Python 脚本获取
+
+首先确保安装了 Python 3.7+，然后安装 requests 库：
+
+```bash
+pip install requests
+```
+
+然后执行
+
+**Linux/MacOS 平台获取**
+
+```bash
+python3 <(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)
+```
+
+可通过设置环境变量或修改脚本第 3 行的字典设置代理。
+
+**Windows 平台获取**
+
+下载脚本，双击运行即可：[get_copilot_token.py](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)。
+
+可修改脚本第 3 行的字典设置代理。
 
 ### 通过 Github Copilot CLI 授权获取
 

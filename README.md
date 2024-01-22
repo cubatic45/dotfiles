@@ -53,11 +53,11 @@ To use copilot-gpt4-service, you need to use it with a third-party client. The f
 
 ## Server
 
-The deployment methods for copilot-gpt4-service currently include Docker deployment, source code deployment, Kubernetes deployment implementation. They are described below.
+The deployment methods of the copilot-gpt4-service currently include Docker deployment, binary startup, Kubernetes deployment, and source code startup.
 
 ### Configuration
 
-Use environment variables or environment variable configuration file `config.env` to configure the service (environment variables take precedence over `config.env`), the default configuration items are as follows:
+You can configure the service using command line parameters or environment variables or the environment variable configuration file `config.env` (you can copy `config.env.example` from the project root directory to `config.env` and modify it). The default service configuration items are as follows:
 
 ```env
 HOST=localhost # Service listening address
@@ -67,35 +67,67 @@ CACHE_PATH=db/cache.sqlite3 # Path to persistent cache (only used when CACHE=tru
 DEBUG=false # Whether to enable debug mode, more logs will be output when enabled
 LOGGING=true # Whether to enable logging
 LOG_LEVEL=info # Log level, optional values: panic, fatal, error, warn, info, debug, trace (Note: Only effective when LOGGING=true)
-CORS_PROXY_NEXTCHAT=false # When enabled will serve a proxy for NextChat on `/cors-proxy-nextchat/`. Enables the use of settings sync in desktop application
+CORS_PROXY_NEXTCHAT=false # Whether to enable the CORS proxy for NextChat desktop application. It will then be served on the '$HOST:$PORT/cors-proxy-nextchat/' endpoint. Make sure to update it in your application settings
 ```
 
 ### Docker Deployment
 
+Docker deployment requires the installation of Docker first, and then execute the command.
+
 #### One-click Deployment
+
+Start the service with default configuration parameters, as follows:
 
 ```bash
 docker run -d \
   --name copilot-gpt4-service \
   --restart always \
   -p 8080:8080 \
-  -e HOST=0.0.0.0 \
   aaamoon/copilot-gpt4-service:latest
 ```
 
-#### Code Build
+The startup can also be configured by carrying parameters through environment variables or command lines, such as setting **HOST** through environment variables and setting **LOG_LEVEL** through command line parameters.
 
 ```bash
+docker run -d \
+  --name copilot-gpt4-service \
+  -e HOST=0.0.0.0 \
+  --restart always \
+  -p 8080:8080 \
+  aaamoon/copilot-gpt4-service:latest -log_level=debug
+```
+
+#### Compose Startup
+
+```bash
+# Pull source code
 git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service
-# Modify the port in docker-compose.yml if necessary
+# Compose startup, startup parameter configuration can be done by modifying the docker-compose.yml file
 docker compose up -d
 ```
 
-To update the container, pull the code again and rebuild the image in the source code folder using the following command:
+If you need to update the container, you can re-pull the code and build the image in the source code folder, the command is as follows:
 
 ```bash
 git pull && docker compose up -d --build
 ```
+
+### Binary Startup
+
+You can pull the source code to compile the binary executable file yourself, or download the binary executable file of the corresponding system architecture from the repository, and then execute the following command to start (note that **copilot-gpt4-service** is the name of the binary executable file, please replace it according to the actual name):
+
+```bash
+# Quick start (use default configuration, if there is a config.env file in the folder where the executable file is located, the config.env file configuration is used first)
+./copilot-gpt4-service
+
+# Modify the listening port through the command line
+./copilot-gpt4-service -port 3000
+
+# View help, see available parameters
+./copilot-gpt4-service -h
+```
+
+**Note:** Please make sure that executable permissions have been set before running. If there are no executable permissions, you can set them through the `chmod +x copilot-gpt4-service` command.
 
 ### Kubernetes Deployment
 
@@ -104,6 +136,14 @@ Supports deployment through Kubernetes, the specific deployment method is as fol
 ```bash
 helm repo add aaamoon https://charts.kii.la && helm repo update # Source by github pages
 helm install copilot-gpt4-service aaamoon/copilot-gpt4-service
+```
+
+### Source Code Startup
+
+Pull the code and start directly, suitable for development environment use, please make sure that the local Go environment has been installed.
+
+```bash
+git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service && go run .
 ```
 
 ## Support HTTPS
@@ -183,8 +223,33 @@ Your account needs to have Github Copilot service enabled.
 
 There are currently two ways to obtain the Github Copilot Plugin Token:
 
-1. Obtain it by installing [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) and authorizing (recommended).
-2. Authorized access through a third-party interface, not recommended because it is not secure.
+1. Obtain it through the Python script, only the requests library is required (recommended).
+2. Obtain it by installing [Github Copilot CLI](https://githubnext.com/projects/copilot-cli/) and authorizing (recommended).
+3. Authorized access through a third-party interface, not recommended because it is not secure.
+
+### Obtaining Through Python Script
+
+First, install the requests library:
+
+```bash
+pip install requests
+```
+
+Then, run the following command to obtain the Github Copilot Plugin Token:
+
+**For Linux/MacOS Platforms**
+
+```bash
+python3 <(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)
+```
+
+You can set proxy by setting environment variables or modifying the 3th line of the script.
+
+**For Windows Platform**
+
+Download the Python script and double-click to run it: [get_copilot_token.py](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py).
+
+You can set proxy by modifying the 3th line of the script.
 
 ### Obtaining Through Github Copilot CLI
 
