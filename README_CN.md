@@ -79,17 +79,6 @@ CORS_PROXY_NEXTCHAT=false # 启用后，可以通过路由 /cors-proxy-nextchat/
 
 **注意：** 以上配置项均可通过命令行参数或环境变量进行配置，命令行参数优先级最高，环境变量优先级次之，配置文件优先级最低。命令行参数名称为为环境变量名称的小写形式，如 `HOST` 对应的命令行参数为 `host`。
 
-```env
-HOST=localhost # 服务监听地址
-PORT=8080 # 服务监听端口
-CACHE=true # 是否启用持久化
-CACHE_PATH=db/cache.sqlite3 # 持久化缓存的路径（仅当 CACHE=true 时有效）
-DEBUG=false # 是否启用调试模式，启用后会输出更多日志
-LOGGING=true # 是否启用日志
-LOG_LEVEL=info # 日志级别，可选值：panic、fatal、error、warn、info、debug、trace（注意：仅当 LOGGING=true 时有效）
-CORS_PROXY_NEXTCHAT=false # 启用后，可以通过路由 /cors-proxy-nextchat/ 上为 NextChat 提供代理服务。配置 NextChat 云同步时，如本地部署方式则设置代理地址为：http://localhost:8080/cors-proxy-nextchat/
-```
-
 ### Docker 部署
 
 Docker 部署需要先安装 Docker，然后执行相应命令。
