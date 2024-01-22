@@ -17,6 +17,7 @@ import (
 	"copilot-gpt4-service/config"
 	"copilot-gpt4-service/log"
 	"copilot-gpt4-service/utils"
+	"copilot-gpt4-service/tools"
 )
 
 // Handle the Cross-Origin Resource Sharing (CORS) for requests.
@@ -307,9 +308,7 @@ func main() {
 		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
 	})
 
-	fmt.Printf("Cache enabled: %t, Cache path: %s, Logging: %t, LOG_LEVEL: %s, Debug: %t\n", config.ConfigInstance.Cache, config.ConfigInstance.CachePath, config.ConfigInstance.Logging, config.ConfigInstance.LogLevel, config.ConfigInstance.Debug)
-	fmt.Printf("Starting server on http://%s:%s\n\n", config.ConfigInstance.Host, config.ConfigInstance.Port)
-
+	tools.PrintStructFieldsAndValues(config.ConfigInstance, "Copilot-GPT4-Service startup configuration:")
 	fmt.Println("\033[31m 非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。\033[0m")
 	fmt.Println("\033[31m Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned.\033[0m")
 	fmt.Println("\033[31m 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。\033[0m\n")
