@@ -12,3 +12,4 @@ services:
       - 8080:8080
     restart: unless-stopped
     container_name: copilot-gpt4-service
+    command: ["-log_level", "info"]

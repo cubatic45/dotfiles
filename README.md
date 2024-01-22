@@ -46,55 +46,90 @@ As verified and discussed by the community, the best practice approach is.
 
 To use copilot-gpt4-service, you need to use it with a third-party client. The following clients have been tested and are supported:
 
--   [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (recommended)
--   [Chatbox](https://github.com/Bin-Huang/chatbox): Supports Windows, Mac, and Linux platforms
--   [OpenCat APP](https://opencat.app/): Supports iOS and Mac platforms
--   [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087): Supports iOS and Mac platforms
+- [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (recommended)
+- [Chatbox](https://github.com/Bin-Huang/chatbox): Supports Windows, Mac, and Linux platforms
+- [OpenCat APP](https://opencat.app/): Supports iOS and Mac platforms
+- [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087): Supports iOS and Mac platforms
 
 ## Server
 
-The deployment methods for copilot-gpt4-service currently include Docker deployment, source code deployment, Kubernetes deployment implementation. They are described below.
+The deployment methods of the copilot-gpt4-service currently include Docker deployment, binary startup, Kubernetes deployment, and source code startup.
 
 ### Configuration
 
-Use environment variables or environment variable configuration file `config.env` to configure the service (environment variables take precedence over `config.env`), the default configuration items are as follows:
+You can configure the service using command line parameters or environment variables or the environment variable configuration file `config.env` (you can copy `config.env.example` from the project root directory to `config.env` and modify it). The default service configuration items are as follows:
 
-```env
-HOST=localhost # Service listening address
-PORT=8080 # Service listening port
-CACHE=true # Whether to enable persistence
-CACHE_PATH=db/cache.sqlite3 # Path to persistent cache (only used when CACHE=true)
-DEBUG=false # Whether to enable debug mode, more logs will be output when enabled
-LOGGING=true # Whether to enable logging
-LOG_LEVEL=info # Log level, optional values: panic, fatal, error, warn, info, debug, trace (Note: Only effective when LOGGING=true)
+```yaml
+HOST=0.0.0.0 # Service listening address, default is 0.0.0.0.
+PORT=8080 # Service listening port, default is 8080.
+CACHE=true # Whether to enable persistence, default is true.
+CACHE_PATH=db/cache.sqlite3 # Path of persistent cache (effective only when CACHE=true), default is db/cache.sqlite3.
+DEBUG=false # Whether to enable debug mode, more logs will be output after enabling, default is false.
+LOGGING=true # Whether to enable logging, default is true.
+LOG_LEVEL=info # Log level, optional values: panic, fatal, error, warn, info, debug, trace (Note: effective only when LOGGING=true), default is info.
+COPILOT_TOKEN=ghp_xxxxxxx # Default Github Copilot Token, if this item is set, the Token carried with the request will be ignored. Default is empty.
 ```
+
+**Note:** All of the above configuration items can be configured through command line parameters or environment variables. The priority of command line parameters is the highest, the priority of environment variables is second, and the priority of the configuration file is the lowest. The command line parameter name is the lowercase form of the environment variable name, such as `HOST` corresponding to the command line parameter is `host`.
 
 ### Docker Deployment
 
+Docker deployment requires the installation of Docker first, and then execute the command.
+
 #### One-click Deployment
+
+Start the service with default configuration parameters, as follows:
 
 ```bash
 docker run -d \
   --name copilot-gpt4-service \
   --restart always \
   -p 8080:8080 \
-  -e HOST=0.0.0.0 \
   aaamoon/copilot-gpt4-service:latest
 ```
 
-#### Code Build
+The startup can also be configured by carrying parameters through environment variables or command lines, such as setting **HOST** through environment variables and setting **LOG_LEVEL** through command line parameters.
 
 ```bash
+docker run -d \
+  --name copilot-gpt4-service \
+  -e HOST=0.0.0.0 \
+  --restart always \
+  -p 8080:8080 \
+  aaamoon/copilot-gpt4-service:latest -log_level=debug
+```
+
+#### Compose Startup
+
+```bash
+# Pull source code
 git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service
-# Modify the port in docker-compose.yml if necessary
+# Compose startup, startup parameter configuration can be done by modifying the docker-compose.yml file
 docker compose up -d
 ```
 
-To update the container, pull the code again and rebuild the image in the source code folder using the following command:
+If you need to update the container, you can re-pull the code and build the image in the source code folder, the command is as follows:
 
 ```bash
 git pull && docker compose up -d --build
 ```
+
+### Binary Startup
+
+You can pull the source code to compile the binary executable file yourself, or download the binary executable file of the corresponding system architecture from the repository, and then execute the following command to start (note that **copilot-gpt4-service** is the name of the binary executable file, please replace it according to the actual name):
+
+```bash
+# Quick start (use default configuration, if there is a config.env file in the folder where the executable file is located, the config.env file configuration is used first)
+./copilot-gpt4-service
+
+# Modify the listening port through the command line
+./copilot-gpt4-service -port 3000
+
+# View help, see available parameters
+./copilot-gpt4-service -h
+```
+
+**Note:** Please make sure that executable permissions have been set before running. If there are no executable permissions, you can set them through the `chmod +x copilot-gpt4-service` command.
 
 ### Kubernetes Deployment
 
@@ -103,6 +138,14 @@ Supports deployment through Kubernetes, the specific deployment method is as fol
 ```bash
 helm repo add aaamoon https://charts.kii.la && helm repo update # Source by github pages
 helm install copilot-gpt4-service aaamoon/copilot-gpt4-service
+```
+
+### Source Code Startup
+
+Pull the code and start directly, suitable for development environment use, please make sure that the local Go environment has been installed.
+
+```bash
+git clone https://github.com/aaamoon/copilot-gpt4-service && cd copilot-gpt4-service && go run .
 ```
 
 ## Support HTTPS

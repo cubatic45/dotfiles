@@ -23,14 +23,14 @@ type Config struct {
 var ConfigInstance *Config = &Config{}
 
 func init() {
-	flag.StringVar(&ConfigInstance.Host, "host", "", "Host to listen on")
-	flag.StringVar(&ConfigInstance.Port, "port", "", "Port to listen on")
-	flag.StringVar(&ConfigInstance.CachePath, "cache_path", "", "Path to cache file")
-	flag.StringVar(&ConfigInstance.LogLevel, "log_level", "", "Log level")
-	flag.StringVar(&ConfigInstance.CopilotToken, "copilot_token", "", "Copilot token")
-	flag.BoolVar(&ConfigInstance.Cache, "cache", false, "Enable cache")
-	flag.BoolVar(&ConfigInstance.Debug, "debug", false, "Enable debug")
-	flag.BoolVar(&ConfigInstance.Logging, "logging", false, "Enable logging")
+	flag.StringVar(&ConfigInstance.Host, "host", "", "Service listen address.")
+	flag.StringVar(&ConfigInstance.Port, "port", "", "Service listen port.")
+	flag.StringVar(&ConfigInstance.CachePath, "cache_path", "", "Path to the persistent cache.")
+	flag.StringVar(&ConfigInstance.LogLevel, "log_level", "", "Log level, optional values: panic, fatal, error, warn, info, debug, trace (note: valid only when log_level is true).")
+	flag.StringVar(&ConfigInstance.CopilotToken, "copilot_token", "", "Default Github Copilot Token, if this is set, the Token carried in the request will be ignored. Default is empty.")
+	flag.BoolVar(&ConfigInstance.Cache, "cache", false, "Whether persistence is enabled or not.")
+	flag.BoolVar(&ConfigInstance.Debug, "debug", false, "Enable debug mode, if enabled, more logs will be output.")
+	flag.BoolVar(&ConfigInstance.Logging, "logging", false, "Enable logging.")
 
 	// if exists config.env, load it
 	if _, err := os.Stat("config.env"); err == nil {
