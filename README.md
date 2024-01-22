@@ -59,16 +59,19 @@ The deployment methods of the copilot-gpt4-service currently include Docker depl
 
 You can configure the service using command line parameters or environment variables or the environment variable configuration file `config.env` (you can copy `config.env.example` from the project root directory to `config.env` and modify it). The default service configuration items are as follows:
 
-```env
-HOST=localhost # Service listening address
-PORT=8080 # Service listening port
-CACHE=true # Whether to enable persistence
-CACHE_PATH=db/cache.sqlite3 # Path to persistent cache (only used when CACHE=true)
-DEBUG=false # Whether to enable debug mode, more logs will be output when enabled
-LOGGING=true # Whether to enable logging
-LOG_LEVEL=info # Log level, optional values: panic, fatal, error, warn, info, debug, trace (Note: Only effective when LOGGING=true)
+```yaml
+HOST=0.0.0.0 # Service listening address, default is 0.0.0.0.
+PORT=8080 # Service listening port, default is 8080.
+CACHE=true # Whether to enable persistence, default is true.
+CACHE_PATH=db/cache.sqlite3 # Path of persistent cache (effective only when CACHE=true), default is db/cache.sqlite3.
+DEBUG=false # Whether to enable debug mode, more logs will be output after enabling, default is false.
+LOGGING=true # Whether to enable logging, default is true.
+LOG_LEVEL=info # Log level, optional values: panic, fatal, error, warn, info, debug, trace (Note: effective only when LOGGING=true), default is info.
+COPILOT_TOKEN=ghp_xxxxxxx # Default Github Copilot Token, if this item is set, the Token carried with the request will be ignored. Default is empty.
 CORS_PROXY_NEXTCHAT=false # Whether to enable the CORS proxy for NextChat desktop application. It will then be served on the '$HOST:$PORT/cors-proxy-nextchat/' endpoint. Make sure to update it in your application settings
 ```
+
+**Note:** All of the above configuration items can be configured through command line parameters or environment variables. The priority of command line parameters is the highest, the priority of environment variables is second, and the priority of the configuration file is the lowest. The command line parameter name is the lowercase form of the environment variable name, such as `HOST` corresponding to the command line parameter is `host`.
 
 ### Docker Deployment
 
