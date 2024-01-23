@@ -342,7 +342,9 @@ func main() {
 		c.String(http.StatusOK, `非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned. 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。`)
 	})
 	router.NoRoute(func(c *gin.Context) {
-		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+			"message": fmt.Sprintf("Invalid URL (%s %s)", c.Request.Method, c.Request.URL.Path),
+		})
 	})
 
 	StartupOutput()
