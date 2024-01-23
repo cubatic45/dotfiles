@@ -284,9 +284,9 @@ func LoggerHandler() gin.HandlerFunc {
 	}
 }
 
-func RateLimiterHandler(enabled bool, reqsPerMin int) gin.HandlerFunc {
+func RateLimiterHandler(reqsPerMin int) gin.HandlerFunc {
 	var limiter *rate.Limiter
-	if enabled {
+	if reqsPerMin != 0 {
 		limiter = rate.NewLimiter(rate.Every(time.Minute), reqsPerMin)
 	} else {
 		limiter = rate.NewLimiter(rate.Inf, 0)
@@ -327,16 +327,11 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	rateLimiterEnabled := true
-	if config.ConfigInstance.RateLimit == 0 {
-		rateLimiterEnabled = false
-	}
-
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	router.Use(LoggerHandler())
 
-	router.POST("/v1/chat/completions", RateLimiterHandler(rateLimiterEnabled, config.ConfigInstance.RateLimit), chatCompletions)
+	router.POST("/v1/chat/completions", RateLimiterHandler(config.ConfigInstance.RateLimit), chatCompletions)
 	router.GET("/v1/models", createMockModelsResponse)
 	router.GET("/healthz", func(context *gin.Context) {
 		context.JSON(200, gin.H{

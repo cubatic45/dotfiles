@@ -74,6 +74,7 @@ DEBUG=false # 是否启用调试模式，启用后会输出更多日志，默认
 LOGGING=true # 是否启用日志，默认为 true。
 LOG_LEVEL=info # 日志级别，可选值：panic、fatal、error、warn、info、debug、trace（注意：仅当 LOGGING=true 时有效），默认为 info。
 COPILOT_TOKEN=ghp_xxxxxxx # 默认的 Github Copilot Token，如果设置此项，则请求时携带的 Token 将被忽略。默认为空。
+RATE_LIMIT= # 每分钟允许请求的次数，如果没有设置，默认无限制。
 ```
 
 **注意：** 以上配置项均可通过命令行参数或环境变量进行配置，命令行参数优先级最高，环境变量优先级次之，配置文件优先级最低。命令行参数名称为为环境变量名称的小写形式，如 `HOST` 对应的命令行参数为 `host`。
