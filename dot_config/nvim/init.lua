@@ -13,8 +13,3 @@ vim.opt.rtp:prepend(lazypath)
 require("basic")
 require("keybindings")
 require("lazy").setup("plugins")
-vim.cmd('hi clear MiniTablineFill')
-vim.cmd('hi clear MiniStatuslineFilename')
-
-vim.cmd('hi MiniCursorwordCurrent term=underline cterm=underline gui=underline guibg=NONE')
-vim.cmd('hi MiniCursorword term=underline cterm=underline gui=underline guibg=NONE')

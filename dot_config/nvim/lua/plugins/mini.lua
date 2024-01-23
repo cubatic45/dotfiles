@@ -1,7 +1,8 @@
 return {
     'echasnovski/mini.nvim',
     dependencies = {
-        "nvim-tree/nvim-web-devicons"
+        "nvim-tree/nvim-web-devicons",
+        "Tsuzat/NeoSolarized.nvim",
     },
     init = function()
         require('mini.starter').setup({
@@ -27,11 +28,17 @@ return {
         require('mini.statusline').setup()
         require('mini.comment').setup()
         require('mini.indentscope').setup()
+        require('mini.pairs').setup()
     end,
     config = function()
         require('mini.tabline').setup()
-
         require('mini.cursorword').setup()
+
+        vim.cmd('hi clear MiniTablineFill')
+        vim.cmd('hi clear MiniStatuslineFilename')
+
+        vim.cmd('hi MiniCursorwordCurrent term=underline cterm=underline gui=underline guibg=NONE')
+        vim.cmd('hi MiniCursorword term=underline cterm=underline gui=underline guibg=NONE')
     end,
 
     keys = {

@@ -81,7 +81,7 @@ map("n", "sj", ":resize +10<CR>", opt)
 map("n", "sk", ":resize -10<CR>", opt)
 
 -- jq json format
-map("n", "<leader>jq", ":%!jq '.'<CR>", opt)
+-- map("n", "<leader>jq", ":%!jq '.'<CR>", opt)
 
 -- 插件快捷键
 local pluginKeys = {}
@@ -112,8 +112,8 @@ pluginKeys.mapLSP = function(client, bufnr)
     mapbuf("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", bufopts)
     mapbuf("n", "<leader>f", "<cmd>lua vim.lsp.buf.format()<CR>", bufopts)
 
-    mapbuf("n", "<laeder>gi", "<cmd>Telescope lsp_incoming_calls<CR>", bufopts)
-    mapbuf("n", "<leader>go", "<cmd>Telescope lsp_outgoing_calls<CR>", bufopts)
+    -- mapbuf("n", "<laeder>i", "<cmd>Telescope lsp_incoming_calls<CR>", bufopts)
+    -- mapbuf("n", "<leader>o", "<cmd>Telescope lsp_outgoing_calls<CR>", bufopts)
     -- 没用到
     -- mapbuf('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opt)
     -- mapbuf("n", "<leader>s", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opt)

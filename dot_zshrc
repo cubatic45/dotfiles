@@ -29,7 +29,7 @@ zinit light-mode for \
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
-zinit light zdharma/fast-syntax-highlighting
+# zinit light zdharma/fast-syntax-highlighting
 
 # oh my zsh 功能
 zinit snippet OMZ::lib/completion.zsh

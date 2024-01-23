@@ -18,7 +18,8 @@ M.config = function()
         -- 补全源
         sources = cmp.config.sources(
             {
-                { name = "codeium" },
+                -- { name = "codeium" },
+                { name = "copilot",  group_index = 2 },
                 { name = "nvim_lsp", group_index = 2 },
             },
             {
@@ -31,6 +32,24 @@ M.config = function()
         mapping = require("keybindings").cmp(cmp),
         window = {
             documentation = cmp.config.window.bordered()
+        },
+        sorting = {
+            priority_weight = 2,
+            comparators = {
+                require("copilot_cmp.comparators").prioritize,
+
+                -- Below is the default comparitor list and order for nvim-cmp
+                cmp.config.compare.offset,
+                -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+                cmp.config.compare.exact,
+                cmp.config.compare.score,
+                cmp.config.compare.recently_used,
+                cmp.config.compare.locality,
+                cmp.config.compare.kind,
+                cmp.config.compare.sort_text,
+                cmp.config.compare.length,
+                cmp.config.compare.order,
+            },
         },
     })
 
