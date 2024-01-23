@@ -46,10 +46,10 @@ As verified and discussed by the community, the best practice approach is.
 
 To use copilot-gpt4-service, you need to use it with a third-party client. The following clients have been tested and are supported:
 
--   [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (recommended)
--   [Chatbox](https://github.com/Bin-Huang/chatbox): Supports Windows, Mac, and Linux platforms
--   [OpenCat APP](https://opencat.app/): Supports iOS and Mac platforms
--   [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087): Supports iOS and Mac platforms
+- [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (recommended)
+- [Chatbox](https://github.com/Bin-Huang/chatbox): Supports Windows, Mac, and Linux platforms
+- [OpenCat APP](https://opencat.app/): Supports iOS and Mac platforms
+- [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087): Supports iOS and Mac platforms
 
 ## Server
 

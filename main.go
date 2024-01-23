@@ -354,7 +354,7 @@ func StartupOutput() {
 	fmt.Println(" (Press CTRL+C to quit)\n")
 
 	if config.ConfigInstance.CORSProxyNextChat {
-		fmt.Println("\033[33m WARNING: CORS_PROXY_NEXTCHAT is enabled. This is a potential security risk if your service is not private.\033[0m")
+		fmt.Println("\033[33m WARNING: CORS_PROXY_NEXTCHAT is enabled. This is a potential security risk if your service is not private.\033[0m\n")
 	}
 	fmt.Println("\033[33m 警告：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。\033[0m")
 	fmt.Println("\033[33m Warning: Please do not make this service public, for personal use only, otherwise the account or Copilot will be banned.\033[0m")

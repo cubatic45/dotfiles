@@ -52,10 +52,10 @@
 
 使用 **copilot-gpt4-service** 服务，需要使用第三方客户端，目前已验证支持以下客户端：
 
--   [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (推荐)。
--   [Chatbox](https://github.com/Bin-Huang/chatbox)：支持 Windows, Mac, Linux 平台。
--   [OpenCat APP](https://opencat.app/)：支持 iOS、Mac 平台。
--   [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087) ：支持 iOS、Mac 平台。
+- [ChatGPT-Next-Web](https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web) (推荐)。
+- [Chatbox](https://github.com/Bin-Huang/chatbox)：支持 Windows, Mac, Linux 平台。
+- [OpenCat APP](https://opencat.app/)：支持 iOS、Mac 平台。
+- [ChatX APP](https://apps.apple.com/us/app/chatx-ai-chat-client/id6446304087) ：支持 iOS、Mac 平台。
 
 ## 服务端
 
