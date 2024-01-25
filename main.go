@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/time/rate"
 
 	"bufio"
 	"bytes"
@@ -340,6 +341,25 @@ func LoggerHandler() gin.HandlerFunc {
 	}
 }
 
+func RateLimiterHandler(reqsPerMin int) gin.HandlerFunc {
+	var limiter *rate.Limiter
+	if reqsPerMin > 0 {
+		limiter = rate.NewLimiter(rate.Every(time.Minute), reqsPerMin)
+	} else {
+		limiter = rate.NewLimiter(rate.Inf, 0)
+	}
+
+	return func(c *gin.Context) {
+		if !limiter.Allow() {
+			c.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{
+				"message": "too many requests",
+			})
+			return
+		}
+		c.Next()
+	}
+}
+
 func StartupOutput() {
 	ipv4s, err := tools.GetIPv4NetworkIPs()
 	tools.PrintStructFieldsAndValues(config.ConfigInstance, "Copilot-GPT4-Service startup configuration:")
@@ -372,7 +392,7 @@ func main() {
 	router.Use(CORSMiddleware())
 	router.Use(LoggerHandler())
 
-	router.POST("/v1/chat/completions", chatCompletions)
+	router.POST("/v1/chat/completions", RateLimiterHandler(config.ConfigInstance.RateLimit), chatCompletions)
 	router.GET("/v1/models", createMockModelsResponse)
 	router.GET("/healthz", func(context *gin.Context) {
 		context.JSON(200, gin.H{
@@ -383,7 +403,9 @@ func main() {
 		c.String(http.StatusOK, `非常重要：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。Very important: please do not make this service public, for personal use only, otherwise the account or Copilot will be banned. 非常に重要：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。`)
 	})
 	router.NoRoute(func(c *gin.Context) {
-		c.String(http.StatusMethodNotAllowed, "Method Not Allowed")
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+			"message": fmt.Sprintf("Invalid URL (%s %s)", c.Request.Method, c.Request.URL.Path),
+		})
 	})
 
 	if config.ConfigInstance.CORSProxyNextChat {
