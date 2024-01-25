@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/time/rate"
 
 	"bufio"
 	"bytes"
@@ -16,8 +17,8 @@ import (
 
 	"copilot-gpt4-service/config"
 	"copilot-gpt4-service/log"
-	"copilot-gpt4-service/utils"
 	"copilot-gpt4-service/tools"
+	"copilot-gpt4-service/utils"
 )
 
 // Handle the Cross-Origin Resource Sharing (CORS) for requests.
@@ -283,6 +284,25 @@ func LoggerHandler() gin.HandlerFunc {
 	}
 }
 
+func RateLimiterHandler(reqsPerMin int) gin.HandlerFunc {
+	var limiter *rate.Limiter
+	if reqsPerMin > 0 {
+		limiter = rate.NewLimiter(rate.Every(time.Minute), reqsPerMin)
+	} else {
+		limiter = rate.NewLimiter(rate.Inf, 0)
+	}
+
+	return func(c *gin.Context) {
+		if !limiter.Allow() {
+			c.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{
+				"message": "too many requests",
+			})
+			return
+		}
+		c.Next()
+	}
+}
+
 func StartupOutput() {
 	ipv4s, err := tools.GetIPv4NetworkIPs()
 	tools.PrintStructFieldsAndValues(config.ConfigInstance, "Copilot-GPT4-Service startup configuration:")
@@ -311,7 +331,7 @@ func main() {
 	router.Use(CORSMiddleware())
 	router.Use(LoggerHandler())
 
-	router.POST("/v1/chat/completions", chatCompletions)
+	router.POST("/v1/chat/completions", RateLimiterHandler(config.ConfigInstance.RateLimit), chatCompletions)
 	router.GET("/v1/models", createMockModelsResponse)
 	router.GET("/healthz", func(context *gin.Context) {
 		context.JSON(200, gin.H{

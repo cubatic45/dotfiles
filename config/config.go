@@ -1,10 +1,10 @@
 package config
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
-	"flag"
 
 	"github.com/joho/godotenv"
 )
@@ -18,6 +18,7 @@ type Config struct {
 	Logging      bool
 	LogLevel     string
 	CopilotToken string
+	RateLimit    int
 }
 
 var ConfigInstance *Config = &Config{}
@@ -31,6 +32,7 @@ func init() {
 	flag.BoolVar(&ConfigInstance.Cache, "cache", false, "Whether persistence is enabled or not.")
 	flag.BoolVar(&ConfigInstance.Debug, "debug", false, "Enable debug mode, if enabled, more logs will be output.")
 	flag.BoolVar(&ConfigInstance.Logging, "logging", false, "Enable logging.")
+	flag.IntVar(&ConfigInstance.RateLimit, "rate_limit", 0, "Limit the number of requests per minute.")
 
 	// if exists config.env, load it
 	if _, err := os.Stat("config.env"); err == nil {
@@ -49,6 +51,7 @@ func init() {
 	ConfigInstance.Cache = getFlagOrEnvOrDefaultBool(ConfigInstance.Cache, "CACHE", true)
 	ConfigInstance.Debug = getFlagOrEnvOrDefaultBool(ConfigInstance.Debug, "DEBUG", false)
 	ConfigInstance.Logging = getFlagOrEnvOrDefaultBool(ConfigInstance.Logging, "LOGGING", false)
+	ConfigInstance.RateLimit = getFlagOrEnvOrDefaultInt(ConfigInstance.RateLimit, "RATE_LIMIT", 0)
 }
 
 func getFlagOrEnvOrDefault(flagValue string, key string, defaultValue string) string {
@@ -56,6 +59,24 @@ func getFlagOrEnvOrDefault(flagValue string, key string, defaultValue string) st
 		return flagValue
 	}
 	return getEnvOrDefault(key, defaultValue)
+}
+
+func getFlagOrEnvOrDefaultInt(flagValue int, key string, defaultValue int) int {
+	if flagValue != 0 {
+		return flagValue
+	}
+
+	valueStr, exists := os.LookupEnv(key)
+	if !exists {
+		return defaultValue
+	}
+
+	value, err := strconv.Atoi(valueStr)
+	if err != nil {
+		return defaultValue
+	}
+
+	return value
 }
 
 func getFlagOrEnvOrDefaultBool(flagValue bool, key string, defaultValue bool) bool {
@@ -84,4 +105,18 @@ func getEnvOrDefaultBool(key string, defaultValue bool) bool {
 		panic(err)
 	}
 	return s
+}
+
+func getEnvOrDefaultInt(key string, defaultValue int) int {
+	valueStr, exists := os.LookupEnv(key)
+	if !exists {
+		return defaultValue
+	}
+
+	value, err := strconv.Atoi(valueStr)
+	if err != nil {
+		return defaultValue
+	}
+
+	return value
 }

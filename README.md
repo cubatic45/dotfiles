@@ -68,6 +68,7 @@ DEBUG=false # Whether to enable debug mode, more logs will be output after enabl
 LOGGING=true # Whether to enable logging, default is true.
 LOG_LEVEL=info # Log level, optional values: panic, fatal, error, warn, info, debug, trace (Note: effective only when LOGGING=true), default is info.
 COPILOT_TOKEN=ghp_xxxxxxx # Default Github Copilot Token, if this item is set, the Token carried with the request will be ignored. Default is empty.
+RATE_LIMIT= # The number of requests allowed per minute, if 0 there is no limit, default is 0.
 ```
 
 **Note:** All of the above configuration items can be configured through command line parameters or environment variables. The priority of command line parameters is the highest, the priority of environment variables is second, and the priority of the configuration file is the lowest. The command line parameter name is the lowercase form of the environment variable name, such as `HOST` corresponding to the command line parameter is `host`.
