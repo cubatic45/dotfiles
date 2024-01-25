@@ -42,6 +42,28 @@ jobs:
         if: github.event_name == 'push'
         run: |
           echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Cache go-build
+        uses: actions/cache@v4
+        with:
+          path: go-build
+          key: go-build-${{ hashFiles('**/go.sum') }}
+      - name: Cache go-pkg
+        uses: actions/cache@v4
+        with:
+          path: go-pkg
+          key: go-pkg-${{ hashFiles('**/go.sum') }}
+      - name: Inject go-build into Docker
+        uses: reproducible-containers/buildkit-cache-dance@v2.1.4
+        with:
+          cache-source: go-build
+          cache-target: /root/.cache/go-build
+      - name: Inject go-pkg into Docker
+        uses: reproducible-containers/buildkit-cache-dance@v2.1.4
+        with:
+          cache-source: go-pkg
+          cache-target: /go/pkg
+
       - name: Docker build and push with version
         uses: docker/build-push-action@v5
         with:
@@ -54,5 +76,3 @@ jobs:
             linux/amd64
             linux/arm64
             linux/arm/v7
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
