@@ -22,7 +22,7 @@ env:
 jobs:
   docker-release:
     name: Publish Docker images
-    if: github.repository == 'aaamoon/copilot-gpt4-service'
+    if: github.repository == 'aaamoon/copilot-gpt4-service' && (github.ref_name == 'master' || github.ref_name == 'ci-test')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -71,7 +71,7 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_REPOSITORY }}:${{ env.VERSION }}
-            ${{ env.IMAGE_REPOSITORY }}:${{ github.ref_name == 'master' && 'master' || ''}}
+            ${{ env.IMAGE_REPOSITORY }}:${{ github.ref_name }}
           platforms: |
             linux/amd64
             linux/arm64
