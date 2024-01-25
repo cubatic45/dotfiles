@@ -74,7 +74,8 @@ DEBUG=false # 是否启用调试模式，启用后会输出更多日志，默认
 LOGGING=true # 是否启用日志，默认为 true。
 LOG_LEVEL=info # 日志级别，可选值：panic、fatal、error、warn、info、debug、trace（注意：仅当 LOGGING=true 时有效），默认为 info。
 COPILOT_TOKEN=ghp_xxxxxxx # 默认的 Github Copilot Token，如果设置此项，则请求时携带的 Token 将被忽略。默认为空。
-RATE_LIMIT= # 每分钟允许的请求数，如果为 0 则没有限制，默认为 0。
+CORS_PROXY_NEXTCHAT=false # 启用后，可以通过路由 /cors-proxy-nextchat/ 上为 NextChat 提供代理服务。配置 NextChat 云同步时，如本地部署方式则设置代理地址为：http://localhost:8080/cors-proxy-nextchat/
+RATE_LIMIT=0 # 每分钟允许的请求数，如果为 0 则没有限制，默认为 0。
 ```
 
 **注意：** 以上配置项均可通过命令行参数或环境变量进行配置，命令行参数优先级最高，环境变量优先级次之，配置文件优先级最低。命令行参数名称为为环境变量名称的小写形式，如 `HOST` 对应的命令行参数为 `host`。
@@ -252,14 +253,13 @@ pip install requests
 python3 <(curl -fsSL https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)
 ```
 
-可通过设置环境变量或修改脚本第3行的字典设置代理。
+可通过设置环境变量或修改脚本第 3 行的字典设置代理。
 
 **Windows 平台获取**
 
 下载脚本，双击运行即可：[get_copilot_token.py](https://raw.githubusercontent.com/aaamoon/copilot-gpt4-service/master/shells/get_copilot_token.py)。
 
-可修改脚本第3行的字典设置代理。
-
+可修改脚本第 3 行的字典设置代理。
 
 ### 通过 Github Copilot CLI 授权获取
 

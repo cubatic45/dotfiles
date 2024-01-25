@@ -10,14 +10,15 @@ import (
 )
 
 type Config struct {
-	Port         string
-	Cache        bool
-	CachePath    string
-	Host         string
-	Debug        bool
-	Logging      bool
-	LogLevel     string
-	CopilotToken string
+	Port              string
+	Cache             bool
+	CachePath         string
+	Host              string
+	Debug             bool
+	Logging           bool
+	LogLevel          string
+	CopilotToken      string
+	CORSProxyNextChat bool
 	RateLimit    int
 }
 
@@ -32,6 +33,7 @@ func init() {
 	flag.BoolVar(&ConfigInstance.Cache, "cache", false, "Whether persistence is enabled or not.")
 	flag.BoolVar(&ConfigInstance.Debug, "debug", false, "Enable debug mode, if enabled, more logs will be output.")
 	flag.BoolVar(&ConfigInstance.Logging, "logging", false, "Enable logging.")
+	flag.BoolVar(&ConfigInstance.CORSProxyNextChat, "cors_proxy_nextchat", false, "Enable CORS proxy for NextChat.")
 	flag.IntVar(&ConfigInstance.RateLimit, "rate_limit", 0, "Limit the number of requests per minute.")
 
 	// if exists config.env, load it
@@ -51,6 +53,7 @@ func init() {
 	ConfigInstance.Cache = getFlagOrEnvOrDefaultBool(ConfigInstance.Cache, "CACHE", true)
 	ConfigInstance.Debug = getFlagOrEnvOrDefaultBool(ConfigInstance.Debug, "DEBUG", false)
 	ConfigInstance.Logging = getFlagOrEnvOrDefaultBool(ConfigInstance.Logging, "LOGGING", false)
+	ConfigInstance.CORSProxyNextChat = getFlagOrEnvOrDefaultBool(ConfigInstance.CORSProxyNextChat, "CORS_PROXY_NEXTCHAT", false)
 	ConfigInstance.RateLimit = getFlagOrEnvOrDefaultInt(ConfigInstance.RateLimit, "RATE_LIMIT", 0)
 }
 

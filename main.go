@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"time"
 
 	"copilot-gpt4-service/config"
@@ -267,6 +269,61 @@ func createMockModelsResponse(c *gin.Context) {
 	})
 }
 
+// corsProxyNextChat endpoint handler for proxying requests from nextChat desktop app
+func corsProxyNextChat(c *gin.Context) {
+	sp := strings.Split(c.Param("path"), "/")
+	if len(sp) < 3 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid proxy path"})
+		return
+	}
+
+	proto := sp[1]
+	host := sp[2]
+	path := strings.Join(sp[3:], "/")
+	if path != "" {
+		path = "/" + path
+	}
+	url, err := url.Parse(fmt.Sprintf("%s://%s%s", proto, host, path))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	method := c.Request.Header.Get("Method")
+	c.Request.Header.Del("Method")
+	if method == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Method header is not set"})
+		return
+	}
+	proxyReq, err := http.NewRequest(method, url.String(), c.Request.Body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	proxyReq.Header = c.Request.Header
+
+	resp, err := http.DefaultClient.Do(proxyReq)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer resp.Body.Close()
+
+	for key, values := range resp.Header {
+		for _, value := range values {
+			c.Header(key, value)
+		}
+	}
+
+	c.Status(resp.StatusCode)
+
+	_, err = io.Copy(c.Writer, resp.Body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+}
+
 func LoggerHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
@@ -313,8 +370,12 @@ func StartupOutput() {
 			fmt.Printf(" - %-20s:\033[32m http://%s:%s\033[0m\n", "Network", ip, config.ConfigInstance.Port)
 		}
 	}
+
 	fmt.Println(" (Press CTRL+C to quit)\n")
 
+	if config.ConfigInstance.CORSProxyNextChat {
+		fmt.Println("\033[33m WARNING: CORS_PROXY_NEXTCHAT is enabled. This is a potential security risk if your service is not private.\033[0m\n")
+	}
 	fmt.Println("\033[33m 警告：请不要将此服务公开，仅供个人使用，否则账户或 Copilot 将被封禁。\033[0m")
 	fmt.Println("\033[33m Warning: Please do not make this service public, for personal use only, otherwise the account or Copilot will be banned.\033[0m")
 	fmt.Println("\033[33m 警告：このサービスを公開しないでください、個人使用のみにしてください。そうしないと、アカウントまたは Copilot が禁止されます。\033[0m\n")
@@ -346,6 +407,10 @@ func main() {
 			"message": fmt.Sprintf("Invalid URL (%s %s)", c.Request.Method, c.Request.URL.Path),
 		})
 	})
+
+	if config.ConfigInstance.CORSProxyNextChat {
+		router.Any("/cors-proxy-nextchat/*path", corsProxyNextChat)
+	}
 
 	StartupOutput()
 
