@@ -17,6 +17,9 @@ jobs:
       matrix:
         goos: [windows, linux, darwin]
         goarch: [amd64, arm64]
+        include:
+          - goos: linux
+            goarch: arm
       fail-fast: false
 
     runs-on: ubuntu-latest
