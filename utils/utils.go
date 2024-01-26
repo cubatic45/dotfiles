@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"copilot-gpt4-service/cache"
-	"copilot-gpt4-service/config"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,6 +8,9 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"copilot-gpt4-service/cache"
+	"copilot-gpt4-service/config"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,6 +36,9 @@ func GetAuthorizationFromToken(copilotToken string) (string, int, string) {
 	authorization := getAuthorizationFromCache(copilotToken)
 	if authorization.Token == "" {
 		getAuthorizationUrl := "https://api.github.com/copilot_internal/v2/token"
+		if config.ConfigInstance.AuthorizationUrl != "" {
+			getAuthorizationUrl = config.ConfigInstance.AuthorizationUrl
+		}
 		client := &http.Client{}
 		req, _ := http.NewRequest("GET", getAuthorizationUrl, nil)
 		req.Header.Set("Authorization", "token "+copilotToken)

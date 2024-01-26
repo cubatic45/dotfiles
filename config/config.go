@@ -18,8 +18,9 @@ type Config struct {
 	Logging           bool
 	LogLevel          string
 	CopilotToken      string
+	AuthorizationUrl  string
 	CORSProxyNextChat bool
-	RateLimit    int
+	RateLimit         int
 }
 
 var ConfigInstance *Config = &Config{}
@@ -30,6 +31,7 @@ func init() {
 	flag.StringVar(&ConfigInstance.CachePath, "cache_path", "", "Path to the persistent cache.")
 	flag.StringVar(&ConfigInstance.LogLevel, "log_level", "", "Log level, optional values: panic, fatal, error, warn, info, debug, trace (note: valid only when log_level is true).")
 	flag.StringVar(&ConfigInstance.CopilotToken, "copilot_token", "", "Default Github Copilot Token, if this is set, the Token carried in the request will be ignored. Default is empty.")
+	flag.StringVar(&ConfigInstance.AuthorizationUrl, "authorization_url", "", "authorization_url")
 	flag.BoolVar(&ConfigInstance.Cache, "cache", false, "Whether persistence is enabled or not.")
 	flag.BoolVar(&ConfigInstance.Debug, "debug", false, "Enable debug mode, if enabled, more logs will be output.")
 	flag.BoolVar(&ConfigInstance.Logging, "logging", false, "Enable logging.")
