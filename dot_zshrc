@@ -29,7 +29,7 @@ zinit light-mode for \
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
-# zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma/fast-syntax-highlighting
 
 # oh my zsh 功能
 zinit snippet OMZ::lib/completion.zsh
@@ -45,29 +45,3 @@ bindkey ',' autosuggest-accept
 zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
 zinit light sindresorhus/pure
 
-
-export GOPATH="/Users/vb/go"
-export PATH=$PATH:$GOPATH/bin
-
-#
-# jump
-eval "$(jump shell --bind=z)"
-# 
-# VLC
-export VLC_PLUGIN_PATH=/Applications/VLC.app/Contents/MacOS
-#
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# 
-# redis 6.2
-export PATH="/opt/homebrew/opt/redis@6.2/bin:$PATH"
-# 
-# atuin
-eval "$(atuin init zsh --disable-up-arrow)"
-
-alias ls="eza"
-alias ll="eza -l"
-alias la="eza -l -a"
-alias cat="bat --paging=never --theme=\"Solarized (light)\" --style=\"header,grid,header-filesize\""
