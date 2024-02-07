@@ -1,4 +1,3 @@
-
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -25,13 +24,12 @@ zinit light-mode for \
 
 
 
-# zsh 套件四天王
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search
 zinit light zdharma/fast-syntax-highlighting
 
-# oh my zsh 功能
+# oh my zsh 
 zinit snippet OMZ::lib/completion.zsh
 zinit snippet OMZ::lib/history.zsh
 zinit snippet OMZ::lib/key-bindings.zsh
@@ -44,4 +42,39 @@ bindkey ',' autosuggest-accept
 
 zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
 zinit light sindresorhus/pure
+
+unset zle_bracketed_paste
+
+
+if type &> /dev/null; then
+    export GOPATH=$(go env GOPATH)
+    export PATH=$PATH:$GOPATH/bin
+    go install github.com/gsamokovarov/jump@latest
+    eval "$(jump shell --bind=z)"
+fi
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+if type atuin &> /dev/null; then
+    eval "$(atuin init zsh --disable-up-arrow)"
+fi
+
+if type eza &> /dev/null; then
+    alias ls="eza"
+    alias ll="eza -l"
+    alias la="eza -l -a"
+    alias cat="bat --paging=never --theme=\"Solarized (light)\" --style=\"header,grid,header-filesize\""
+fi
+
+if type brew &> /dev/null
+then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
 
