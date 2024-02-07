@@ -83,6 +83,9 @@ map("n", "sk", ":resize -10<CR>", opt)
 -- jq json format
 -- map("n", "<leader>jq", ":%!jq '.'<CR>", opt)
 
+-- tmux
+map("n", "<leader>t", function() os.execute('tmux popup -d $(pwd)') end, opt)
+
 -- 插件快捷键
 local pluginKeys = {}
 

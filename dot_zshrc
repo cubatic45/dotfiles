@@ -46,7 +46,7 @@ zinit light sindresorhus/pure
 unset zle_bracketed_paste
 
 
-if type &> /dev/null; then
+if type go &> /dev/null; then
     export GOPATH=$(go env GOPATH)
     export PATH=$PATH:$GOPATH/bin
     go install github.com/gsamokovarov/jump@latest
