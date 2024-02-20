@@ -12,6 +12,8 @@ znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-syntax-highlighting
 znap source zsh-users/zsh-history-substring-search
 
+znap source ohmyzsh/ohmyzsh lib/{completion,key-bindings}
+
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
@@ -30,4 +32,5 @@ if type eza &> /dev/null; then
     alias la="eza -l -a"
     alias cat="bat --paging=never --theme=\"Solarized (light)\" --style=\"header,grid,header-filesize\""
 fi
+
 
