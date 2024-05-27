@@ -91,39 +91,6 @@ local pluginKeys = {}
 
 
 
--- lsp 回调函数快捷键设置
-pluginKeys.mapLSP = function(client, bufnr)
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    local mapbuf = vim.keymap.set
-    -- rename
-    mapbuf("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", bufopts)
-    -- code action
-    mapbuf("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", bufopts)
-    -- go xx
-    mapbuf("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", bufopts)
-    mapbuf("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", bufopts)
-    mapbuf("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", bufopts)
-    -- 接口实现
-    mapbuf("n", "gi", "<cmd>Telescope lsp_implementations<CR>", bufopts)
-    -- 类型定义
-    mapbuf('n', '<leader>d', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opt)
-    -- 查看引用
-    mapbuf("n", "gr", "<cmd>Telescope lsp_references<CR>", bufopts)
-    -- diagnostic
-    mapbuf("n", "gp", "<cmd>Telescope diagnostics<CR>", bufopts)
-    mapbuf("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", bufopts)
-    mapbuf("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", bufopts)
-    mapbuf("n", "<leader>f", "<cmd>lua vim.lsp.buf.format()<CR>", bufopts)
-
-    -- mapbuf("n", "<laeder>i", "<cmd>Telescope lsp_incoming_calls<CR>", bufopts)
-    -- mapbuf("n", "<leader>o", "<cmd>Telescope lsp_outgoing_calls<CR>", bufopts)
-    -- 没用到
-    -- mapbuf('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opt)
-    -- mapbuf("n", "<leader>s", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opt)
-    -- mapbuf('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opt)
-    -- mapbuf('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opt)
-    -- mapbuf('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opt)
-end
 
 
 -- nvim-cmp 自动补全
@@ -154,27 +121,14 @@ pluginKeys.cmp = function(cmp)
             c = cmp.mapping.close(),
         }),
         -- 确认
-        -- Accept currently selected item. If none selected, `select` first item.
-        -- Set `select` to `false` to only confirm explicitly selected items.
         ["<CR>"] = cmp.mapping.confirm({
             select = true,
             behavior = cmp.ConfirmBehavior.Replace,
         }),
-        -- ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
         -- 如果窗口内容太多，可以滚动
         ["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
         ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
 
-        -- super Tab
-        -- ["<Tab>"] = cmp.mapping(function(fallback)
-        --     if cmp.visible() then
-        --         cmp.select_next_item()
-        --     elseif has_words_before() then
-        --         cmp.complete()
-        --     else
-        --         fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
-        --     end
-        -- end, { "i", "s" }),
         ["<Tab>"] = vim.schedule_wrap(function(fallback)
             if cmp.visible() and has_words_before() then
                 cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
@@ -189,7 +143,6 @@ pluginKeys.cmp = function(cmp)
                 feedkey("<Plug>(vsnip-jump-prev)", "")
             end
         end, { "i", "s" }),
-        -- end of super Tab
     }
 end
 
