@@ -37,6 +37,8 @@ now(function()
     })
     vim.cmd [[ colorscheme NeoSolarized ]]
 end)
+
+-- Setup mini.starter
 now(function()
     require('mini.starter').setup({
         items = {
@@ -65,8 +67,20 @@ later(function()
     vim.cmd('hi MiniCursorword term=underline cterm=underline gui=underline guibg=NONE')
 end)
 
+-- Setup mini.pairs
+later(function()
+    require('mini.pairs').setup()
+end)
+
+-- Setup mini.ai
+later(function()
+    require('mini.ai').setup()
+end)
+
 -- Setup mini.files
 later(function()
+    add({ source = 'nvim-tree/nvim-web-devicons' })
+    require('nvim-web-devicons').setup()
     require('mini.files').setup({
         mappings = {
             close       = 'q',
@@ -92,6 +106,37 @@ later(function()
     end)
     vim.keymap.set('n', '<C-h>', '<cmd>bprevious<cr>')
     vim.keymap.set('n', '<C-l>', '<cmd>bnext<cr>')
+end)
+
+
+-- Setup mini.git
+later(function()
+    require('mini.git').setup()
+end)
+
+-- Setup vgit.nvim
+later(function()
+    add({ source = 'cubatic45/vgit.nvim', depends = { 'nvim-lua/plenary.nvim' } })
+    require('vgit').setup({
+        keymaps = {
+            ['n <leader>k'] = function() require('vgit').hunk_up() end,
+            ['n <leader>j'] = function() require('vgit').hunk_down() end,
+            ['n <leader>gs'] = function() require('vgit').buffer_hunk_stage() end,
+            ['n <leader>gr'] = function() require('vgit').buffer_hunk_reset() end,
+            ['n <leader>gp'] = function() require('vgit').buffer_hunk_preview() end,
+
+            ['n <leader>gb'] = function() require('vgit').buffer_blame_preview() end,
+            ['n <leader>gf'] = function() require('vgit').buffer_diff_preview() end,
+            ['n <leader>gh'] = function() require('vgit').buffer_history_preview() end,
+            ['n <leader>gu'] = function() require('vgit').buffer_reset() end,
+            ['n <leader>gg'] = function() require('vgit').buffer_gutter_blame_preview() end,
+            ['n <leader>glu'] = function() require('vgit').buffer_hunks_preview() end,
+            ['n <leader>gls'] = function() require('vgit').project_hunks_staged_preview() end,
+            ['n <leader>gd'] = function() require('vgit').project_diff_preview() end,
+            ['n <leader>gq'] = function() require('vgit').project_hunks_qf() end,
+            ['n <leader>gx'] = function() require('vgit').toggle_diff_preference() end,
+        },
+    })
 end)
 
 -- Setup LSP configuration

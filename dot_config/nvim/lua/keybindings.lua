@@ -13,6 +13,7 @@ vim.g.maplocalleader = " "
 -- 使用 lua 重新定义 vim.keymap.set
 local map = vim.keymap.set
 local opt = { noremap = true, silent = true, }
+map('i', 'jj', '<Esc>', opt)
 -- ALT+j/k 上一个下一个
 map("c", "<A-j>", "<C-n>", { expr = false, silent = false })
 map("c", "<A-k>", "<C-p>", { expr = false, silent = false })
