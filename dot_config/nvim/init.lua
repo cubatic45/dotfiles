@@ -341,3 +341,15 @@ later(function()
         require('telescope').load_extension('projects')
     }
 end)
+
+-- Setup dap
+later(function()
+    add({
+        source = 'rcarriga/nvim-dap-ui',
+        depends = { "leoluz/nvim-dap-go", 'mfussenegger/nvim-dap', "nvim-neotest/nvim-nio" }
+    })
+    require('dapui').setup()
+    require('dap-go').setup()
+    vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
+    vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end)
+end)
