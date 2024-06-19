@@ -348,7 +348,35 @@ later(function()
         source = 'rcarriga/nvim-dap-ui',
         depends = { "leoluz/nvim-dap-go", 'mfussenegger/nvim-dap', "nvim-neotest/nvim-nio" }
     })
-    require('dapui').setup()
+    require('dapui').setup(
+        {
+            layouts = { {
+                elements = { {
+                    id = "scopes",
+                    size = 0.25
+                }, {
+                    id = "breakpoints",
+                    size = 0.25
+                }, {
+                    id = "stacks",
+                    size = 0.25
+                }, {
+                    id = "watches",
+                    size = 0.25
+                } },
+                position = "left",
+                size = 40
+            }, {
+                elements = { {
+                    id = "repl",
+                    size = 1
+                }, },
+                position = "bottom",
+                size = 10
+            } },
+        }
+
+    )
     require('dap-go').setup()
     vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
     vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end)
