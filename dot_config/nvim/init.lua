@@ -42,7 +42,6 @@ end)
 now(function()
     require('mini.starter').setup({
         items = {
-            { action = 'Telescope projects', name = 'Projects', section = 'Telescope' },
         },
         query_updaters = ""
     })
@@ -116,7 +115,7 @@ end)
 
 -- Setup vgit.nvim
 later(function()
-    add({ source = 'cubatic45/vgit.nvim', depends = { 'nvim-lua/plenary.nvim' } })
+    add({ source = 'tanvirtin/vgit.nvim', depends = { 'nvim-lua/plenary.nvim' } })
     require('vgit').setup({
         keymaps = {
             ['n <leader>k'] = function() require('vgit').hunk_up() end,
@@ -238,13 +237,16 @@ later(function()
     vim.keymap.set('n', '<leader>s', '<cmd>SymbolsOutline<cr>')
 end)
 
--- Setup codeium
+-- Setup supermaven
 later(function()
     add({
-        source = 'Exafunction/codeium.nvim',
+        source = 'supermaven-inc/supermaven-nvim',
         depends = { 'nvim-lua/plenary.nvim', "hrsh7th/nvim-cmp" }
     })
-    require("codeium").setup({})
+    require("supermaven-nvim").setup({
+        disable_keymaps = true,
+        ignore_filetypes = { json = true, yaml = true, toml = true },
+    })
 end)
 
 -- Setup nvim-cmp
@@ -258,18 +260,61 @@ later(function()
             "hrsh7th/cmp-cmdline",
         }
     })
+    local feedkey = function(key, mode)
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+    end
+    local has_words_before = function()
+        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+    end
 
     local cmp = require("cmp")
 
     cmp.setup({
         preselect = cmp.PreselectMode.None,
         sources = {
-            { name = "codeium" },
+            { name = "supermaven" },
             { name = "nvim_lsp" },
             { name = "buffer" },
             { name = "path" }
         },
-        mapping = require("keybindings").cmp(cmp),
+        mapping = {
+            -- 上一个
+            ["<A-k>"] = cmp.mapping.select_prev_item(),
+            -- 下一个
+            ["<A-j>"] = cmp.mapping.select_next_item(),
+            -- 出现补全
+            ["<A-l>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+            -- 取消
+            ["<A-h>"] = cmp.mapping({
+                i = cmp.mapping.abort(),
+                c = cmp.mapping.close(),
+            }),
+            -- 确认
+            ["<CR>"] = cmp.mapping.confirm({
+                select = true,
+                behavior = cmp.ConfirmBehavior.Replace,
+            }),
+            -- 如果窗口内容太多，可以滚动
+            ["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+            ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+
+            ["<Tab>"] = vim.schedule_wrap(function(fallback)
+                if cmp.visible() and has_words_before() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                else
+                    fallback()
+                end
+            end),
+            ["<S-Tab>"] = cmp.mapping(function()
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+                    feedkey("<Plug>(vsnip-jump-prev)", "")
+                end
+            end, { "i", "s" }),
+        },
         window = {
             documentation = cmp.config.window.bordered(),
         }
@@ -326,20 +371,6 @@ later(function()
     vim.keymap.set('n', '<C-p>', '<cmd>Telescope find_files<cr>')
     vim.keymap.set('n', '<C-f>', '<cmd>Telescope live_grep<cr>')
     vim.keymap.set('n', '<C-s>', '<cmd>Telescope oldfiles<cr>')
-end)
-
--- Setup projects
-later(function()
-    add({
-        source = 'ahmedkhalf/project.nvim',
-        depends = { 'nvim-telescope/telescope.nvim' }
-    })
-    require("project_nvim").setup {
-        exclude_dirs = { "~/go", "/opt" },
-        manual_mode = true,
-        patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "go.mod", "init.lua" },
-        require('telescope').load_extension('projects')
-    }
 end)
 
 -- Setup dap
