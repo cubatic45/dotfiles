@@ -76,6 +76,11 @@ later(function()
     require('mini.ai').setup()
 end)
 
+-- Setup indentscope
+later(function()
+    require('mini.indentscope').setup()
+end)
+
 -- Setup mini.files
 later(function()
     add({ source = 'nvim-tree/nvim-web-devicons' })
@@ -160,6 +165,40 @@ now(function()
         automatic_installation = true
     })
 
+    require('lspconfig').lua_ls.setup({
+        on_init = function(client)
+            if client.workspace_folders then
+                local path = client.workspace_folders[1].name
+                if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
+                    return
+                end
+            end
+
+            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                runtime = {
+                    -- Tell the language server which version of Lua you're using
+                    -- (most likely LuaJIT in the case of Neovim)
+                    version = 'LuaJIT'
+                },
+                -- Make the server aware of Neovim runtime files
+                workspace = {
+                    checkThirdParty = false,
+                    library = {
+                        vim.env.VIMRUNTIME
+                        -- Depending on the usage, you might want to add additional paths here.
+                        -- "${3rd}/luv/library"
+                        -- "${3rd}/busted/library",
+                    }
+                    -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+                    -- library = vim.api.nvim_get_runtime_file("", true)
+                }
+            })
+        end,
+        settings = {
+            Lua = {}
+        }
+    })
+    require("lspconfig").clangd.setup({})
     require("lspconfig").gopls.setup({
         settings = {
             gopls = {
@@ -169,7 +208,16 @@ now(function()
                 },
                 usePlaceholders = true,
                 staticcheck = true,
-            }
+            },
+            hints = {
+                rangeVariableTypes = true,
+                parameterNames = true,
+                constantValues = true,
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                functionTypeParameters = true,
+            },
         }
     })
 
@@ -177,6 +225,22 @@ now(function()
     vim.keymap.set('n', 'gk', vim.diagnostic.goto_prev)
     vim.keymap.set('n', 'gj', vim.diagnostic.goto_next)
     vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+
+    vim.keymap.set('n', '<leader>f', function()
+        -- 如果当前文件是go文件，则组织导入
+        if vim.bo.filetype == "go" then
+            go_org_imports(500)
+        end
+        -- json 则调用 jq 格式化
+        if vim.bo.filetype == "json" then
+            vim.cmd("%!jq .")
+            return
+        end
+        -- 其他文件则尝试调用 lsp 格式化
+        if vim.lsp.buf_get_clients(0) ~= nil then
+            vim.lsp.buf.format { async = true }
+        end
+    end)
 
     -- LSP buffer local mappings
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -192,10 +256,6 @@ now(function()
             vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
             vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
             vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-            vim.keymap.set('n', '<leader>f', function()
-                go_org_imports(500)
-                vim.lsp.buf.format { async = true }
-            end, opts)
         end,
     })
 end)
@@ -237,18 +297,6 @@ later(function()
     vim.keymap.set('n', '<leader>s', '<cmd>SymbolsOutline<cr>')
 end)
 
--- Setup supermaven
-later(function()
-    add({
-        source = 'supermaven-inc/supermaven-nvim',
-        depends = { 'nvim-lua/plenary.nvim', "hrsh7th/nvim-cmp" }
-    })
-    require("supermaven-nvim").setup({
-        disable_keymaps = true,
-        ignore_filetypes = { json = true, yaml = true, toml = true },
-    })
-end)
-
 -- Setup nvim-cmp
 later(function()
     add({
@@ -274,7 +322,6 @@ later(function()
     cmp.setup({
         preselect = cmp.PreselectMode.None,
         sources = {
-            { name = "supermaven" },
             { name = "nvim_lsp" },
             { name = "buffer" },
             { name = "path" }
@@ -285,7 +332,7 @@ later(function()
             -- 下一个
             ["<A-j>"] = cmp.mapping.select_next_item(),
             -- 出现补全
-            ["<A-l>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+            -- ["<A-l>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
             -- 取消
             ["<A-h>"] = cmp.mapping({
                 i = cmp.mapping.abort(),
@@ -411,4 +458,44 @@ later(function()
     require('dap-go').setup()
     vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
     vim.keymap.set('n', '<Leader>du', function() require('dapui').toggle() end)
+end)
+
+-- Setup codecompanion
+later(function()
+    add({
+        source = 'olimorris/codecompanion.nvim',
+        depends = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "hrsh7th/nvim-cmp",
+            "nvim-telescope/telescope.nvim",
+        }
+    })
+    require("codecompanion").setup({
+        opts = {
+            log_level = "TRACE",
+        },
+        strategies = {
+            chat = {
+                adapter = "ollama",
+            },
+            inline = {
+                adapter = "ollama",
+            },
+            agent = {
+                adapter = "ollama",
+            },
+        },
+        adapters = {
+            ollama = function()
+                return require("codecompanion.adapters").extend("openai", {
+                    url = "https://models.inference.ai.azure.com/chat/completions",
+                    env = {
+                        -- url = "https://models.inference.ai.azure.com",
+                        api_key = "",
+                    },
+                })
+            end,
+        },
+    })
 end)
