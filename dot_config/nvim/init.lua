@@ -1,6 +1,3 @@
-require("basic")
-require("keybindings")
-
 local path_package = vim.fn.stdpath('data') .. '/site/'
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
 
@@ -16,11 +13,168 @@ require('mini.deps').setup({ path = { package = path_package } })
 
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
+now(function()
+    -- utf8
+    vim.g.encoding = "UTF-8"
+    vim.o.fileencoding = 'utf-8'
+    -- jkhl 移动时光标周围保留8行
+    vim.o.scrolloff = 8
+    vim.o.sidescrolloff = 8
+    -- 使用相对行号
+    vim.wo.number = true
+    vim.wo.relativenumber = true
+    -- 高亮所在行
+    vim.wo.cursorline = true
+    -- 显示左侧图标指示列
+    vim.wo.signcolumn = "yes"
+    -- 右侧参考线，超过表示代码太长了，考虑换行
+    -- vim.wo.colorcolumn = "80"
+    -- 缩进4个空格等于一个Tab
+    vim.o.tabstop = 4
+    vim.bo.tabstop = 4
+    vim.o.softtabstop = 4
+    vim.o.shiftround = true
+    -- >> << 时移动长度
+    vim.o.shiftwidth = 4
+    vim.bo.shiftwidth = 4
+    -- 空格替代tab
+    vim.o.expandtab = true
+    vim.bo.expandtab = true
+    -- 新行对齐当前行
+    vim.o.autoindent = true
+    vim.bo.autoindent = true
+    vim.o.smartindent = true
+    -- 搜索大小写不敏感，除非包含大写
+    vim.o.ignorecase = true
+    vim.o.smartcase = true
+    -- 搜索不要高亮
+    vim.o.hlsearch = false
+    -- 边输入边搜索
+    vim.o.incsearch = true
+    -- 命令行高为2，提供足够的显示空间
+    vim.o.cmdheight = 2
+    -- 当文件被外部程序修改时，自动加载
+    vim.o.autoread = true
+    vim.bo.autoread = true
+    -- 禁止折行
+    vim.wo.wrap = false
+    -- 光标在行首尾时<Left><Right>可以跳到下一行
+    vim.o.whichwrap = '<,>,[,]'
+    -- 允许隐藏被修改过的buffer
+    vim.o.hidden = true
+    -- 鼠标支持
+    vim.o.mouse = "a"
+    -- 禁止创建备份文件
+    vim.o.backup = false
+    vim.o.writebackup = false
+    vim.o.swapfile = false
+    -- smaller updatetime
+    vim.o.updatetime = 300
+    -- 设置 timeoutlen 为等待键盘快捷键连击时间500毫秒，可根据需要设置
+    vim.o.timeoutlen = 500
+    -- split window 从下边和右边出现
+    vim.o.splitbelow = true
+    vim.o.splitright = true
+    -- 自动补全不自动选中
+    vim.g.completeopt = "menu,menuone,noselect,noinsert"
+    -- 样式
+    vim.o.background = "light"
+    vim.o.termguicolors = true
+    vim.opt.termguicolors = true
+    -- 不可见字符的显示，这里只把空格显示为一个点
+    -- vim.o.list = true
+    -- vim.o.listchars = "space:·"
+    -- 补全增强
+    vim.o.wildmenu = true
+    -- Dont' pass messages to |ins-completin menu|
+    vim.o.shortmess = vim.o.shortmess .. 'c'
+    -- 补全最多显示10行
+    vim.o.pumheight = 10
+    -- 永远显示 tabline
+    vim.o.showtabline = 2
+    -- 使用增强状态栏插件后不再需要 vim 的模式提示
+    vim.o.showmode = false
+    vim.o.cmdheight = 0
+end)
+
 -- Keymap setup
 now(function()
-    vim.keymap.set('x', 'c', '"+y')
+    vim.g.mapleader = " "
+    vim.g.maplocalleader = " "
+
+
+    -- 使用 lua 重新定义 vim.keymap.set
+    local set = vim.keymap.set
+    local opt = { noremap = true, silent = true }
+
+    set('x', 'c', '"+y')
     vim.keymap.del("n", "<C-w>d")
     vim.keymap.del("n", "<C-w><C-d>")
+
+    -- Basic key mappings
+    set('i', 'jj', '<Esc>', opt)
+    set("c", "<A-j>", "<C-n>", { expr = false, silent = false })
+    set("c", "<A-k>", "<C-p>", { expr = false, silent = false })
+
+    set("n", "<leader>w", ":w<CR>", opt)
+    set("n", "<leader>wq", ":wqa!<CR>", opt)
+
+    -- Motion adjustments
+    set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+    set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+
+    -- Scrolling and movement
+    set("n", "<C-j>", "5j", opt)
+    set("n", "<C-k>", "5k", opt)
+    set("v", "<C-j>", "5j", opt)
+    set("v", "<C-k>", "5k", opt)
+
+    set("n", "<C-u>", "10k", opt)
+    set("n", "<C-d>", "10j", opt)
+
+    -- Magic search
+    set("n", "/", "/\\v", { expr = false, silent = false })
+    set("v", "/", "/\\v", { expr = false, silent = false })
+
+    -- Move selected text up/down
+    set("v", "J", ":move '>+1<CR>gv-gv", opt)
+    set("v", "K", ":move '<-2<CR>gv-gv", opt)
+
+    -- Paste without yanking
+    set("v", "p", '"_dP', opt)
+
+    -- Exiting commands
+    set("n", "qq", ":q!<CR>", opt)
+    set("n", "<leader>q", ":qa!<CR>", opt)
+
+    -- Insert mode enhancements
+    set("i", "<C-a>", "<ESC>I", opt)
+    set("i", "<C-e>", "<ESC>A", opt)
+    set("i", "<S-CR>", "<Esc>o", opt)
+
+    ------------------------------------------------------------------
+    -- Window management
+    ------------------------------------------------------------------
+    set("n", "s", "", opt)
+    set("n", "sv", ":vsp<CR>", opt)
+    set("n", "sh", ":sp<CR>", opt)
+    set("n", "sc", "<C-w>c", opt)
+    set("n", "so", "<C-w>o", opt)
+
+    -- Window navigation
+    set("n", "<A-h>", "<C-w>h", opt)
+    set("n", "<A-j>", "<C-w>j", opt)
+    set("n", "<A-k>", "<C-w>k", opt)
+    set("n", "<A-l>", "<C-w>l", opt)
+
+    -- Resize windows
+    set("n", "s,", ":vertical resize -10<CR>", opt)
+    set("n", "s.", ":vertical resize +10<CR>", opt)
+    set("n", "sj", ":resize +10<CR>", opt)
+    set("n", "sk", ":resize -10<CR>", opt)
+
+    -- Tmux integration
+    set("n", "<leader>t", function() os.execute('tmux popup -d $(pwd)') end, opt)
 end)
 
 -- Setup mini.notify
@@ -35,7 +189,10 @@ now(function()
     require("NeoSolarized").setup({
         transparent = false,
     })
-    vim.cmd [[ colorscheme NeoSolarized ]]
+    vim.o.background = "light"
+    vim.o.termguicolors = true
+    vim.opt.termguicolors = true
+    vim.cmd('colorscheme NeoSolarized')
 end)
 
 -- Setup mini.starter
@@ -144,7 +301,7 @@ later(function()
 end)
 
 -- Setup LSP configuration
-function go_org_imports(wait_ms)
+local function go_org_imports(wait_ms)
     local params = vim.lsp.util.make_range_params()
     params.context = { only = { "source.organizeImports" } }
     local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
@@ -164,32 +321,41 @@ now(function()
     require('mason-lspconfig').setup({
         automatic_installation = true
     })
-
-    require('lspconfig').lua_ls.setup({
+    require 'lspconfig'.harper_ls.setup {
+        settings = {
+            ["harper-ls"] = {
+                userDictPath = "~/config/harper/dict.txt",
+                linters = {
+                    sentence_capitalization = false,
+                },
+                codeActions = {
+                    forceStable = true
+                }
+            }
+        },
+    }
+    require 'lspconfig'.bashls.setup {}
+    require 'lspconfig'.docker_compose_language_service.setup {}
+    require 'lspconfig'.dockerls.setup {}
+    require 'lspconfig'.marksman.setup {}
+    require 'lspconfig'.lua_ls.setup {
         on_init = function(client)
             if client.workspace_folders then
                 local path = client.workspace_folders[1].name
-                if vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc') then
+                if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
                     return
                 end
             end
 
             client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
                 runtime = {
-                    -- Tell the language server which version of Lua you're using
-                    -- (most likely LuaJIT in the case of Neovim)
                     version = 'LuaJIT'
                 },
-                -- Make the server aware of Neovim runtime files
                 workspace = {
                     checkThirdParty = false,
                     library = {
                         vim.env.VIMRUNTIME
-                        -- Depending on the usage, you might want to add additional paths here.
-                        -- "${3rd}/luv/library"
-                        -- "${3rd}/busted/library",
                     }
-                    -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
                     -- library = vim.api.nvim_get_runtime_file("", true)
                 }
             })
@@ -197,7 +363,8 @@ now(function()
         settings = {
             Lua = {}
         }
-    })
+    }
+
     require("lspconfig").clangd.setup({})
     require("lspconfig").gopls.setup({
         settings = {
@@ -237,7 +404,7 @@ now(function()
             return
         end
         -- 其他文件则尝试调用 lsp 格式化
-        if vim.lsp.buf_get_clients(0) ~= nil then
+        if vim.lsp.get_clients() ~= nil then
             vim.lsp.buf.format { async = true }
         end
     end)
@@ -306,13 +473,15 @@ later(function()
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
+            'zbirenbaum/copilot.lua',
+            'zbirenbaum/copilot-cmp',
         }
     })
     local feedkey = function(key, mode)
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
     end
     local has_words_before = function()
-        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+        if vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt" then return false end
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
     end
@@ -322,6 +491,7 @@ later(function()
     cmp.setup({
         preselect = cmp.PreselectMode.None,
         sources = {
+            { name = "copilot", group_index = 2 },
             { name = "nvim_lsp" },
             { name = "buffer" },
             { name = "path" }
@@ -340,7 +510,7 @@ later(function()
             }),
             -- 确认
             ["<CR>"] = cmp.mapping.confirm({
-                select = true,
+                select = false,
                 behavior = cmp.ConfirmBehavior.Replace,
             }),
             -- 如果窗口内容太多，可以滚动
@@ -497,5 +667,44 @@ later(function()
                 })
             end,
         },
+    })
+end)
+
+-- Setup copilot
+later(function()
+    add({
+        source = 'zbirenbaum/copilot.lua',
+        depends = {
+        }
+    })
+    require('copilot').setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+        copilot_node_command = '/Users/vb/.asdf/installs/nodejs/23.5.0/bin/node',
+        filetypes = {
+            lua = false,
+            go = true,
+        },
+    })
+end)
+
+-- Setup copilot-cmp
+later(function()
+    add({
+        source = 'zbirenbaum/copilot-cmp',
+        depends = {
+            'zbirenbaum/copilot.lua'
+        }
+    })
+    require('copilot_cmp').setup({
+    })
+end)
+
+-- Setup Glow
+later(function()
+    add({
+        source = 'ellisonleao/glow.nvim',
+    })
+    require('glow').setup({
     })
 end)
