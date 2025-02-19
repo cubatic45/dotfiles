@@ -680,7 +680,6 @@ later(function()
     require('copilot').setup({
         suggestion = { enabled = false },
         panel = { enabled = false },
-        copilot_node_command = '/Users/vb/.asdf/installs/nodejs/23.5.0/bin/node',
         filetypes = {
             lua = false,
             go = true,
